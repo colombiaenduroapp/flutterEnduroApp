@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/nav_bar/tab_sede.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 
 import 'inicio.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:ui_flutter/src/nav_bar/tab_evento.dart';
-import 'package:ui_flutter/src/nav_bar/tab_inicio.dart';
-import 'package:ui_flutter/src/nav_bar/tab_sede.dart';
+import 'package:ui_flutter/src/tab_bar/tab_evento.dart';
+import 'package:ui_flutter/src/tab_bar/tab_inicio.dart';
+import 'package:ui_flutter/src/tab_bar/tab_sede.dart';
 
-import 'package:ui_flutter/src/widgets/nav_drawer.dart';
+import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
 class InicioPage extends StatefulWidget {
   InicioPage({Key key}) : super(key: key);

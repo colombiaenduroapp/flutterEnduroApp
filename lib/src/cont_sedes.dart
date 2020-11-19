@@ -37,13 +37,15 @@ class _cont_sedesState extends State<cont_sedes> {
   }
 
   ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-      title: Text(title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-          )),
-      subtitle: Text(subtitle),
-      leading: Image(
-          image: NetworkImage(
-              'https://www.flaticon.es/svg/static/icons/svg/27/27176.svg')));
+        title: Text(title,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            )),
+        subtitle: Text(subtitle),
+        leading: Icon(
+          icon,
+          color: Colors.blue[500],
+        ),
+      );
 }
