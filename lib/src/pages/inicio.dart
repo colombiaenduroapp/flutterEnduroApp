@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:ui_flutter/src/tab_bar/tab_evento.dart';
-import 'package:ui_flutter/src/tab_bar/tab_inicio.dart';
-import 'package:ui_flutter/src/tab_bar/tab_sede.dart';
+import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
+import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
+import 'package:ui_flutter/src/widgets/tab_bar/tab_sede.dart';
 
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
