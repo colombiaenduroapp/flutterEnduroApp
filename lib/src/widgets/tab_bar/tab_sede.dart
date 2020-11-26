@@ -7,7 +7,7 @@ class tab_sede extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Center(
       child: cont_sedes(),
     );
   }
