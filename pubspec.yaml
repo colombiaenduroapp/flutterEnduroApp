@@ -22,6 +22,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  progress_indicator_button: ^0.0.3
   flutter_launcher_icons: ^0.7.4
   image_picker:
   http: ^0.12.2

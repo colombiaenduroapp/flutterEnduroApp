@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 
@@ -20,9 +18,9 @@ class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
   int fabIndex = 0;
   final List<Tab> myTabs = <Tab>[
-    new Tab(icon: new Icon(Icons.home), text: "Inicio"),
-    new Tab(icon: new Icon(Icons.event), text: "Eventos"),
-    new Tab(icon: new Icon(Icons.event), text: "Sedes"),
+    new Tab(text: "Inicio"),
+    new Tab(text: "Eventos"),
+    new Tab(text: "Sedes"),
   ];
   TabController tabController;
   @override
