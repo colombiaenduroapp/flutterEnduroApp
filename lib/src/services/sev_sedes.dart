@@ -92,12 +92,14 @@ class Sede {
   final String sd_desc;
   final String sd_logo;
   final String sd_jersey;
+  final String cd_desc;
   final String sd_estado;
   Sede(
       {this.sd_cdgo,
       this.sd_desc,
       this.sd_logo,
       this.sd_jersey,
+      this.cd_desc,
       this.sd_estado});
 
   factory Sede.fromJson(Map<String, dynamic> json) {
@@ -106,6 +108,7 @@ class Sede {
       sd_desc: json['sd_desc'],
       sd_logo: json['sd_logo'],
       sd_jersey: json['sd_jersey'],
+      cd_desc: json['sd_jersey'],
       sd_estado: json['sd_estado'].toString(),
     );
   }
