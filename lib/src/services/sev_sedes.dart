@@ -4,6 +4,14 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 class ServicioCiudad {
+  Future<SedesList> cargarSedes() async {
+    http.Response response =
+        await http.get("http://192.168.100.181:5000/sede/");
+    final jsonResponse = json.decode(response.body)['data'];
+    SedesList sedesList = SedesList.fromJson(jsonResponse);
+    return sedesList;
+  }
+
   Future<List> getCiudad() async {
     http.Response response =
         await http.get("http://192.168.100.181:5000/sede/");
@@ -93,7 +101,7 @@ class Sede {
       this.sd_estado});
 
   factory Sede.fromJson(Map<String, dynamic> json) {
-    return Sede(
+    return new Sede(
       sd_cdgo: json['sd_cdgo'],
       sd_desc: json['sd_desc'],
       sd_logo: json['sd_logo'],

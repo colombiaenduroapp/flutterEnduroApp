@@ -12,7 +12,7 @@ class _tab_inicioState extends State<tab_inicio> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text('Aquí va inicio'),
+        child: null,
       ),
     );
   }

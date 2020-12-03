@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/services/sev_sedes.dart';
+
+import '../cont_eventos.dart';
 
 class tab_evento extends StatefulWidget {
   tab_evento({Key key}) : super(key: key);
@@ -11,7 +14,7 @@ class _tab_eventoState extends State<tab_evento> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text('Aquí van los eventos')),
+      child: cont_eventos(),
     );
   }
 }

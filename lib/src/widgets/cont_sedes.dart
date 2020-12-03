@@ -11,7 +11,7 @@ class cont_sedes extends StatefulWidget {
 }
 
 class _cont_sedesState extends State<cont_sedes> {
-  Future<List> lista = ServicioCiudad().getCiudad();
+  Future<SedesList> lista = ServicioCiudad().cargarSedes();
 
   @override
   void initState() {
@@ -22,11 +22,11 @@ class _cont_sedesState extends State<cont_sedes> {
   @override
   Widget build(BuildContext context) {
     try {
-      return FutureBuilder<List>(
+      return FutureBuilder<SedesList>(
         future: lista,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List data = snapshot.data;
+            SedesList data = snapshot.data;
             return _jobsListView(data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -45,10 +45,10 @@ class _cont_sedesState extends State<cont_sedes> {
 
   ListView _jobsListView(data) {
     return ListView.builder(
-        itemCount: data.length,
+        itemCount: data.sedes.length,
         itemBuilder: (context, index) {
-          return _tile(data[index]['sd_desc'],
-              data[index]['sd_cdgo'].toString(), data[index]['sd_logo']);
+          return _tile(data.sedes[index].sd_desc,
+              data.sedes[index].sd_cdgo.toString(), data.sedes[index].sd_logo);
         });
   }
 
