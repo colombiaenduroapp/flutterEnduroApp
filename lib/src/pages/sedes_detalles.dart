@@ -23,40 +23,94 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
 
   @override
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Sede'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             FutureBuilder<Sede>(
               future: searchSede,
               builder: (context, snapshot) {
                 if (snapshot.hasData)
-                  return Column(
+                  return Stack(
                     children: [
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child:
-                              Image(image: NetworkImage(snapshot.data.sd_logo)),
+                      _imagen_fondo(screen, snapshot.data.sd_logo),
+                      SafeArea(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: screen.height / 4.4,
+                              ),
+                              _imagen_perfil(snapshot.data.sd_logo),
+                              // Texto Nombre Sede
+                              Center(
+                                child: Text(
+                                  snapshot.data.sd_desc,
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              // -----------------
+                            ],
+                          ),
                         ),
-                        height: 200,
-                        width: 500,
-                      ),
-                      Text(snapshot.data.sd_desc),
-                      Text(snapshot.data.sd_estado),
+                      )
                     ],
                   );
                 else if (snapshot.hasError) return Text(snapshot.error);
                 return Text("Await for data");
               },
             ),
-            Text(widget.data),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _imagen_perfil(String url) {
+  return Center(
+    child: Container(
+      width: 140.0,
+      height: 140.0,
+      decoration: BoxDecoration(
+          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(color: Colors.white, width: 5.0)),
+    ),
+  );
+}
+
+Widget _imagen_fondo(Size screen, String url) {
+  return Container(
+    height: screen.height / 2.6,
+    decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(url),
+          fit: BoxFit.cover,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
+  );
 }
