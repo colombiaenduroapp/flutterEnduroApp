@@ -72,7 +72,7 @@ class Nav_drawerState extends State<Nav_drawer> {
               icon: Icons.apps,
               text: 'Sedes',
               onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => InicioPage()))),
+                  MaterialPageRoute(builder: (context) => InicioPage(2)))),
           Divider(),
           _createDrawerItem(
               icon: Icons.emoji_transportation,

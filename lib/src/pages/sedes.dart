@@ -1,27 +1,52 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
-import 'package:ui_flutter/src/services/sev_sedes.dart';
+import 'package:ui_flutter/src/services/service_url.dart';
+import 'package:ui_flutter/src/services/services_ciudad.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 
 class pageSedes extends StatefulWidget {
-  pageSedes({Key key}) : super(key: key);
+  final String estado;
+  final String id;
+  final Sede sede;
+  pageSedes(this.estado, this.id, this.sede, {Key key}) : super(key: key);
 
   @override
   _pageSedesState createState() => _pageSedesState();
 }
 
 class _pageSedesState extends State<pageSedes> {
-  ServicioCiudad ser = new ServicioCiudad();
+  ServicioSede ser = new ServicioSede();
+  Future<Ciudad> ciudad;
+  String urlLogo;
+  String urlJersey;
+  bool res = null;
+  String imgJersey = '';
+  String imgLogo = '';
+  String nombre_url_logo;
+  String nombre_url_jersey;
+  var nombreTextController = TextEditingController();
+  List statelist;
+  String id;
+  String ciudadSel;
+  File file;
+  File fileJersey;
+  String textValue = '?';
   @override
   void initState() {
+    getCiudad();
+    ciudad = ServicioCiudad().getCiudad();
+    cargar_sede(widget.sede);
+
     super.initState();
   }
 
   @override
   void dispose() {
+    cargar_sede(widget.sede);
     file = null;
 
     super.dispose();
@@ -35,13 +60,14 @@ class _pageSedesState extends State<pageSedes> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Registrar Sede'),
+        title:
+            widget.estado == 'Editar' ? Text('Editar Sede') : Text('Registrar'),
         leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InicioPage(),
+                    builder: (context) => InicioPage(2),
                   ),
                 )),
       ),
@@ -50,7 +76,7 @@ class _pageSedesState extends State<pageSedes> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(),
+            builder: (context) => InicioPage(2),
           ),
         ),
         child: Builder(
@@ -79,9 +105,16 @@ class _pageSedesState extends State<pageSedes> {
                         formItemsDesign(
                           Icons.person,
                           TextFormField(
+                            autofocus: false,
                             controller: nombreTextController,
                             decoration: new InputDecoration(
                               labelText: 'Nombre Sede',
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -105,13 +138,19 @@ class _pageSedesState extends State<pageSedes> {
                         ),
                         Column(
                           children: [
-                            file == null
-                                ? Text('Seleccione una imagen')
-                                : Image.file(
-                                    file,
+                            urlLogo == null
+                                ? file == null
+                                    ? Text('Seleccione una imagen')
+                                    : Image.file(
+                                        file,
+                                        width: 300,
+                                        height: 100,
+                                      )
+                                : Image.network(
+                                    urlLogo,
                                     width: 300,
                                     height: 100,
-                                  ),
+                                  )
                           ],
                         ),
                         // input file subir jersey
@@ -128,112 +167,33 @@ class _pageSedesState extends State<pageSedes> {
                         ),
                         Column(
                           children: [
-                            fileJersey == null
-                                ? Text('Seleccione una imagen')
-                                : Image.file(
-                                    fileJersey,
+                            urlJersey == null
+                                ? fileJersey == null
+                                    ? Text('Seleccione una imagen')
+                                    : Image.file(
+                                        fileJersey,
+                                        width: 300,
+                                        height: 100,
+                                      )
+                                : Image.network(
+                                    urlJersey,
                                     width: 300,
                                     height: 100,
-                                  ),
+                                  )
                           ],
                         ),
+
                         // input dropdown lista ciudades
                         formItemsDesign(
                           Icons.location_city,
-                          DropdownButton(
-                            onChanged: (String value) {
-                              setState(() {
-                                ciudadSel = value;
-                              });
-                            },
-                            items: lista.map((String ciudad) {
-                              return DropdownMenuItem(
-                                value: ciudad,
-                                child: Text(ciudad),
-                              );
-                            }).toList(),
-                            hint: Text('Seleccione una Ciudad'),
-                          ),
+                          dropdwon(),
                         ),
                         // Boton registrar
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                children: [
-                                  RaisedButton(
-                                    color: Colors.blue[400],
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        // valida si existe logo y lo convierte en base 64
-                                        if (file != null) {
-                                          imgLogo = base64Encode(
-                                              file.readAsBytesSync());
-                                        }
-                                        // valida si hay imagen jersey y la convierte a base64
-                                        if (fileJersey != null) {
-                                          imgJersey = base64Encode(
-                                              fileJersey.readAsBytesSync());
-                                        }
-                                        showLoaderDialog(context);
-                                        try {
-                                          // guarda la informacion
-                                          res = await ser.addSede(
-                                              nombreTextController.text,
-                                              imgLogo,
-                                              imgJersey,
-                                              '14');
-                                          // ---------------------
-                                          Navigator.pop(context);
-                                          // si se guarda la informacion muestra dialog ok y resfresca la pantalla
-                                          if (res) {
-                                            showLoaderDialogOk(
-                                                context,
-                                                Icons.check_circle_outlined,
-                                                'Registrado Correctamente');
-                                            nombreTextController.clear();
+                        widget.estado == 'Registrar'
+                            ? boton_registrar()
+                            : boton_editar()
 
-                                            nombreTextController.text = '';
-                                            file = null;
-                                            fileJersey = null;
-                                            await Future.delayed(
-                                                Duration(milliseconds: 500));
-                                            Navigator.pop(context);
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    pageSedes(),
-                                              ),
-                                            );
-                                          } else {
-                                            showLoaderDialogOk(
-                                                context,
-                                                Icons.error_outline,
-                                                'Ha Ocurrido un error');
-                                            await Future.delayed(
-                                                Duration(milliseconds: 500));
-                                            Navigator.pop(context);
-                                          }
-                                        } catch (e) {
-                                          print('object');
-                                          return Text('Ha ocurrido un error');
-                                        }
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Column(
-                                        children: [Text('Registrar')],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        // fin boton--------
                       ],
                     ),
                   ),
@@ -246,6 +206,21 @@ class _pageSedesState extends State<pageSedes> {
         ),
       ),
     );
+  }
+
+  void cargar_sede(Sede sede) {
+    if (sede != null) {
+      nombreTextController.text = sede.sd_desc;
+      urlLogo = sede.sd_logo;
+      nombre_url_logo =
+          urlLogo.replaceAll("http://192.168.100.181:5000/sede/image/", "");
+      urlJersey = sede.sd_jersey;
+      nombre_url_jersey = urlJersey.replaceAll(
+          "http://192.168.100.181:5000/sede/imagejersey/", "");
+      ciudadSel = sede.cd_cdgo;
+      id = sede.sd_cdgo.toString();
+      print(urlLogo);
+    }
   }
 
 // Dialog cargando
@@ -291,19 +266,14 @@ class _pageSedesState extends State<pageSedes> {
   formItemsDesign(icon, item) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-      child: Card(child: ListTile(leading: Icon(icon), title: item)),
+      child: Card(
+        child: ListTile(
+          leading: Icon(icon),
+          title: item,
+        ),
+      ),
     );
   }
-
-  bool res = null;
-  String imgJersey = '';
-  String imgLogo = '';
-  String ciudadSel = '';
-  var nombreTextController = TextEditingController();
-  var lista = ['Cartagena', 'cartago', 'Bogota'];
-  File file;
-  File fileJersey;
-  String textValue = '?';
 
 // subir logo sede
   _chooseLogo() async {
@@ -313,7 +283,7 @@ class _pageSedesState extends State<pageSedes> {
     setState(() {
       if (imagen != null) {
         file = File(imagen.path);
-        print(file);
+        urlLogo = null;
       } else {
         print('No image selected.');
       }
@@ -328,9 +298,201 @@ class _pageSedesState extends State<pageSedes> {
     setState(() {
       if (imagen != null) {
         fileJersey = File(imagen.path);
+        urlJersey = null;
       } else {
         print('No image selected.');
       }
     });
+  }
+
+  Future getCiudad() async {
+    // Ciudad ciudad;
+    http.Response response;
+    print('object');
+    try {
+      response = await http
+          .get(Url().getUrl() + 'ciudad')
+          .timeout(Duration(seconds: 30));
+      final jsonResponse = json.decode(response.body)['data'];
+      // ciudad = Ciudad.fromJson(jsonResponse);
+      setState(() {
+        statelist = jsonResponse;
+      });
+    } catch (e) {}
+
+    return null;
+  }
+
+  dropdwon() {
+    try {
+      return statelist != null
+          ? DropdownButton(
+              value: ciudadSel,
+              onChanged: (String value) {
+                setState(() {
+                  ciudadSel = value;
+                  print(ciudadSel);
+                  getCiudad();
+                });
+              },
+              items: statelist.map((item) {
+                // print(item['cd_desc']);
+                return DropdownMenuItem(
+                  value: item['cd_cdgo'].toString(),
+                  child: Text(item['cd_desc']),
+                );
+              }).toList(),
+              hint: Text('Seleccione una Ciudad'),
+            )
+          : Container(
+              child: Center(
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Cargando ciudades...')
+                  ],
+                ),
+              ),
+            );
+    } catch (e) {
+      return Container(
+        child: Center(
+          child: Column(
+            children: [Text('A ocurrido  un error')],
+          ),
+        ),
+      );
+    }
+    ;
+  }
+
+  Widget boton_registrar() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              RaisedButton(
+                color: Colors.blue[400],
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    // valida si existe logo y lo convierte en base 64
+                    if (file != null) {
+                      imgLogo = base64Encode(file.readAsBytesSync());
+                    }
+                    // valida si hay imagen jersey y la convierte a base64
+                    if (fileJersey != null) {
+                      imgJersey = base64Encode(fileJersey.readAsBytesSync());
+                    }
+                    showLoaderDialog(context);
+                    try {
+                      // guarda la informacion
+                      res = await ser.addSede(nombreTextController.text,
+                          imgLogo, imgJersey, ciudadSel);
+                      // ---------------------
+                      Navigator.pop(context);
+                      // si se guarda la informacion muestra dialog ok y resfresca la pantalla
+                      if (res) {
+                        showLoaderDialogOk(context, Icons.check_circle_outlined,
+                            'Registrado Correctamente');
+                        nombreTextController.clear();
+
+                        nombreTextController.text = '';
+                        file = null;
+                        fileJersey = null;
+                        await Future.delayed(Duration(milliseconds: 500));
+                        Navigator.pop(context);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         pageSedes('Registrar', null, null),
+                        //   ),
+                        // );
+                      } else {
+                        showLoaderDialogOk(context, Icons.error_outline,
+                            'Ha Ocurrido un error');
+                        await Future.delayed(Duration(milliseconds: 500));
+                        Navigator.pop(context);
+                      }
+                    } catch (e) {
+                      return Text('Ha ocurrido un error');
+                    }
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [Text('Registrar')],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget boton_editar() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              RaisedButton(
+                onPressed: () async {
+                  // valida si existe logo y lo convierte en base 64
+                  if (file != null) {
+                    imgLogo = base64Encode(file.readAsBytesSync());
+                  }
+                  // valida si hay imagen jersey y la convierte a base64
+                  if (fileJersey != null) {
+                    imgJersey = base64Encode(fileJersey.readAsBytesSync());
+                  }
+                  showLoaderDialog(context);
+                  res = await ser.updateSede(
+                      id,
+                      nombreTextController.text,
+                      imgLogo,
+                      nombre_url_logo,
+                      imgJersey,
+                      nombre_url_jersey,
+                      ciudadSel);
+                  Navigator.pop(context);
+
+                  if (res) {
+                    showLoaderDialogOk(context, Icons.check_circle_outlined,
+                        'Actualizado Correctamente');
+                    await Future.delayed(Duration(milliseconds: 500));
+
+                    imgLogo = '';
+                    imgJersey = '';
+                    file = null;
+                    fileJersey = null;
+                    Navigator.pop(context);
+                    print(imgLogo);
+                    print(imgJersey);
+                  } else {
+                    showLoaderDialogOk(
+                        context, Icons.error_outline, 'Ha Ocurrido un error');
+                    await Future.delayed(Duration(milliseconds: 500));
+                    Navigator.pop(context);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [Text('Actualizar')],
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 }

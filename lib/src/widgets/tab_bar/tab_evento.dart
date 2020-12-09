@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/services/sev_sedes.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 
 import '../cont_eventos.dart';
 

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/sedes.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'inicio.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [const Locale('es')],
         initialRoute: '/',
         debugShowCheckedModeBanner: false,
         routes: {
           // When navigating to the "/" route, build the FirstScreen widget.
-          '/': (context) => InicioPage(),
-
-          '/sedes': (context) => pageSedes(),
+          '/': (context) => InicioPage(0),
 
           // When navigating to the "/second"
         });

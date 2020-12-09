@@ -19,9 +19,14 @@ version: 1.0.0+1
 
 
 environment:
+  
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  random_color:
+  shared_preferences:
+  flutter_localizations:
+    sdk: flutter
   progress_indicator_button: ^0.0.3
   flutter_launcher_icons: ^0.7.4
   image_picker:
@@ -46,6 +51,11 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/loading.gif
+
+
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

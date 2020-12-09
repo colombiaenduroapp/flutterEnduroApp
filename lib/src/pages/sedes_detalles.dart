@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/services/sev_sedes.dart';
+import 'package:ui_flutter/src/pages/sedes.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 
 class page_sedes_detalles extends StatefulWidget {
   final String data;
@@ -11,11 +12,11 @@ class page_sedes_detalles extends StatefulWidget {
 
 class _page_sedes_detallesState extends State<page_sedes_detalles> {
   Future<Sede> searchSede;
+  Sede sede;
+  String id;
   @override
   void initState() {
-    searchSede = ServicioCiudad().searchSede(widget.data);
-    print(searchSede);
-    print(widget.data);
+    searchSede = ServicioSede().searchSede(widget.data);
 
     // TODO: implement initState
     super.initState();
@@ -27,6 +28,19 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sede'),
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.edit_outlined),
+            iconSize: 30,
+            tooltip: 'Tog',
+            onPressed: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => pageSedes('Editar', id, sede),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,41 +48,114 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
             FutureBuilder<Sede>(
               future: searchSede,
               builder: (context, snapshot) {
+                sede = snapshot.data;
                 if (snapshot.hasData)
-                  return Stack(
-                    children: [
-                      _imagen_fondo(screen, snapshot.data.sd_logo),
-                      SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: screen.height / 4.4,
-                              ),
-                              _imagen_perfil(snapshot.data.sd_logo),
-                              // Texto Nombre Sede
-                              Center(
-                                child: Text(
-                                  snapshot.data.sd_desc,
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                  return Center(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            _imagen_fondo(screen, snapshot.data.sd_jersey),
+                            SafeArea(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: screen.height / 4.4,
+                                    ),
+                                    _imagen_perfil(snapshot.data.sd_logo),
+                                    // Texto Nombre Sede
+                                    nombre_sede(snapshot.data.sd_desc,
+                                        snapshot.data.cd_desc)
+                                    // -----------------
+                                  ],
                                 ),
                               ),
-                              // -----------------
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      )
-                    ],
+                        Text('Mesa de trabajo',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500)),
+                        future_mesa(searchSede),
+                      ],
+                    ),
                   );
                 else if (snapshot.hasError) return Text(snapshot.error);
-                return Text("Await for data");
+                return Center(
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('Cargando informacion')
+                    ],
+                  ),
+                );
               },
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+Widget future_mesa(Future<Sede> searchSede) {
+  return SingleChildScrollView(
+    child: FutureBuilder<Sede>(
+      future: searchSede,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Sede data = snapshot.data;
+          return lista_mesa(data);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return CircularProgressIndicator();
+      },
+    ),
+  );
+}
+
+Widget lista_mesa(Sede sede) {
+  if (sede.mesas.length > 0) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: sede.mesas.length,
+      itemBuilder: (context, index) {
+        if (sede.mesas != null) {
+          return Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.black26, width: 0.5),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.verified_user),
+              title: Text(
+                '${sede.mesas[index].us_nombres}(${sede.mesas[index].us_alias} )',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(sede.mesas[index].ca_desc),
+            ),
+          );
+        } else {
+          return Container(
+              child: ListTile(
+            title: Text('vacio'),
+          ));
+        }
+      },
+    );
+  } else {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Container(
+          child: Center(
+        child: Text(
+          'No se han agregado integrantes a la mesa de trabajo',
+          style: TextStyle(color: Colors.black26),
+        ),
+      )),
     );
   }
 }
@@ -79,17 +166,18 @@ Widget _imagen_perfil(String url) {
       width: 140.0,
       height: 140.0,
       decoration: BoxDecoration(
-          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(color: Colors.white, width: 5.0)),
+        image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        borderRadius: BorderRadius.circular(80.0),
+        border: Border.all(color: Colors.white, width: 5.0),
+      ),
     ),
   );
 }
@@ -112,5 +200,29 @@ Widget _imagen_fondo(Size screen, String url) {
         ],
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
+  );
+}
+
+Widget nombre_sede(String nombre, String ciudad) {
+  return Center(
+    child: Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(8.0),
+      margin: EdgeInsets.symmetric(vertical: 15.0),
+      child: Column(
+        children: [
+          Text(
+            nombre,
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          Text('Ciudad: ' + ciudad)
+        ],
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.black26, width: 2.0),
+        ),
+      ),
+    ),
   );
 }

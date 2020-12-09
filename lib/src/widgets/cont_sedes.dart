@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
-import 'package:ui_flutter/src/services/sev_sedes.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 
 class cont_sedes extends StatefulWidget {
   cont_sedes({Key key}) : super(key: key);
@@ -11,8 +11,9 @@ class cont_sedes extends StatefulWidget {
 }
 
 class _cont_sedesState extends State<cont_sedes> {
-  Future<SedesList> lista = ServicioCiudad().cargarSedes();
-
+  Future<SedesList> lista = ServicioSede().cargarSedes();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -25,13 +26,43 @@ class _cont_sedesState extends State<cont_sedes> {
       return FutureBuilder<SedesList>(
         future: lista,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            SedesList data = snapshot.data;
-            return _jobsListView(data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              if (snapshot.hasError) {
+                return Text("${snapshot.error} error            .");
+              } else {
+                return Center(
+                  child: Text('conecction.none'),
+                );
+              }
+
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                SedesList data = snapshot.data;
+                return _jobsListView(data);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              } else {
+                return Center(
+                  child: Text(
+                      'Tu conexion es inestable o ha ocurrido un problema en el servidor. Si el problema persiste comunicate con los desarrolladores'),
+                );
+              }
+
+              break;
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
+
+              break;
+            case ConnectionState.active:
+              return Center(
+                child: Text('conecction.Active'),
+              );
+
+              break;
+            default:
           }
-          return CircularProgressIndicator();
         },
       );
     } catch (exception) {
@@ -43,13 +74,28 @@ class _cont_sedesState extends State<cont_sedes> {
     }
   }
 
-  ListView _jobsListView(data) {
-    return ListView.builder(
-        itemCount: data.sedes.length,
-        itemBuilder: (context, index) {
-          return _tile(data.sedes[index].sd_desc,
-              data.sedes[index].sd_cdgo.toString(), data.sedes[index].sd_logo);
-        });
+  Widget _jobsListView(data) {
+    try {
+      if (data.sedes.length > 0) {
+        return ListView.builder(
+            itemCount: data.sedes.length,
+            itemBuilder: (context, index) {
+              return _tile(
+                  data.sedes[index].sd_desc,
+                  data.sedes[index].sd_cdgo.toString(),
+                  data.sedes[index].sd_logo);
+            });
+      } else {
+        return Container(
+          child: Center(
+            child: Text(
+              'No hay sedes registradas',
+              style: TextStyle(color: Colors.black26),
+            ),
+          ),
+        );
+      }
+    } catch (e) {}
   }
 
 // Widget item list contiene todo los atributos de un list item

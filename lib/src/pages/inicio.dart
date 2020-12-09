@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
@@ -7,8 +8,11 @@ import 'package:ui_flutter/src/widgets/tab_bar/tab_sede.dart';
 
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
+import 'eventos.dart';
+
 class InicioPage extends StatefulWidget {
-  InicioPage({Key key}) : super(key: key);
+  int tab_index;
+  InicioPage(this.tab_index, {Key key}) : super(key: key);
 
   @override
   _InicioPageState createState() => _InicioPageState();
@@ -23,13 +27,21 @@ class _InicioPageState extends State<InicioPage>
     new Tab(text: "Sedes"),
   ];
   TabController tabController;
+  addStringToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('us_cdgo', 1);
+    prefs.setString('us_nombres', "Yuri Marcela");
+    prefs.setInt('us_sede_sd_cdgo', 110);
+  }
+
   @override
   void initState() {
+    addStringToSF();
     tabController = new TabController(vsync: this, length: myTabs.length);
+    tabController.index = widget.tab_index;
     tabController.addListener(() {
       setState(() {
         fabIndex = tabController.index;
-        print(fabIndex);
       });
     });
     super.initState();
@@ -40,6 +52,7 @@ class _InicioPageState extends State<InicioPage>
     return new DefaultTabController(
         length: 3,
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           appBar: AppBar(
               title: Text(
                 'COLOMBIA ENDURO',
@@ -67,11 +80,12 @@ class _InicioPageState extends State<InicioPage>
     } else if (tabController.index == 1) {
       return FloatingActionButton(
         shape: StadiumBorder(),
-        onPressed: null,
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => pagesEventos())),
         backgroundColor: Colors.redAccent,
         child: Icon(
-          Icons.edit,
-          size: 20.0,
+          Icons.add,
+          size: 35.0,
         ),
       );
     } else if (tabController.index == 2) {
@@ -84,7 +98,9 @@ class _InicioPageState extends State<InicioPage>
         hoverColor: Colors.blue,
         focusColor: Colors.blue,
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => pageSedes())),
+            context,
+            MaterialPageRoute(
+                builder: (context) => pageSedes('Registrar', null, null))),
         backgroundColor: Colors.green,
       );
     }
