@@ -5,15 +5,16 @@ import 'package:http/http.dart' as http;
 
 class ServicioCiudad {
   String url = Url().getUrl();
-  Future<Ciudad> getCiudad() async {
-    Ciudad ciudad;
-    http.Response response;
-    try {
-      response = await http.get(url + 'ciudad').timeout(Duration(seconds: 30));
-      final jsonResponse = json.decode(response.body)['data'];
-      ciudad = Ciudad.fromJson(jsonResponse);
-    } catch (e) {}
-  }
+  // Future<Ciudad> getCiudad() async {
+  //   http.Response response;
+  //   try {
+  //     Ciudad ciudad;
+  //     response = await http.get(url + 'ciudad').timeout(Duration(seconds: 30));
+  //     final jsonResponse = json.decode(response.body)['data'];
+  //     ciudad = Ciudad.fromJson(jsonResponse);
+  //     return ciudad;
+  //   } catch (e) {}
+  // }
 }
 
 class Ciudad {

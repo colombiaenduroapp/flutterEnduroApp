@@ -38,7 +38,6 @@ class _pageSedesState extends State<pageSedes> {
   @override
   void initState() {
     getCiudad();
-    ciudad = ServicioCiudad().getCiudad();
     cargar_sede(widget.sede);
 
     super.initState();
@@ -403,13 +402,13 @@ class _pageSedesState extends State<pageSedes> {
                         fileJersey = null;
                         await Future.delayed(Duration(milliseconds: 500));
                         Navigator.pop(context);
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         pageSedes('Registrar', null, null),
-                        //   ),
-                        // );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                pageSedes('Registrar', null, null),
+                          ),
+                        );
                       } else {
                         showLoaderDialogOk(context, Icons.error_outline,
                             'Ha Ocurrido un error');

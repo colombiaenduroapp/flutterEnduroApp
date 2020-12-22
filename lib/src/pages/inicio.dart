@@ -20,7 +20,7 @@ class InicioPage extends StatefulWidget {
 
 class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
-  int fabIndex = 0;
+  int fabIndex;
   final List<Tab> myTabs = <Tab>[
     new Tab(text: "Inicio"),
     new Tab(text: "Eventos"),
@@ -81,7 +81,9 @@ class _InicioPageState extends State<InicioPage>
       return FloatingActionButton(
         shape: StadiumBorder(),
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => pagesEventos())),
+            context,
+            MaterialPageRoute(
+                builder: (context) => pagesEventos('Registrar', null, null))),
         backgroundColor: Colors.redAccent,
         child: Icon(
           Icons.add,

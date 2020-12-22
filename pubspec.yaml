@@ -22,13 +22,14 @@ environment:
   
   sdk: ">=2.7.0 <3.0.0"
 
-dependencies:
-  random_color:
+dependencies: 
+  cached_network_image: ^2.0.0
+  youtube_player_flutter: ^7.0.0+7
   shared_preferences:
   flutter_localizations:
     sdk: flutter
   progress_indicator_button: ^0.0.3
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons: ^0.8.1
   image_picker:
   http: ^0.12.2
   flutter:

@@ -32,7 +32,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           IconButton(
             icon: new Icon(Icons.edit_outlined),
             iconSize: 30,
-            tooltip: 'Tog',
+            tooltip: 'Editar',
             onPressed: () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -185,11 +185,19 @@ Widget _imagen_perfil(String url) {
 Widget _imagen_fondo(Size screen, String url) {
   return Container(
     height: screen.height / 2.6,
+    child: FadeInImage.assetNetwork(
+      placeholder: 'assets/loading.gif',
+      image: url,
+      fit: BoxFit.cover,
+
+      //   // En esta propiedad colocamos el alto de nuestra imagen
+      width: double.infinity,
+    ),
     decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(url),
-          fit: BoxFit.cover,
-        ),
+        // image: DecorationImage(
+        //   image: NetworkImage(url),
+        //   fit: BoxFit.cover,
+        // ),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),

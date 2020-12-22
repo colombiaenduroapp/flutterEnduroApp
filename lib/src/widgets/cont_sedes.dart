@@ -52,7 +52,18 @@ class _cont_sedesState extends State<cont_sedes> {
 
               break;
             case ConnectionState.waiting:
-              return CircularProgressIndicator();
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Cargando...',
+                      style: TextStyle(fontSize: 30, color: Colors.black45),
+                    ),
+                    Image(image: AssetImage('assets/loading.gif')),
+                  ],
+                ),
+              );
 
               break;
             case ConnectionState.active:
@@ -132,14 +143,25 @@ class _cont_sedesState extends State<cont_sedes> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Container(
-                                width: 50.0,
-                                height: 50.0,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(url),
-                                    ))),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/loading.gif',
+                                image: url,
+                                fit: BoxFit.cover,
+
+                                //   // En esta propiedad colocamos el alto de nuestra imagen
+                                width: double.infinity,
+                                height: 150,
+                              ),
+                              width: 50.0,
+                              height: 50.0,
+                              // decoration: new BoxDecoration(
+                              //   shape: BoxShape.circle,
+                              //   image: new DecorationImage(
+                              //     fit: BoxFit.fill,
+                              //     image: NetworkImage(url),
+                              //   ),
+                              // ),
+                            ),
                           ),
                           // Nombre Sede
                           Padding(

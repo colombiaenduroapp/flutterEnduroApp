@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/pages/listas_empresas.dart';
+import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 class Nav_drawer extends StatefulWidget {
@@ -55,7 +57,7 @@ class Nav_drawerState extends State<Nav_drawer> {
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(0.1), BlendMode.dstATop),
                 image: NetworkImage(
-                  'https://scontent-bog1-1.xx.fbcdn.net/v/t1.0-9/44431290_706071719755557_15078917211684864_n.jpg?_nc_cat=111&ccb=2&_nc_sid=09cbfe&_nc_ohc=PsdsvDqeBaAAX-L-e-J&_nc_ht=scontent-bog1-1.xx&oh=ea1b32144ca1560d810b34879700deb2&oe=5FD56025',
+                  'https://scontent-bog1-1.xx.fbcdn.net/v/t1.0-9/44431290_706071719755557_15078917211684864_n.jpg?_nc_cat=111&ccb=2&_nc_sid=85a577&_nc_ohc=5AcKETNm2YwAX_0wX-k&_nc_ht=scontent-bog1-1.xx&oh=59194151bb669a05cf6a5c7923b0550f&oe=5FFCED25',
                 ),
               ),
             ),
@@ -69,15 +71,31 @@ class Nav_drawerState extends State<Nav_drawer> {
           _createDrawerItem(icon: Icons.event_available, text: 'Eventos'),
           Divider(),
           _createDrawerItem(
-              icon: Icons.apps,
-              text: 'Sedes',
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => InicioPage(2)))),
+            icon: Icons.apps,
+            text: 'Sedes',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InicioPage(2),
+              ),
+            ),
+          ),
           Divider(),
           _createDrawerItem(
               icon: Icons.emoji_transportation,
               text: 'Convenios',
               onTap: () => Navigator.pop(context)),
+          Divider(),
+          _createDrawerItem(
+            icon: Icons.contacts,
+            text: 'Empresas',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => pages_listas_empresas(),
+              ),
+            ),
+          ),
           Divider(),
           _createDrawerItem(
               icon: Icons.search,
