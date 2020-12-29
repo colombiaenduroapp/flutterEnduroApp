@@ -330,7 +330,6 @@ class _pageSedesState extends State<pageSedes> {
               onChanged: (String value) {
                 setState(() {
                   ciudadSel = value;
-                  print(ciudadSel);
                   getCiudad();
                 });
               },

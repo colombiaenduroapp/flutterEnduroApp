@@ -78,45 +78,38 @@ class ServicioEmpresa {
     }
   }
 
-  // Future<bool> updateSede(
-  //     String ev_cdgo,
-  //     int us_sede_sd_cdgo,
-  //     int us_cdgo,
-  //     String ev_desc,
-  //     DateTime ev_fecha_inicio,
-  //     DateTime ev_fecha_fin,
-  //     String ev_lugar,
-  //     String ev_img,
-  //     String ev_url_img,
-  //     String ev_url_video) async {
-  //   var response;
-  //   try {
-  //     response = await http.post(
-  //       url + "evento/" + ev_cdgo,
-  //       body: {
-  //         "us_sede_sd_cdgo": us_sede_sd_cdgo.toString(),
-  //         "us_cdgo": us_cdgo.toString(),
-  //         "ev_desc": ev_desc,
-  //         "ev_fecha_inicio": ev_fecha_inicio.toString(),
-  //         "ev_fecha_fin": ev_fecha_fin.toString(),
-  //         "ev_lugar": ev_lugar,
-  //         "ev_img": ev_img,
-  //         "ev_url_img": ev_url_img,
-  //         "ev_url_video": ev_url_video,
-  //       },
-  //     ).timeout(Duration(seconds: 40));
-  //   } on TimeoutException catch (e) {
-  //     print('Timeout');
-  //   } on Error catch (e) {
-  //     print('Error: $e');
-  //   }
-  //   if (response.statusCode == 200) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
+  Future<bool> updateEmpresa(
+      String em_cdgo,
+      String em_nit,
+      String em_logo,
+      String em_nombre,
+      String em_desc,
+      String em_telefono,
+      String em_correo) async {
+    var response;
+    try {
+      response = await http.post(
+        url + "empresa/" + em_cdgo,
+        body: {
+          "em_nit": em_nit,
+          "em_logo": em_logo,
+          "em_nombre": em_nombre,
+          "em_desc": em_desc,
+          "em_telefono": em_telefono,
+          "em_correo": em_correo,
+        },
+      ).timeout(Duration(seconds: 40));
+    } on TimeoutException catch (e) {
+      print('Timeout');
+    } on Error catch (e) {
+      print('Error: $e');
+    }
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 class Empresa {

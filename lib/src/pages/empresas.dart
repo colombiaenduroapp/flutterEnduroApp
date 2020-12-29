@@ -42,11 +42,17 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   File file;
   String id_ev_cdgo;
   String nombre_url_logo = '';
-  String urlLogo = '';
+  String urlLogo = null;
   String imgLogo = '';
   bool res = false;
   int us_cdgo, us_sede_sd_cdgo;
   String us_nombres;
+  @override
+  void initState() {
+    cargar_evento(widget.empresa);
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,18 +233,17 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
     );
   }
 
-  // void cargar_evento(Evento evento) {
-  //   if (evento != null) {
-  //     nitTextController.text = evento.ev_desc;
-  //     // selected_fecha_inicio = DateTime.parse(evento.ev_fecha_inicio);
-  //     print(selected_fecha_inicio);
-  //     lugarTextController.text = evento.ev_lugar;
-  //     urlLogo = evento.ev_img;
-  //     nombreTextController.text = evento.ev_url_video;
+  void cargar_evento(Empresa empresa) {
+    if (empresa != null) {
+      nitTextController.text = empresa.em_nit;
 
-  //     print(urlLogo);
-  //   }
-  // }
+      telefonoTextController.text = empresa.em_telefono;
+      urlLogo = empresa.em_logo;
+      nombreTextController.text = empresa.em_nombre;
+      emailTextController.text = empresa.em_correo;
+      descTextController.text = empresa.em_desc;
+    }
+  }
 
 // diseño  de inputs form
   formItemsDesign(icon, item) {
@@ -320,7 +325,14 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
               );
             }
             WidgetDialog(true, 'Cargando...', null);
-
+            res = await ServicioEmpresa().updateEmpresa(
+                widget.em_cdgo,
+                nitTextController.text,
+                imgLogo,
+                nombreTextController.text,
+                descTextController.text,
+                telefonoTextController.text,
+                emailTextController.text);
             if (res) {
               Navigator.pop(context);
               WidgetDialog(false, 'Actualizado Exitosamente',
