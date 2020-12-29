@@ -337,11 +337,12 @@ class _pageSedesState extends State<pageSedes> {
               items: statelist.map((item) {
                 // print(item['cd_desc']);
                 return DropdownMenuItem(
-                  value: item['cd_cdgo'].toString(),
-                  child: Text(item['cd_desc']),
+                  value: item['id'].toString(),
+                  child: Text(item['nombre']),
                 );
               }).toList(),
               hint: Text('Seleccione una Ciudad'),
+              isExpanded: true,
             )
           : Container(
               child: Center(
