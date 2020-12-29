@@ -83,7 +83,7 @@ class _InicioPageState extends State<InicioPage>
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => pagesEventos('Registrar', null, null))),
+                builder: (context) => pagesEventos(null, null, 'Registrar'))),
         backgroundColor: Colors.redAccent,
         child: Icon(
           Icons.add,

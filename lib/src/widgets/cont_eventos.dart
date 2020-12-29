@@ -45,7 +45,7 @@ class _cont_eventosState extends State<cont_eventos> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
-                Text('Cargando Sedes...'),
+                Text('Cargando Eventos...'),
               ],
             ),
           ),

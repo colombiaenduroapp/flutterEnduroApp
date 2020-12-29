@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
+import 'package:ui_flutter/src/widgets/dialog.dart';
 
 // class pagesEmpresa extends StatefulWidget {
 //   final String em_cdgo;
@@ -37,8 +38,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   TextEditingController emailTextController = new TextEditingController();
   TextEditingController descTextController = new TextEditingController();
   TextEditingController nombreTextController = new TextEditingController();
-  DateTime selected_fecha_inicio = DateTime.now();
-  DateTime selected_fecha_fin = DateTime.now();
+
   File file;
   String id_ev_cdgo;
   String nombre_url_logo = '';
@@ -53,7 +53,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Registrar Evento'),
+        title: Text('Registrar Empresa'),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushReplacement(
@@ -120,23 +120,23 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                           ),
                         ),
                         // visualizacion imagen
-                        // Column(
-                        //   children: [
-                        //     urlLogo == null
-                        //         ? file == null
-                        //             ? Text('Seleccione una imagen')
-                        //             : Image.file(
-                        //                 file,
-                        //                 width: 300,
-                        //                 height: 100,
-                        //               )
-                        //         : Image.network(
-                        //             urlLogo,
-                        //             width: 300,
-                        //             height: 100,
-                        //           )
-                        //   ],
-                        // ),
+                        Column(
+                          children: [
+                            urlLogo == null
+                                ? file == null
+                                    ? Text('Seleccione una imagen')
+                                    : Image.file(
+                                        file,
+                                        width: 300,
+                                        height: 100,
+                                      )
+                                : Image.network(
+                                    urlLogo,
+                                    width: 300,
+                                    height: 100,
+                                  )
+                          ],
+                        ),
 
                         formItemsDesign(
                           Icons.video_library,
@@ -147,6 +147,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                               }
                               return null;
                             },
+                            maxLines: 1,
                             autofocus: false,
                             controller: nombreTextController,
                             decoration: new InputDecoration(
@@ -252,34 +253,6 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
     );
   }
 
-  _selectDate(BuildContext context, DateTime selected) async {
-    final DateTime picked = await showDatePicker(
-      locale: Locale("es"),
-      context: context,
-      initialDate: selected, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selected)
-      setState(() {
-        selected_fecha_inicio = picked;
-      });
-  }
-
-  _selectDate_fin(BuildContext context, DateTime selected) async {
-    final DateTime picked = await showDatePicker(
-      locale: Locale("es"),
-      context: context,
-      initialDate: selected, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selected)
-      setState(() {
-        selected_fecha_fin = picked;
-      });
-  }
-
   _chooseLogo() async {
     final picker = ImagePicker();
     // file = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -305,7 +278,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetDialog(true, 'Cargando...', null);
             res = await ServicioEmpresa().addEmpresa(
                 nitTextController.text,
                 imgLogo,
@@ -317,13 +290,12 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
             if (res) {
               Navigator.pop(context);
               print('true');
-              showLoaderDialog(context, false, 'Registrado Exitosamente',
+              WidgetDialog(false, 'Registrado Exitosamente',
                   Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
-              showLoaderDialog(
-                  context, false, 'Ha ocurrido un error', Icons.error_outline);
+              WidgetDialog(false, 'Ha ocurrido un error', Icons.error_outline);
               Navigator.pop(context);
             }
           }
@@ -347,22 +319,17 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            // print(imgLogo);
-
-            showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetDialog(true, 'Cargando...', null);
 
             if (res) {
               Navigator.pop(context);
-              print('true');
-              showLoaderDialog(context, false, 'Actualizado Exitosamente',
+              WidgetDialog(false, 'Actualizado Exitosamente',
                   Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
-              // print('false');
-              showLoaderDialog(
-                  context, false, 'Ha ocurrido un error', Icons.error_outline);
+              WidgetDialog(false, 'Ha ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             }
@@ -371,29 +338,6 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
         color: Colors.blue[200],
         child: Text('Editar'),
       ),
-    );
-  }
-
-  showLoaderDialog(
-      BuildContext context, bool estado, String texto, IconData icon) {
-    AlertDialog alert = AlertDialog(
-      content: new Row(
-        children: [
-          estado ? CircularProgressIndicator() : Text(''),
-          Container(
-              margin: EdgeInsets.only(left: 7),
-              child: Row(
-                children: [Icon(icon), Text(texto)],
-              )),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }

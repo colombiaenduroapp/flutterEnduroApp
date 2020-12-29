@@ -60,7 +60,10 @@ class _cont_sedesState extends State<cont_sedes> {
                       'Cargando...',
                       style: TextStyle(fontSize: 30, color: Colors.black45),
                     ),
-                    Image(image: AssetImage('assets/loading.gif')),
+                    Container(
+                      width: 100,
+                      child: Image(image: AssetImage('assets/loading.gif')),
+                    )
                   ],
                 ),
               );
