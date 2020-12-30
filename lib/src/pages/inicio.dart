@@ -66,7 +66,7 @@ class _InicioPageState extends State<InicioPage>
           bottomNavigationBar: Container(
             height: 50,
             decoration: BoxDecoration(
-              // color: Colors.black87.withOpacity(0.4),
+              color: Colors.white,
               border: Border(
                 top: BorderSide(
                   //                    <--- top side
