@@ -71,7 +71,7 @@ class _InicioPageState extends State<InicioPage>
               top: BorderSide(
                 //                    <--- top side
                 color: Colors.lightBlue[100],
-                width: 0.5,
+                width: 1,
               ),
             )),
             child: TabBar(
