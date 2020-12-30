@@ -56,10 +56,10 @@ class _cont_sedesState extends State<cont_sedes> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Cargando...',
-                      style: TextStyle(fontSize: 30, color: Colors.black45),
-                    ),
+                    // Text(
+                    //   'Cargando...',
+                    //   style: TextStyle(fontSize: 30, color: Colors.black45),
+                    // ),
                     Container(
                       width: 100,
                       child: Image(image: AssetImage('assets/loading.gif')),
@@ -147,7 +147,7 @@ class _cont_sedesState extends State<cont_sedes> {
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Container(
                               child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/loading.gif',
+                                placeholder: 'assets/loading5.gif',
                                 image: url,
                                 fit: BoxFit.cover,
 

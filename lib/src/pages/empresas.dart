@@ -294,9 +294,8 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
 
             if (res) {
               Navigator.pop(context);
-              print('true');
               WidgetDialog.showLoaderDialog(context, false,
-                  'Actualizado Exitosamente', Icons.check_circle_outlined);
+                  'Registrado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {

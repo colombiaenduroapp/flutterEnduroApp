@@ -52,16 +52,30 @@ class _InicioPageState extends State<InicioPage>
     return new DefaultTabController(
         length: 3,
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          // resizeToAvoidBottomPadding: false,
           appBar: AppBar(
-              title: Text(
-                'COLOMBIA ENDURO',
-              ),
-              bottom: new TabBar(controller: tabController, tabs: myTabs)),
+            title: Text(
+              'COLOMBIA ENDURO',
+            ),
+            // bottom: new TabBar(controller: tabController, tabs: myTabs),
+          ),
           body: TabBarView(
             controller: tabController,
             children: [tab_inicio(), tab_evento(), tab_sede()],
           ),
+          bottomNavigationBar: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.black87.withOpacity(0.4),
+                  border: Border(
+                    top: BorderSide(
+                      //                    <--- top side
+                      color: Colors.black,
+                      width: 0.5,
+                    ),
+                  )),
+              child: TabBar(controller: tabController, tabs: myTabs)),
+
           floatingActionButton: _bottomButtons(),
           drawer: Nav_drawer(),
         ));
