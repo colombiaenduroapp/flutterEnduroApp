@@ -7,6 +7,7 @@ import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_ciudad.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
+import 'package:ui_flutter/src/widgets/dialog.dart';
 
 class pageSedes extends StatefulWidget {
   final String estado;
@@ -23,7 +24,7 @@ class _pageSedesState extends State<pageSedes> {
   Future<Ciudad> ciudad;
   String urlLogo;
   String urlJersey;
-  bool res = null;
+  bool res = true;
   String imgJersey = '';
   String imgLogo = '';
   String nombre_url_logo;
@@ -222,45 +223,6 @@ class _pageSedesState extends State<pageSedes> {
     }
   }
 
-// Dialog cargando
-  showLoaderDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      content: new Row(
-        children: [
-          CircularProgressIndicator(),
-          Container(
-              margin: EdgeInsets.only(left: 7),
-              child: Row(
-                children: [Text("Loading...")],
-              )),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-// dialog  resgistrado
-  showLoaderDialogOk(BuildContext context, IconData icon, String text) {
-    AlertDialog alert = AlertDialog(
-      content: new Row(
-        children: [Icon(icon), Text(text)],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
 // diseño  de inputs form
   formItemsDesign(icon, item) {
     return Padding(
@@ -384,7 +346,9 @@ class _pageSedesState extends State<pageSedes> {
                     if (fileJersey != null) {
                       imgJersey = base64Encode(fileJersey.readAsBytesSync());
                     }
-                    showLoaderDialog(context);
+                    WidgetDialog.showLoaderDialog(
+                        context, true, 'Cargando..', null);
+
                     try {
                       // guarda la informacion
                       res = await ser.addSede(nombreTextController.text,
@@ -393,15 +357,21 @@ class _pageSedesState extends State<pageSedes> {
                       Navigator.pop(context);
                       // si se guarda la informacion muestra dialog ok y resfresca la pantalla
                       if (res) {
-                        showLoaderDialogOk(context, Icons.check_circle_outlined,
-                            'Registrado Correctamente');
+                        // showLoaderDialogOk(context, Icons.check_circle_outlined,
+                        //     'Registrado Correctamente');
+                        // WidgetDialog(false, 'Registrado Correctamente', null);
+                        WidgetDialog.showLoaderDialog(
+                            context,
+                            false,
+                            'Registrado Correctamente',
+                            Icons.check_circle_outlined);
                         nombreTextController.clear();
 
                         nombreTextController.text = '';
                         file = null;
                         fileJersey = null;
                         await Future.delayed(Duration(milliseconds: 500));
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -410,8 +380,8 @@ class _pageSedesState extends State<pageSedes> {
                           ),
                         );
                       } else {
-                        showLoaderDialogOk(context, Icons.error_outline,
-                            'Ha Ocurrido un error');
+                        WidgetDialog.showLoaderDialog(context, false,
+                            'Ha Ocurrido un error', Icons.error_outline);
                         await Future.delayed(Duration(milliseconds: 500));
                         Navigator.pop(context);
                       }
@@ -451,7 +421,8 @@ class _pageSedesState extends State<pageSedes> {
                   if (fileJersey != null) {
                     imgJersey = base64Encode(fileJersey.readAsBytesSync());
                   }
-                  showLoaderDialog(context);
+                  WidgetDialog.showLoaderDialog(
+                      context, true, 'Cargando..', null);
                   res = await ser.updateSede(
                       id,
                       nombreTextController.text,
@@ -463,8 +434,11 @@ class _pageSedesState extends State<pageSedes> {
                   Navigator.pop(context);
 
                   if (res) {
-                    showLoaderDialogOk(context, Icons.check_circle_outlined,
-                        'Actualizado Correctamente');
+                    WidgetDialog.showLoaderDialog(
+                        context,
+                        false,
+                        'Actualizado Correctamente',
+                        Icons.check_circle_outlined);
                     await Future.delayed(Duration(milliseconds: 500));
 
                     imgLogo = '';
@@ -475,8 +449,8 @@ class _pageSedesState extends State<pageSedes> {
                     print(imgLogo);
                     print(imgJersey);
                   } else {
-                    showLoaderDialogOk(
-                        context, Icons.error_outline, 'Ha Ocurrido un error');
+                    WidgetDialog.showLoaderDialog(context, false,
+                        'Ha Ocurrido un error', Icons.error_outline);
                     await Future.delayed(Duration(milliseconds: 500));
                     Navigator.pop(context);
                   }

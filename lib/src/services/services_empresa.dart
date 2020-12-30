@@ -120,27 +120,28 @@ class Empresa {
   final String em_desc;
   final String em_telefono;
   final String em_correo;
+  final String em_error;
 
-  Empresa({
-    this.em_cdgo,
-    this.em_nit,
-    this.em_logo,
-    this.em_nombre,
-    this.em_desc,
-    this.em_telefono,
-    this.em_correo,
-  });
+  Empresa(
+      {this.em_cdgo,
+      this.em_nit,
+      this.em_logo,
+      this.em_nombre,
+      this.em_desc,
+      this.em_telefono,
+      this.em_correo,
+      this.em_error});
 
   factory Empresa.fromJson(Map<String, dynamic> json) {
     return new Empresa(
-      em_cdgo: json['em_cdgo'],
-      em_nit: json['em_nit'],
-      em_logo: json['em_logo'],
-      em_nombre: json['em_nombre'],
-      em_desc: json['em_desc'],
-      em_telefono: json['em_telefono'],
-      em_correo: json['em_correo'],
-    );
+        em_cdgo: json['em_cdgo'],
+        em_nit: json['em_nit'],
+        em_logo: json['em_logo'],
+        em_nombre: json['em_nombre'],
+        em_desc: json['em_desc'],
+        em_telefono: json['em_telefono'],
+        em_correo: json['em_correo'],
+        em_error: json['em_error']);
   }
 }
 

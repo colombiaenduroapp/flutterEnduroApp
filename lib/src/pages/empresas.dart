@@ -43,7 +43,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   String id_ev_cdgo;
   String nombre_url_logo = '';
   String urlLogo = null;
-  String imgLogo = '';
+  String imgLogo = null;
   bool res = false;
   int us_cdgo, us_sede_sd_cdgo;
   String us_nombres;
@@ -283,7 +283,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            WidgetDialog(true, 'Cargando...', null);
+            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
             res = await ServicioEmpresa().addEmpresa(
                 nitTextController.text,
                 imgLogo,
@@ -295,12 +295,13 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
             if (res) {
               Navigator.pop(context);
               print('true');
-              WidgetDialog(false, 'Registrado Exitosamente',
-                  Icons.check_circle_outlined);
+              WidgetDialog.showLoaderDialog(context, false,
+                  'Actualizado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
-              WidgetDialog(false, 'Ha ocurrido un error', Icons.error_outline);
+              WidgetDialog.showLoaderDialog(
+                  context, false, 'Ha ocurrido un error', Icons.error_outline);
               Navigator.pop(context);
             }
           }
@@ -324,7 +325,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            WidgetDialog(true, 'Cargando...', null);
+            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
             res = await ServicioEmpresa().updateEmpresa(
                 widget.em_cdgo,
                 nitTextController.text,
@@ -335,13 +336,14 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 emailTextController.text);
             if (res) {
               Navigator.pop(context);
-              WidgetDialog(false, 'Actualizado Exitosamente',
-                  Icons.check_circle_outlined);
+              WidgetDialog.showLoaderDialog(context, false,
+                  'Actualizado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
-              WidgetDialog(false, 'Ha ocurrido un error', Icons.error_outline);
+              WidgetDialog.showLoaderDialog(
+                  context, false, 'Ha ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             }
