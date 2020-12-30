@@ -72,76 +72,87 @@ Widget listaa(EventosList data) {
           );
         },
         child: Card(
-          color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
-              .withOpacity(0.5),
+          color: Colors.orange[50],
+          // color: Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(0.5),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          borderOnForeground: true,
           clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      leading: Icon(Icons.event_available_outlined),
-                      title: Text(
-                        data.eventos[index].ev_desc,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        'Organiza: ' + data.eventos[index].sd_desc,
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+          child: Container(
+            height: 250,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(data.eventos[index].ev_img),
+                    fit: BoxFit.cover)),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ListTile(
+                        tileColor: Colors.white70,
+                        leading: Icon(Icons.event_available_outlined),
+                        title: Text(
+                          data.eventos[index].ev_desc,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'Organiza: ' + data.eventos[index].sd_desc,
+                          style:
+                              TextStyle(color: Colors.black.withOpacity(0.6)),
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(Icons.favorite_border_outlined),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              FadeInImage.assetNetwork(
-                placeholder: 'assets/loading.gif',
-                image: data.eventos[index].ev_img,
-                fit: BoxFit.cover,
-
-                //   // En esta propiedad colocamos el alto de nuestra imagen
-                width: double.infinity,
-                height: 150,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Column(
                       children: [
-                        Text(
-                          'Fecha: ' + data.eventos[index].ev_fecha_inicio,
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.9),
-                          ),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          color: Colors.white70,
+                          child: Icon(Icons.favorite_border_outlined),
                         ),
                       ],
+                    )
+                  ],
+                ),
+                // FadeInImage.assetNetwork(
+                //   placeholder: 'assets/loading.gif',
+                //   image: data.eventos[index].ev_img,
+                //   fit: BoxFit.cover,
+
+                //   //   // En esta propiedad colocamos el alto de nuestra imagen
+                //   width: double.infinity,
+                //   height: 150,
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Fecha: ' + data.eventos[index].ev_fecha_inicio,
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Column(
-                      children: [
-                        Text('Dias faltantes'),
-                        Text(data.eventos[index].ev_faltante.toString())
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Column(
+                        children: [
+                          Text('Dias faltantes'),
+                          Text(data.eventos[index].ev_faltante.toString())
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
