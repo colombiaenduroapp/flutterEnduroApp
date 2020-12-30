@@ -67,6 +67,7 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
 
   _imagen_evento(String url) {
     try {
+      print(url);
       return url != null
           ? Container(
               decoration: BoxDecoration(
