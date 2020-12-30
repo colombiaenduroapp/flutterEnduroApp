@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 
-class WidgetDialog extends StatelessWidget {
-  final bool estado;
-  final String texto;
-  final IconData icon;
-
-  const WidgetDialog(this.estado, this.texto, this.icon, {Key key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+class WidgetDialog {
+  static Widget showLoaderDialog(
+      BuildContext context, bool estado, String texto, IconData icon) {
     AlertDialog alert = AlertDialog(
       content: new Row(
         children: [

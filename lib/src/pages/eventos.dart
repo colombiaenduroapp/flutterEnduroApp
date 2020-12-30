@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
+import 'package:ui_flutter/src/widgets/dialog.dart';
 
 import 'inicio.dart';
 
@@ -325,7 +326,7 @@ class _pagesEventosState extends State<pagesEventos> {
               imgLogo = base64Encode(
                 file.readAsBytesSync(),
               );
-              showLoaderDialog(context, true, 'Cargango...', null);
+              WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
               res = await ServicioEvento().addEvento(
                 us_sede_sd_cdgo,
                 us_cdgo,
@@ -344,12 +345,12 @@ class _pagesEventosState extends State<pagesEventos> {
             if (res) {
               Navigator.pop(context);
               print('true');
-              showLoaderDialog(context, false, 'Registrado Exitosamente',
-                  Icons.check_circle_outlined);
+              WidgetDialog.showLoaderDialog(context, false,
+                  'Registrado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
-              showLoaderDialog(
+              WidgetDialog.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               Navigator.pop(context);
             }
@@ -376,7 +377,7 @@ class _pagesEventosState extends State<pagesEventos> {
             }
             // print(imgLogo);
 
-            showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
             res = await ServicioEvento().updateSede(
               id_ev_cdgo,
               us_sede_sd_cdgo,
@@ -392,15 +393,14 @@ class _pagesEventosState extends State<pagesEventos> {
 
             if (res) {
               Navigator.pop(context);
-              print('true');
-              showLoaderDialog(context, false, 'Actualizado Exitosamente',
-                  Icons.check_circle_outlined);
+              WidgetDialog.showLoaderDialog(context, false,
+                  'Actualizado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
               // print('false');
-              showLoaderDialog(
+              WidgetDialog.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
@@ -410,29 +410,6 @@ class _pagesEventosState extends State<pagesEventos> {
         color: Colors.blue[200],
         child: Text('Editar'),
       ),
-    );
-  }
-
-  showLoaderDialog(
-      BuildContext context, bool estado, String texto, IconData icon) {
-    AlertDialog alert = AlertDialog(
-      content: new Row(
-        children: [
-          estado ? CircularProgressIndicator() : Text(''),
-          Container(
-              margin: EdgeInsets.only(left: 7),
-              child: Row(
-                children: [Icon(icon), Text(texto)],
-              )),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }
