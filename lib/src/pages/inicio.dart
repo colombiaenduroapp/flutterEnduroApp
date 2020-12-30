@@ -70,16 +70,22 @@ class _InicioPageState extends State<InicioPage>
                 border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: Colors.lightBlue[100],
-                width: 0.5,
+                color: Colors.lightBlue[800],
+                width: 1.0,
               ),
             )),
             child: TabBar(
               controller: tabController,
+              labelStyle: TextStyle(
+                  fontSize: 17.0,
+                  fontFamily: 'Family Name',
+                  fontWeight: FontWeight.w500),
+              unselectedLabelStyle:
+                  TextStyle(fontSize: 15.0, fontFamily: 'Family Name'),
               unselectedLabelColor: Colors.lightBlue[100],
-              labelColor: const Color(0xFF3baee7),
+              labelColor: Colors.lightBlue[800],
               indicatorWeight: 3,
-              indicatorColor: Colors.blue,
+              indicatorColor: Colors.lightBlue[800],
               tabs: myTabs,
             ),
           ),

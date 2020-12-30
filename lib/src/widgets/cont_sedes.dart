@@ -147,7 +147,7 @@ class _cont_sedesState extends State<cont_sedes> {
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Container(
                               child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/loading5.gif',
+                                placeholder: 'assets/loading.gif',
                                 image: url,
                                 fit: BoxFit.cover,
 
