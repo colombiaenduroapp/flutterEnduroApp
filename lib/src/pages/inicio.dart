@@ -70,8 +70,17 @@ class _InicioPageState extends State<InicioPage>
                 border: Border(
               top: BorderSide(
                 //                    <--- top side
+<<<<<<< HEAD
                 color: Theme.of(context).primaryColor,
+=======
+<<<<<<< HEAD
+                color: Colors.lightBlue[100],
+                width: 1,
+=======
+                color: Colors.lightBlue[800],
+>>>>>>> c1e5f9d5ec01864b3767a7d10681d47d545fa1e7
                 width: 1.0,
+>>>>>>> 274b1a2efcf34f2cd45a0005a6bf1177393643ac
               ),
             )),
             child: TabBar(
