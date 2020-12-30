@@ -8,15 +8,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Colombia Enduro',
         theme: ThemeData(
-          // Define el Brightness y Colores por defecto
-          // brightness: Brightness.dark,
-          // primarySwatch: Colors.orangeAccent[800],
-          // accentColor: Colors.lightBlue[400],
-
-          primaryColor: Colors.orange,
+          primarySwatch: Colors.orange,
+          primaryColor: Colors.orange[300],
           secondaryHeaderColor: Colors.orange[100],
           accentColor: Colors.blueAccent,
-          textTheme: TextTheme(bodyText2: TextStyle(color: Colors.purple)),
+          textTheme: TextTheme(bodyText1: TextStyle(color: Colors.purple)),
 
           // Define la Familia de fuente por defecto
           fontFamily: 'Montserrat',

@@ -23,6 +23,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies: 
+  skeleton_text: ^1.0.0
+  flutter_placeholder_textlines: ^1.0.4
   cached_network_image: ^2.0.0
   youtube_player_flutter: ^7.0.0+7
   shared_preferences:

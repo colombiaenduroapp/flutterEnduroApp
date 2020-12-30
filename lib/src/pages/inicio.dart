@@ -66,23 +66,23 @@ class _InicioPageState extends State<InicioPage>
           bottomNavigationBar: Container(
             height: 50,
             decoration: BoxDecoration(
-                // color: Colors.black87.withOpacity(0.4),
-                border: Border(
-              top: BorderSide(
-                //                    <--- top side
-<<<<<<< HEAD
-                color: Theme.of(context).primaryColor,
-=======
-<<<<<<< HEAD
-                color: Colors.lightBlue[100],
-                width: 1,
-=======
-                color: Colors.lightBlue[800],
->>>>>>> c1e5f9d5ec01864b3767a7d10681d47d545fa1e7
-                width: 1.0,
->>>>>>> 274b1a2efcf34f2cd45a0005a6bf1177393643ac
+              // color: Colors.black87.withOpacity(0.4),
+              border: Border(
+                top: BorderSide(
+                  //                    <--- top side
+                  color: Theme.of(context).primaryColor,
+                  width: 1.0,
+                ),
               ),
-            )),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
             child: TabBar(
               controller: tabController,
               labelStyle: TextStyle(
@@ -91,7 +91,7 @@ class _InicioPageState extends State<InicioPage>
                   fontWeight: FontWeight.w800),
               unselectedLabelStyle:
                   TextStyle(fontSize: 15.0, fontFamily: 'Family Name'),
-              unselectedLabelColor: Theme.of(context).secondaryHeaderColor,
+              unselectedLabelColor: Colors.black38,
               labelColor: Theme.of(context).primaryColor,
               indicatorWeight: 3,
               indicatorColor: Theme.of(context).primaryColor,
