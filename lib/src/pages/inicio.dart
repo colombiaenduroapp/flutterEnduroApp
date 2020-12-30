@@ -70,22 +70,22 @@ class _InicioPageState extends State<InicioPage>
                 border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: Colors.lightBlue[800],
+                color: Theme.of(context).primaryColor,
                 width: 1.0,
               ),
             )),
             child: TabBar(
               controller: tabController,
               labelStyle: TextStyle(
-                  fontSize: 17.0,
+                  fontSize: 18.0,
                   fontFamily: 'Family Name',
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.w800),
               unselectedLabelStyle:
                   TextStyle(fontSize: 15.0, fontFamily: 'Family Name'),
-              unselectedLabelColor: Colors.lightBlue[100],
-              labelColor: Colors.lightBlue[800],
+              unselectedLabelColor: Theme.of(context).secondaryHeaderColor,
+              labelColor: Theme.of(context).primaryColor,
               indicatorWeight: 3,
-              indicatorColor: Colors.lightBlue[800],
+              indicatorColor: Theme.of(context).primaryColor,
               tabs: myTabs,
             ),
           ),
@@ -112,7 +112,6 @@ class _InicioPageState extends State<InicioPage>
             context,
             MaterialPageRoute(
                 builder: (context) => pagesEventos(null, null, 'Registrar'))),
-        backgroundColor: Colors.redAccent,
         child: Icon(
           Icons.add,
           size: 35.0,
@@ -131,7 +130,6 @@ class _InicioPageState extends State<InicioPage>
             context,
             MaterialPageRoute(
                 builder: (context) => pageSedes('Registrar', null, null))),
-        backgroundColor: Colors.green,
       );
     }
   }

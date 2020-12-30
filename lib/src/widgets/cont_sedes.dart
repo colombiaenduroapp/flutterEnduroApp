@@ -129,7 +129,7 @@ class _cont_sedesState extends State<cont_sedes> {
         child: Container(
           decoration: BoxDecoration(
             border:
-                Border(bottom: BorderSide(color: Colors.black12, width: 1.0)),
+                Border(bottom: BorderSide(color: Colors.black12, width: 0.7)),
           ),
           child: Row(
             children: <Widget>[
