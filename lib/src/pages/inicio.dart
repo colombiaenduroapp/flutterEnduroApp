@@ -64,17 +64,25 @@ class _InicioPageState extends State<InicioPage>
             children: [tab_inicio(), tab_evento(), tab_sede()],
           ),
           bottomNavigationBar: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.black87.withOpacity(0.4),
-                  border: Border(
-                    top: BorderSide(
-                      //                    <--- top side
-                      color: Colors.black,
-                      width: 0.5,
-                    ),
-                  )),
-              child: TabBar(controller: tabController, tabs: myTabs)),
+            height: 50,
+            decoration: BoxDecoration(
+                // color: Colors.black87.withOpacity(0.4),
+                border: Border(
+              top: BorderSide(
+                //                    <--- top side
+                color: Colors.lightBlue[100],
+                width: 0.5,
+              ),
+            )),
+            child: TabBar(
+              controller: tabController,
+              unselectedLabelColor: Colors.lightBlue[100],
+              labelColor: const Color(0xFF3baee7),
+              indicatorWeight: 3,
+              indicatorColor: Colors.blue,
+              tabs: myTabs,
+            ),
+          ),
 
           floatingActionButton: _bottomButtons(),
           drawer: Nav_drawer(),
