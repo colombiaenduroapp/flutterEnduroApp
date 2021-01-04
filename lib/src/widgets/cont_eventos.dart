@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 
@@ -44,8 +45,27 @@ class _cont_eventosState extends State<cont_eventos> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(),
-                Text('Cargando Eventos...'),
+                Expanded(
+                  child: Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return Shimmer.fromColors(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            color: Colors.grey[300],
+                            width: double.infinity,
+                            height: 250,
+                            child: Text(''),
+                          ),
+                          baseColor: Colors.grey[400],
+                          highlightColor: Colors.grey[300],
+                        );
+                      },
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -114,15 +134,6 @@ Widget listaa(EventosList data) {
                     )
                   ],
                 ),
-                // FadeInImage.assetNetwork(
-                //   placeholder: 'assets/loading.gif',
-                //   image: data.eventos[index].ev_img,
-                //   fit: BoxFit.cover,
-
-                //   //   // En esta propiedad colocamos el alto de nuestra imagen
-                //   width: double.infinity,
-                //   height: 150,
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

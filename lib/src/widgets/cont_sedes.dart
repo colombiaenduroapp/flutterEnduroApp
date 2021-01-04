@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/sedes.dart';
+import 'package:shimmer/shimmer.dart';
+
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 
@@ -52,20 +53,36 @@ class _cont_sedesState extends State<cont_sedes> {
 
               break;
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Text(
-                    //   'Cargando...',
-                    //   style: TextStyle(fontSize: 30, color: Colors.black45),
-                    // ),
-                    Container(
-                      width: 100,
-                      child: Image(image: AssetImage('assets/loading.gif')),
-                    )
-                  ],
-                ),
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 14,
+                      itemBuilder: (context, index) {
+                        return Shimmer.fromColors(
+                            baseColor: Colors.grey[400],
+                            highlightColor: Colors.grey[300],
+                            child: ListTile(
+                              title: Container(
+                                width: double.infinity,
+                                color: Colors.grey[800],
+                                child: Text('c'),
+                              ),
+                              leading: Container(
+                                width: 50,
+                                height: 50,
+                                color: Colors.grey,
+                                child: Text(''),
+                              ),
+                            ));
+                      },
+                    ),
+                  )
+                ],
               );
 
               break;
