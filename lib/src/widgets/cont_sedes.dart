@@ -66,24 +66,29 @@ class _cont_sedesState extends State<cont_sedes> {
                         return Shimmer.fromColors(
                             baseColor: Colors.grey[400],
                             highlightColor: Colors.grey[300],
-                            child: ListTile(
-                              title: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(3),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    width: double.infinity,
+                                    child: Text('c'),
+                                  ),
+                                  leading: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    width: 50,
+                                    height: 50,
+                                    child: Text(''),
+                                  ),
                                 ),
-                                width: double.infinity,
-                                child: Text('c'),
-                              ),
-                              leading: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                width: 50,
-                                height: 50,
-                                child: Text(''),
-                              ),
+                                Divider()
+                              ],
                             ));
                       },
                     ),
