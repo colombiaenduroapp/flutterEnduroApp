@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:ui_flutter/src/widgets/dialog.dart';
 
@@ -48,8 +49,7 @@ class _pagesEventosState extends State<pagesEventos> {
 
   @override
   void initState() {
-    nombre_url_logo =
-        urlLogo.replaceAll("http://192.168.100.181:5000/evento/image/", "");
+    nombre_url_logo = urlLogo.replaceAll(Url().getUrl() + "evento/image/", "");
     cargar_evento(widget.evento);
     addStringToSF();
     id_ev_cdgo = widget.ev_cdgo;
@@ -215,7 +215,7 @@ class _pagesEventosState extends State<pagesEventos> {
                         ),
                         Column(
                           children: [
-                            urlLogo == null
+                            urlLogo == ''
                                 ? file == null
                                     ? Text('Seleccione una imagen')
                                     : Image.file(

@@ -59,7 +59,7 @@ class _cont_eventosState extends State<cont_eventos> {
                             ),
                             margin: EdgeInsets.all(10),
                             width: double.infinity,
-                            height: 250,
+                            height: 300,
                             child: Text(''),
                           ),
                           baseColor: Colors.grey[400],
@@ -97,73 +97,106 @@ Widget listaa(EventosList data) {
         child: Card(
           color: Colors.orange[50],
           // color: Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(0.5),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           borderOnForeground: true,
           clipBehavior: Clip.antiAlias,
           child: Container(
-            height: 250,
+            height: 300,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(data.eventos[index].ev_img),
                     fit: BoxFit.cover)),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: ListTile(
-                        tileColor: Colors.white70,
-                        leading: Icon(Icons.event_available_outlined),
-                        title: Text(
-                          data.eventos[index].ev_desc,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54,
+                              spreadRadius: 3,
+                              blurRadius: 10,
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
                         ),
-                        subtitle: Text(
-                          'Organiza: ' + data.eventos[index].sd_desc,
-                          style:
-                              TextStyle(color: Colors.black.withOpacity(0.6)),
+                        child: ListTile(
+                          leading: Icon(Icons.event_available_outlined,
+                              color: Colors.white),
+                          title: Text(
+                            data.eventos[index].ev_desc,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            'Organiza: ' + data.eventos[index].sd_desc,
+                            style:
+                                TextStyle(color: Colors.white.withOpacity(0.8)),
+                          ),
                         ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          color: Colors.white70,
-                          child: Icon(Icons.favorite_border_outlined),
-                        ),
-                      ],
-                    )
+                    // Column(
+                    //   children: [
+                    //     Container(
+                    //       padding: const EdgeInsets.all(10.0),
+                    //       color: Colors.white70,
+                    //       child: Icon(Icons.favorite_border_outlined),
+                    //     ),
+                    //   ],
+                    // )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Fecha: ' + data.eventos[index].ev_fecha_inicio,
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.9),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black54,
+                        spreadRadius: 5,
+                        blurRadius: 3,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fecha: ' + data.eventos[index].ev_fecha_inicio,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Column(
-                        children: [
-                          Text('Dias faltantes'),
-                          Text(data.eventos[index].ev_faltante.toString())
-                        ],
-                      ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Column(
+                          children: [
+                            Text('Dias faltantes',
+                                style: (TextStyle(color: Colors.white))),
+                            Text(
+                              data.eventos[index].ev_faltante.toString(),
+                              style: (TextStyle(color: Colors.white)),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
