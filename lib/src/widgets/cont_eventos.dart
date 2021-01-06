@@ -53,8 +53,11 @@ class _cont_eventosState extends State<cont_eventos> {
                       itemBuilder: (context, index) {
                         return Shimmer.fromColors(
                           child: Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            color: Colors.grey[300],
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: EdgeInsets.all(10),
                             width: double.infinity,
                             height: 250,
                             child: Text(''),

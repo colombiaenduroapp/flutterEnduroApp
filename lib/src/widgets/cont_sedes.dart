@@ -68,14 +68,20 @@ class _cont_sedesState extends State<cont_sedes> {
                             highlightColor: Colors.grey[300],
                             child: ListTile(
                               title: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
                                 width: double.infinity,
-                                color: Colors.grey[800],
                                 child: Text('c'),
                               ),
                               leading: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
                                 width: 50,
                                 height: 50,
-                                color: Colors.grey,
                                 child: Text(''),
                               ),
                             ));
