@@ -92,7 +92,7 @@ class _InicioPageState extends State<InicioPage>
               unselectedLabelStyle:
                   TextStyle(fontSize: 15.0, fontFamily: 'Family Name'),
               unselectedLabelColor: Colors.black38,
-              labelColor: Theme.of(context).primaryColor,
+              labelColor: Theme.of(context).accentColor,
               indicatorWeight: 3,
               indicatorColor: Theme.of(context).primaryColor,
               tabs: myTabs,
