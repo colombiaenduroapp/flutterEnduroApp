@@ -94,7 +94,7 @@ class _InicioPageState extends State<InicioPage>
               unselectedLabelColor: Colors.black38,
               labelColor: Theme.of(context).accentColor,
               indicatorWeight: 3,
-              indicatorColor: Theme.of(context).primaryColor,
+              indicatorColor: Theme.of(context).accentColor,
               tabs: myTabs,
             ),
           ),
