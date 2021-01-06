@@ -95,7 +95,7 @@ Widget listaa(EventosList data) {
           );
         },
         child: Card(
-          color: Colors.orange[50],
+          color: Theme.of(context).primaryColor,
           // color: Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(0.5),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

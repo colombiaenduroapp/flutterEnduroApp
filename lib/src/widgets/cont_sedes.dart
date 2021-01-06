@@ -68,23 +68,33 @@ class _cont_sedesState extends State<cont_sedes> {
                             highlightColor: Colors.grey[300],
                             child: Column(
                               children: [
-                                ListTile(
-                                  title: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(3),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.black26,
+                                        width: 1,
+                                      ),
                                     ),
-                                    width: double.infinity,
-                                    child: Text('c'),
                                   ),
-                                  leading: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(50),
+                                  child: ListTile(
+                                    title: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      width: double.infinity,
+                                      child: Text(''),
                                     ),
-                                    width: 50,
-                                    height: 50,
-                                    child: Text(''),
+                                    leading: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      width: 50,
+                                      height: 50,
+                                      child: Text(''),
+                                    ),
                                   ),
                                 ),
                                 Divider()
