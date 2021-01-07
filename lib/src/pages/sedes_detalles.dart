@@ -103,11 +103,28 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                         Container(
                           width: double.infinity,
                           padding: EdgeInsets.only(left: 10),
-                          child: Text(
-                            'Mesa de trabajo:',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Mesa de trabajo:',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                              ),
+                              RawMaterialButton(
+                                onPressed: () {},
+                                elevation: 4.0,
+                                fillColor: Theme.of(context).accentColor,
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 25.0,
+                                ),
+                                padding: EdgeInsets.all(15.0),
+                                shape: CircleBorder(),
+                              ),
+                            ],
                           ),
                         ),
                         future_mesa(searchSede),
@@ -170,6 +187,7 @@ Widget lista_mesa(Sede sede) {
               ),
               subtitle: Text(
                   '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
+              trailing: Icon(Icons.more_vert_outlined),
             ),
           );
         } else {
