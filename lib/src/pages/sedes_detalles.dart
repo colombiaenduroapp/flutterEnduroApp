@@ -50,33 +50,66 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
               builder: (context, snapshot) {
                 sede = snapshot.data;
                 if (snapshot.hasData)
-                  return Center(
+                  return Container(
+                    color: Colors.white,
                     child: Column(
                       children: [
                         Stack(
                           children: [
                             _imagen_fondo(screen, snapshot.data.sd_jersey),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: screen.height / 3.0,
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: new BorderRadius.vertical(
+                                          top: Radius.circular(70))),
+                                  child: Text(''),
+                                ),
+                                Container(
+                                  color: Colors.white,
+                                  // padding: EdgeInsets.only(top: 80),
+
+                                  child: Column(
+                                    children: [
+                                      // Texto Nombre Sede
+                                      nombre_sede(snapshot.data.sd_desc,
+                                          snapshot.data.cd_desc)
+                                      // -----------------
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                             SafeArea(
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     SizedBox(
-                                      height: screen.height / 4.4,
+                                      height: screen.height / 4.2,
                                     ),
                                     _imagen_perfil(snapshot.data.sd_logo),
-                                    // Texto Nombre Sede
-                                    nombre_sede(snapshot.data.sd_desc,
-                                        snapshot.data.cd_desc)
-                                    // -----------------
                                   ],
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        Text('Mesa de trabajo',
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Mesa de trabajo:',
+                            textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500)),
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                        ),
                         future_mesa(searchSede),
                       ],
                     ),
@@ -132,10 +165,11 @@ Widget lista_mesa(Sede sede) {
             child: ListTile(
               leading: Icon(Icons.verified_user),
               title: Text(
-                '${sede.mesas[index].us_nombres}(${sede.mesas[index].us_alias} )',
+                '${sede.mesas[index].us_nombres}',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(sede.mesas[index].ca_desc),
+              subtitle: Text(
+                  '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
             ),
           );
         } else {

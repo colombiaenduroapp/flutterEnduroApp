@@ -22,7 +22,7 @@ Widget _createDrawerItem(
         Padding(
           padding: EdgeInsets.only(left: 15.0),
           child:
-              Text(text, style: TextStyle(fontSize: 20, color: Colors.black45)),
+              Text(text, style: TextStyle(fontSize: 15, color: Colors.black54)),
         )
       ],
     ),
