@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
+import 'package:ui_flutter/src/widgets/tab_bar/tab_gestionar.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_sede.dart';
 
@@ -22,6 +23,7 @@ class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
   int fabIndex;
   final List<Tab> myTabs = <Tab>[
+    new Tab(text: "Gestionar"),
     new Tab(text: "Inicio"),
     new Tab(text: "Eventos"),
     new Tab(text: "Sedes"),
@@ -50,7 +52,7 @@ class _InicioPageState extends State<InicioPage>
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           // resizeToAvoidBottomPadding: false,
           appBar: AppBar(
@@ -61,7 +63,7 @@ class _InicioPageState extends State<InicioPage>
           ),
           body: TabBarView(
             controller: tabController,
-            children: [tab_inicio(), tab_evento(), tab_sede()],
+            children: [tab_gestionar(), tab_inicio(), tab_evento(), tab_sede()],
           ),
           bottomNavigationBar: Container(
             height: 50,
@@ -105,12 +107,7 @@ class _InicioPageState extends State<InicioPage>
   }
 
   Widget _bottomButtons() {
-    if (fabIndex == 0) {
-      return FloatingActionButton(
-          shape: StadiumBorder(),
-          onPressed: null,
-          child: Icon(Icons.message, size: 20.0, color: Colors.white));
-    } else if (tabController.index == 1) {
+    if (tabController.index == 2) {
       return FloatingActionButton(
         shape: StadiumBorder(),
         onPressed: () => Navigator.push(
@@ -119,7 +116,7 @@ class _InicioPageState extends State<InicioPage>
                 builder: (context) => pagesEventos(null, null, 'Registrar'))),
         child: Icon(Icons.add, size: 35.0, color: Colors.white),
       );
-    } else if (tabController.index == 2) {
+    } else if (tabController.index == 3) {
       return FloatingActionButton(
         child: Icon(Icons.add, size: 35.0, color: Colors.white),
         shape: StadiumBorder(),
