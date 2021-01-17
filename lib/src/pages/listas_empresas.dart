@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ui_flutter/src/widgets/dialog.dart';
 
 import 'empresas.dart';
 
@@ -13,6 +15,7 @@ class pages_listas_empresas extends StatefulWidget {
 
 class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Future<EmpresaList> lista = ServicioEmpresa().getEmpresa();
+  bool res = false;
   @override
   Widget build(BuildContext context) {
     try {
@@ -84,22 +87,102 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
     }
   }
 
+  void _showSnackBar(BuildContext context, String text) {
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
+  }
+
   Widget _jobsListView(data) {
     try {
       if (data.empresas.length > 0) {
         return ListView.builder(
             itemCount: data.empresas.length,
             itemBuilder: (context, index) {
-              return _tile(
-                  data.empresas[index].em_nombre,
-                  data.empresas[index].em_cdgo.toString(),
-                  data.empresas[index].em_logo);
+              return Slidable(
+                  closeOnScroll: true,
+                  child: _tile(
+                      data.empresas[index].em_nombre,
+                      data.empresas[index].em_cdgo.toString(),
+                      data.empresas[index].em_logo),
+                  actions: <Widget>[
+                    IconSlideAction(
+                        icon: Icons.delete_outline_rounded,
+                        caption: 'Eliminar',
+                        color: Colors.red,
+
+                        //not defined closeOnTap so list will get closed when clicked
+                        onTap: () {
+                          showDialog<bool>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                title: Text(
+                                  'Advertencia!',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: Text(
+                                  'Estas seguro de eliminar',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                  ),
+                                  FlatButton(
+                                      child: Text(
+                                        'Ok',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                      onPressed: () async {
+                                        res = await ServicioEmpresa()
+                                            .deleteEmpresa(data
+                                                .empresas[index].em_cdgo
+                                                .toString());
+                                        Navigator.pop(context);
+                                        WidgetDialog.showLoaderDialog(
+                                            context,
+                                            false,
+                                            'Cargando...',
+                                            Icons.check_circle_outlined);
+
+                                        if (res) {
+                                          Navigator.pop(context);
+                                          WidgetDialog.showLoaderDialog(
+                                              context,
+                                              false,
+                                              'Eliminado Correctamente',
+                                              Icons.check_circle_outlined);
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          onDismissed:
+                                          (_) {
+                                            setState(() {
+                                              data.empresas.removeAt(index);
+                                            });
+                                          };
+                                          Navigator.pop(context);
+                                        }
+                                      }),
+                                ],
+                              );
+                            },
+                          );
+                        }),
+                  ],
+                  actionPane: SlidableDrawerActionPane());
             });
       } else {
         return Container(
           child: Center(
             child: Text(
-              'No hay sedes registradas',
+              'No hay Empresas registradas',
               style: TextStyle(color: Colors.black26),
             ),
           ),

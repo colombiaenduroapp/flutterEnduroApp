@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.orange,
           primaryColor: Colors.blueGrey[700],
+          primaryColorLight: Colors.blueGrey[300],
           secondaryHeaderColor: Colors.orange[100],
           accentColor: Colors.orange[400],
 

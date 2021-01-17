@@ -88,7 +88,7 @@ class ServicioEmpresa {
       String em_correo) async {
     var response;
     try {
-      response = await http.post(
+      response = await http.put(
         url + "empresa/" + em_cdgo,
         body: {
           "em_nit": em_nit,
@@ -104,6 +104,18 @@ class ServicioEmpresa {
     } on Error catch (e) {
       print('Error: $e');
     }
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deleteEmpresa(String em_cdgo) async {
+    var response;
+    try {
+      response = await http.delete(url + 'empresa/' + em_cdgo);
+    } catch (error) {}
     if (response.statusCode == 200) {
       return true;
     } else {

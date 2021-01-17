@@ -21,6 +21,7 @@ class pageSedes extends StatefulWidget {
 
 class _pageSedesState extends State<pageSedes> {
   ServicioSede ser = new ServicioSede();
+  String url = Url().getUrl();
   Future<Ciudad> ciudad;
   String urlLogo;
   String urlJersey;
@@ -293,11 +294,9 @@ class _pageSedesState extends State<pageSedes> {
     if (sede != null) {
       nombreTextController.text = sede.sd_desc;
       urlLogo = sede.sd_logo;
-      nombre_url_logo =
-          urlLogo.replaceAll("http://192.168.100.181:5000/sede/image/", "");
+      nombre_url_logo = urlLogo.replaceAll(url + "sede/image/", "");
       urlJersey = sede.sd_jersey;
-      nombre_url_jersey = urlJersey.replaceAll(
-          "http://192.168.100.181:5000/sede/imagejersey/", "");
+      nombre_url_jersey = urlJersey.replaceAll(url + "sede/imagejersey/", "");
       ciudadSel = sede.cd_cdgo;
       id = sede.sd_cdgo.toString();
       print(urlLogo);
