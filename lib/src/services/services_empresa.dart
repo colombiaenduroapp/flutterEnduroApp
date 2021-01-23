@@ -71,7 +71,6 @@ class ServicioEmpresa {
       final jsonResponse = json.decode(response.body)['data'];
 
       Empresa evento = Empresa.fromJson(jsonResponse);
-      print(evento);
       return evento;
     } else {
       return null;
@@ -165,7 +164,7 @@ class EmpresaList {
   });
 
   factory EmpresaList.fromJson(List<dynamic> parsedJson) {
-    List<Empresa> empresas = new List<Empresa>();
+    List<Empresa> empresas;
     empresas = parsedJson.map((i) => Empresa.fromJson(i)).toList();
 
     return new EmpresaList(empresas: empresas);

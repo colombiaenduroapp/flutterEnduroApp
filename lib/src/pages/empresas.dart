@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
-import 'package:ui_flutter/src/widgets/dialog.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 // class pagesEmpresa extends StatefulWidget {
 //   final String em_cdgo;
@@ -283,7 +283,8 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetsGenericos.showLoaderDialog(
+                context, true, 'Cargango...', null);
             res = await ServicioEmpresa().addEmpresa(
                 nitTextController.text,
                 imgLogo,
@@ -294,12 +295,12 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
 
             if (res) {
               Navigator.pop(context);
-              WidgetDialog.showLoaderDialog(context, false,
+              WidgetsGenericos.showLoaderDialog(context, false,
                   'Registrado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
-              WidgetDialog.showLoaderDialog(
+              WidgetsGenericos.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               Navigator.pop(context);
             }
@@ -324,7 +325,8 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 file.readAsBytesSync(),
               );
             }
-            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetsGenericos.showLoaderDialog(
+                context, true, 'Cargango...', null);
             res = await ServicioEmpresa().updateEmpresa(
                 widget.em_cdgo,
                 nitTextController.text,
@@ -335,13 +337,13 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 emailTextController.text);
             if (res) {
               Navigator.pop(context);
-              WidgetDialog.showLoaderDialog(context, false,
+              WidgetsGenericos.showLoaderDialog(context, false,
                   'Actualizado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
-              WidgetDialog.showLoaderDialog(
+              WidgetsGenericos.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);

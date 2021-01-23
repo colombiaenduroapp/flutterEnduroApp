@@ -66,7 +66,7 @@ class _InicioPageState extends State<InicioPage>
             children: [tab_gestionar(), tab_inicio(), tab_evento(), tab_sede()],
           ),
           bottomNavigationBar: Container(
-            height: 50,
+            height: 40,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border(
@@ -88,11 +88,11 @@ class _InicioPageState extends State<InicioPage>
             child: TabBar(
               controller: tabController,
               labelStyle: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                   fontFamily: 'Family Name',
                   fontWeight: FontWeight.w800),
               unselectedLabelStyle:
-                  TextStyle(fontSize: 15.0, fontFamily: 'Family Name'),
+                  TextStyle(fontSize: 13.0, fontFamily: 'Family Name'),
               unselectedLabelColor: Colors.black38,
               labelColor: Theme.of(context).accentColor,
               indicatorWeight: 3,

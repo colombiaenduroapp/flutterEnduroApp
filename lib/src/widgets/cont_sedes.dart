@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class cont_sedes extends StatefulWidget {
   cont_sedes({Key key}) : super(key: key);
@@ -15,16 +18,36 @@ class _cont_sedesState extends State<cont_sedes> {
   Future<SedesList> lista = ServicioSede().cargarSedes();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+  bool res = false;
+  final TextEditingController _filter = new TextEditingController();
+
+  String _searchText = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
+  _cont_sedesState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          // filteredNames = names;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     try {
-      return FutureBuilder<SedesList>(
+      return FutureBuilder(
         future: lista,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -41,69 +64,43 @@ class _cont_sedesState extends State<cont_sedes> {
             case ConnectionState.done:
               if (snapshot.hasData) {
                 SedesList data = snapshot.data;
-                return _jobsListView(data);
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        child: TextField(
+                          controller: _filter,
+                          // autofocus: true,
+                          // style: TextStyle(color: Colors.white),
+                          decoration: new InputDecoration(
+                            // fillColor: Colors.white,
+                            // filled: true,
+                            prefixIcon: new Icon(
+                              Icons.search,
+                              // color: Colors.white,
+                            ),
+                            contentPadding: const EdgeInsets.only(top: 15),
+                            focusColor: Colors.white,
+                            hintText: "Buscar:",
+                            // hintStyle: TextStyle(color: Colors.white54),
+                          ),
+                        ),
+                      ),
+                      Container(child: _jobsListView(data)),
+                    ],
+                  ),
+                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               } else {
-                return Center(
-                  child: Text(
-                      'Tu conexion es inestable o ha ocurrido un problema en el servidor. Si el problema persiste comunicate con los desarrolladores'),
-                );
+                return WidgetsGenericos.ContainerErrorConection(
+                    context, InicioPage(3));
               }
 
               break;
             case ConnectionState.waiting:
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 14,
-                      itemBuilder: (context, index) {
-                        return Shimmer.fromColors(
-                            baseColor: Colors.grey[400],
-                            highlightColor: Colors.grey[300],
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.black26,
-                                        width: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  child: ListTile(
-                                    title: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      width: double.infinity,
-                                      child: Text(''),
-                                    ),
-                                    leading: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      width: 50,
-                                      height: 50,
-                                      child: Text(''),
-                                    ),
-                                  ),
-                                ),
-                                Divider()
-                              ],
-                            ));
-                      },
-                    ),
-                  )
-                ],
+              return Center(
+                child: WidgetsGenericos.ShimmerList(),
               );
 
               break;
@@ -118,7 +115,6 @@ class _cont_sedesState extends State<cont_sedes> {
         },
       );
     } catch (exception) {
-      print(exception);
       return Center(
         child:
             Text('Ha ocurrido un error de conexion o No hay datos por mostrar'),
@@ -127,114 +123,117 @@ class _cont_sedesState extends State<cont_sedes> {
   }
 
   Widget _jobsListView(data) {
+    List sedes = new List();
+    if (!(_searchText.isEmpty)) {
+      for (int i = 0; i < data.sedes.length; i++) {
+        if (data.sedes[i].sd_desc
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
+          sedes.add(data.sedes[i]);
+        }
+      }
+    } else {
+      for (int i = 0; i < data.sedes.length; i++) {
+        sedes.add(data.sedes[i]);
+      }
+    }
+
     try {
-      if (data.sedes.length > 0) {
+      if (sedes.length > 0) {
         return ListView.builder(
-            itemCount: data.sedes.length,
+            // scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: sedes.length,
             itemBuilder: (context, index) {
-              return _tile(
-                  data.sedes[index].sd_desc,
-                  data.sedes[index].sd_cdgo.toString(),
-                  data.sedes[index].sd_logo);
+              return Slidable(
+                key: ValueKey(data.sedes[index]),
+                closeOnScroll: true,
+                child: WidgetsGenericos.ItemList(
+                    sedes[index].sd_desc,
+                    sedes[index].sd_logo,
+                    context,
+                    page_sedes_detalles(sedes[index].sd_cdgo.toString())),
+                actions: <Widget>[
+                  IconSlideAction(
+                      icon: Icons.delete_outline_rounded,
+                      caption: 'Eliminar',
+                      color: Colors.red,
+
+                      //not defined closeOnTap so list will get closed when clicked
+                      onTap: () async {
+                        showDialog<bool>(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              title: Text(
+                                'Advertencia!',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              content: Text(
+                                'Estas seguro de eliminar',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                ),
+                                FlatButton(
+                                    child: Text(
+                                      'Ok',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () async {
+                                      res = await ServicioSede().deleteSede(
+                                          data.sedes[index].sd_cdgo.toString());
+                                      Navigator.pop(context);
+                                      WidgetsGenericos.showLoaderDialog(
+                                          context,
+                                          false,
+                                          'Cargando...',
+                                          Icons.check_circle_outlined);
+
+                                      if (res) {
+                                        Navigator.pop(context);
+                                        WidgetsGenericos.showLoaderDialog(
+                                            context,
+                                            false,
+                                            'Eliminado Correctamente',
+                                            Icons.check_circle_outlined);
+                                        // await Future.delayed(
+                                        //     Duration(milliseconds: 500));
+
+                                        Navigator.pop(context);
+                                        await setState(() {
+                                          data.sedes.removeAt(index);
+                                        });
+                                      } else {}
+                                    }),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                ],
+                actionPane: SlidableDrawerActionPane(),
+              );
+
+              // WidgetsGenericos.ItemList(
+              //     data.sedes[index].sd_desc,
+              //     data.sedes[index].sd_logo,
+              //     context,
+              //     page_sedes_detalles(data.sedes[index].sd_cdgo.toString()));
             });
       } else {
-        return Container(
-          child: Center(
-            child: Text(
-              'No hay sedes registradas',
-              style: TextStyle(color: Colors.black26),
-            ),
-          ),
-        );
+        return Center(child: WidgetsGenericos.ContainerEmptyData(context));
       }
     } catch (e) {}
-  }
-
-// Widget item list contiene todo los atributos de un list item
-  Widget _tile(String title, String subtitle, String url) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => page_sedes_detalles(
-                      subtitle,
-                    )),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: Colors.black12, width: 0.7)),
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          // Logo Sede
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Container(
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/loading.gif',
-                                image: url,
-                                fit: BoxFit.cover,
-
-                                //   // En esta propiedad colocamos el alto de nuestra imagen
-                                width: double.infinity,
-                                height: 150,
-                              ),
-                              width: 50.0,
-                              height: 50.0,
-                              // decoration: new BoxDecoration(
-                              //   shape: BoxShape.circle,
-                              //   image: new DecorationImage(
-                              //     fit: BoxFit.fill,
-                              //     image: NetworkImage(url),
-                              //   ),
-                              // ),
-                            ),
-                          ),
-                          // Nombre Sede
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // icon next
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [Icon(Icons.navigate_next)],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

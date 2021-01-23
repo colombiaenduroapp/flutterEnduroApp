@@ -6,7 +6,9 @@ import 'empresas.dart';
 
 class pages_empresas_detalles extends StatefulWidget {
   String em_cdgo;
-  pages_empresas_detalles(this.em_cdgo, {Key key}) : super(key: key);
+  Empresa empresa;
+  pages_empresas_detalles(this.em_cdgo, this.empresa, {Key key})
+      : super(key: key);
 
   @override
   _pages_empresas_detallesState createState() =>
@@ -25,6 +27,7 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.empresa.em_correo);
     return Scaffold(
       appBar: AppBar(title: Text('Empresa'), actions: <Widget>[
         IconButton(
@@ -40,27 +43,14 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
           ),
         ),
       ]),
-      body: FutureBuilder<Empresa>(
-        future: future_empresa,
-        // initialData: InitialData,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            empresa = snapshot.data;
-            return Container(
-              child: Column(
-                children: [
-                  _imagen_evento(snapshot.data.em_logo),
-                  _nombre_evento(snapshot.data.em_nombre),
-                  _cont_empresa(snapshot.data)
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Text('vacio'),
-            );
-          }
-        },
+      body: Container(
+        child: Column(
+          children: [
+            _imagen_evento(widget.empresa.em_logo),
+            _nombre_evento(widget.empresa.em_nombre),
+            _cont_empresa(widget.empresa)
+          ],
+        ),
       ),
     );
   }

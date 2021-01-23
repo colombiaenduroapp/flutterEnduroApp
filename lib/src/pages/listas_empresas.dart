@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:ui_flutter/src/widgets/dialog.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'empresas.dart';
 
@@ -15,13 +19,48 @@ class pages_listas_empresas extends StatefulWidget {
 
 class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Future<EmpresaList> lista = ServicioEmpresa().getEmpresa();
-  bool res = false;
+  EmpresaList emplist;
+  final TextEditingController _filter = new TextEditingController();
+
+  String _searchText = "";
+
+  Icon _searchIcon = Icon(Icons.search);
+  Widget _appBarTitle = new Text('Empresa');
+  bool res = true;
+  @override
+  void initState() {
+    // TODO: implement initS
+    super.initState();
+  }
+
+  _pages_listas_empresasState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          print('vacio');
+          // filteredNames = names;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+          print(_searchText);
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     try {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Empresa'),
+          title: _appBarTitle,
+          actions: [
+            IconButton(
+              icon: _searchIcon,
+              onPressed: _searchPressed,
+            ),
+          ],
         ),
         body: FutureBuilder<EmpresaList>(
           future: lista,
@@ -39,31 +78,20 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                 break;
               case ConnectionState.done:
                 if (snapshot.hasData) {
-                  EmpresaList data = snapshot.data;
-                  return _jobsListView(data);
+                  emplist = snapshot.data;
+
+                  return _jobsListView(emplist);
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 } else {
                   return Center(
-                    child: Text(
-                        'Tu conexion es inestable o ha ocurrido un problema en el servidor. Si el problema persiste comunicate con los desarrolladores'),
+                    child: Text('No hay empresas Registradas'),
                   );
                 }
 
                 break;
               case ConnectionState.waiting:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Cargando...',
-                        style: TextStyle(fontSize: 30, color: Colors.black45),
-                      ),
-                      Image(image: AssetImage('assets/loading.gif')),
-                    ],
-                  ),
-                );
+                return Center(child: WidgetsGenericos.ShimmerList());
 
                 break;
               case ConnectionState.active:
@@ -76,7 +104,10 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             }
           },
         ),
-        floatingActionButton: floating_button(),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButton: WidgetsGenericos.floating_button_registrar(
+            context, pagesEmpresa(null, null, 'Registrar')),
       );
     } catch (exception) {
       print(exception);
@@ -87,226 +118,163 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
     }
   }
 
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: _filter,
+          autofocus: true,
+          style: TextStyle(color: Colors.white),
+          decoration: new InputDecoration(
+              fillColor: Colors.white,
+              // filled: true,
+              // prefixIcon: new Icon(
+              //   Icons.search,
+              //   color: Colors.white,
+              // ),
+              contentPadding: const EdgeInsets.all(20),
+              focusColor: Colors.white,
+              hintText: "Buscar:",
+              hintStyle: TextStyle(color: Colors.white54)),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text('Search Example');
+        // filteredNames = names;
+        _filter.clear();
+      }
+    });
+  }
+
   void _showSnackBar(BuildContext context, String text) {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   Widget _jobsListView(data) {
+    List tempList = new List();
+    if (!(_searchText.isEmpty)) {
+      int a = 0;
+      for (int i = 0; i < emplist.empresas.length; i++) {
+        if (emplist.empresas[i].em_nombre
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
+          tempList.add(data.empresas[i]);
+          a++;
+          print(emplist.empresas[i].em_correo);
+        }
+      }
+      // jsonEncode(tempList)
+      // print(tempList[1].em_cdgo);
+      // tempList
+
+      // filteredNames = tempList;
+    } else {
+      for (int i = 0; i < emplist.empresas.length; i++) {
+        tempList.add(data.empresas[i]);
+
+        print(tempList[i].em_nombre);
+      }
+    }
+
     try {
-      if (data.empresas.length > 0) {
+      if (tempList.length > 0) {
         return ListView.builder(
-            itemCount: data.empresas.length,
-            itemBuilder: (context, index) {
-              return Slidable(
-                  closeOnScroll: true,
-                  child: _tile(
-                      data.empresas[index].em_nombre,
-                      data.empresas[index].em_cdgo.toString(),
-                      data.empresas[index].em_logo),
-                  actions: <Widget>[
-                    IconSlideAction(
-                        icon: Icons.delete_outline_rounded,
-                        caption: 'Eliminar',
-                        color: Colors.red,
+          itemCount: tempList.length,
+          itemBuilder: (context, index) {
+            return Slidable(
+              key: ValueKey(emplist.empresas[index]),
+              closeOnScroll: true,
+              child: WidgetsGenericos.ItemList(
+                tempList[index].em_nombre,
+                tempList[index].em_logo,
+                context,
+                pages_empresas_detalles(
+                  tempList[index].em_cdgo.toString(),
+                  tempList[index],
+                ),
+              ),
+              actions: <Widget>[
+                IconSlideAction(
+                    icon: Icons.delete_outline_rounded,
+                    caption: 'Eliminar',
+                    color: Colors.red,
 
-                        //not defined closeOnTap so list will get closed when clicked
-                        onTap: () {
-                          showDialog<bool>(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                title: Text(
-                                  'Advertencia!',
-                                  style: TextStyle(color: Colors.white),
+                    //not defined closeOnTap so list will get closed when clicked
+                    onTap: () async {
+                      showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            title: Text(
+                              'Advertencia!',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: Text(
+                              'Estas seguro de eliminar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
                                 ),
-                                content: Text(
-                                  'Estas seguro de eliminar',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                              ),
+                              FlatButton(
+                                  child: Text(
+                                    'Ok',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   ),
-                                  FlatButton(
-                                      child: Text(
-                                        'Ok',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                      onPressed: () async {
-                                        res = await ServicioEmpresa()
-                                            .deleteEmpresa(data
-                                                .empresas[index].em_cdgo
-                                                .toString());
-                                        Navigator.pop(context);
-                                        WidgetDialog.showLoaderDialog(
-                                            context,
-                                            false,
-                                            'Cargando...',
-                                            Icons.check_circle_outlined);
+                                  onPressed: () async {
+                                    res = await ServicioEmpresa().deleteEmpresa(
+                                        data.empresas[index].em_cdgo
+                                            .toString());
+                                    Navigator.pop(context);
+                                    WidgetsGenericos.showLoaderDialog(
+                                        context,
+                                        false,
+                                        'Cargando...',
+                                        Icons.check_circle_outlined);
 
-                                        if (res) {
-                                          Navigator.pop(context);
-                                          WidgetDialog.showLoaderDialog(
-                                              context,
-                                              false,
-                                              'Eliminado Correctamente',
-                                              Icons.check_circle_outlined);
-                                          await Future.delayed(
-                                              Duration(milliseconds: 500));
-                                          onDismissed:
-                                          (_) {
-                                            setState(() {
-                                              data.empresas.removeAt(index);
-                                            });
-                                          };
-                                          Navigator.pop(context);
-                                        }
-                                      }),
-                                ],
-                              );
-                            },
+                                    if (res) {
+                                      Navigator.pop(context);
+                                      WidgetsGenericos.showLoaderDialog(
+                                          context,
+                                          false,
+                                          'Eliminado Correctamente',
+                                          Icons.check_circle_outlined);
+                                      // await Future.delayed(
+                                      //     Duration(milliseconds: 500));
+
+                                      Navigator.pop(context);
+                                      await setState(() {
+                                        data.empresas.removeAt(index);
+                                      });
+                                    } else {}
+                                  }),
+                            ],
                           );
-                        }),
-                  ],
-                  actionPane: SlidableDrawerActionPane());
-            });
+                        },
+                      );
+                    }),
+              ],
+              actionPane: SlidableDrawerActionPane(),
+            );
+          },
+        );
       } else {
         return Container(
           child: Center(
-            child: Text(
-              'No hay Empresas registradas',
-              style: TextStyle(color: Colors.black26),
-            ),
+            child: WidgetsGenericos.ContainerEmptyData(context),
           ),
         );
       }
     } catch (e) {}
-  }
-
-  floating_button() {
-    return FloatingActionButton(
-      shape: StadiumBorder(),
-      onPressed: () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => pagesEmpresa(null, null, 'Registrar')),
-      ),
-      backgroundColor: Colors.redAccent,
-      child: Icon(
-        Icons.add,
-        size: 35.0,
-      ),
-    );
-  }
-
-// Widget item list contiene todo los atributos de un list item
-  Widget _tile(String title, String subtitle, String url) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => pages_empresas_detalles(subtitle),
-              ));
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: Colors.black12, width: 1.0)),
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          // Logo Sede
-
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: _logo_title(url),
-                          ),
-                          // Nombre Sede
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // icon next
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [Icon(Icons.navigate_next)],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _logo_title(String url) {
-    try {
-      return url != null
-          ? Container(
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/loading.gif',
-                // image: url,
-                image: url,
-                imageErrorBuilder: (BuildContext context, Object exception,
-                    StackTrace stackTrace) {
-                  return Icon(Icons.image_not_supported_rounded);
-                },
-                fit: BoxFit.cover,
-
-                //   // En esta propiedad colocamos el alto de nuestra imagen
-                width: double.infinity,
-                height: 50,
-              ),
-              width: 50.0,
-              height: 50.0,
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-            )
-          : Container(
-              child: Icon(Icons.business_outlined),
-              width: 50,
-              height: 50,
-            );
-    } on NetworkImageLoadException catch (e) {
-      print('hola');
-      return Container(child: Text(e.toString()));
-    }
   }
 }

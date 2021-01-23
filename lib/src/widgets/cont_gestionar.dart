@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
+import 'package:ui_flutter/src/pages/listas_sedes.dart';
 
 import 'boton_gestionar.dart';
 
@@ -34,7 +35,7 @@ class _cont_gestionarState extends State<cont_gestionar> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   BotonGestionar().boton_gestionar(Icons.gamepad_outlined,
-                      'Sedes', context, pages_listas_empresas()),
+                      'Sedes', context, pages_listas_sedes()),
                   BotonGestionar().boton_gestionar(
                       Icons.corporate_fare_outlined,
                       'Empresas',

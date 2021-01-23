@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
-import 'package:ui_flutter/src/widgets/dialog.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'inicio.dart';
 
@@ -68,7 +68,7 @@ class _pagesEventosState extends State<pagesEventos> {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => InicioPage(1),
+              builder: (context) => InicioPage(2),
             ),
           ),
         ),
@@ -77,7 +77,7 @@ class _pagesEventosState extends State<pagesEventos> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(1),
+            builder: (context) => InicioPage(2),
           ),
         ),
         child: Builder(
@@ -326,7 +326,8 @@ class _pagesEventosState extends State<pagesEventos> {
               imgLogo = base64Encode(
                 file.readAsBytesSync(),
               );
-              WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
+              WidgetsGenericos.showLoaderDialog(
+                  context, true, 'Cargango...', null);
               res = await ServicioEvento().addEvento(
                 us_sede_sd_cdgo,
                 us_cdgo,
@@ -345,12 +346,12 @@ class _pagesEventosState extends State<pagesEventos> {
             if (res) {
               Navigator.pop(context);
               print('true');
-              WidgetDialog.showLoaderDialog(context, false,
+              WidgetsGenericos.showLoaderDialog(context, false,
                   'Registrado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
-              WidgetDialog.showLoaderDialog(
+              WidgetsGenericos.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               Navigator.pop(context);
             }
@@ -377,7 +378,8 @@ class _pagesEventosState extends State<pagesEventos> {
             }
             // print(imgLogo);
 
-            WidgetDialog.showLoaderDialog(context, true, 'Cargango...', null);
+            WidgetsGenericos.showLoaderDialog(
+                context, true, 'Cargango...', null);
             res = await ServicioEvento().updateSede(
               id_ev_cdgo,
               us_sede_sd_cdgo,
@@ -393,14 +395,14 @@ class _pagesEventosState extends State<pagesEventos> {
 
             if (res) {
               Navigator.pop(context);
-              WidgetDialog.showLoaderDialog(context, false,
+              WidgetsGenericos.showLoaderDialog(context, false,
                   'Actualizado Exitosamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
               // print('false');
-              WidgetDialog.showLoaderDialog(
+              WidgetsGenericos.showLoaderDialog(
                   context, false, 'Ha ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);

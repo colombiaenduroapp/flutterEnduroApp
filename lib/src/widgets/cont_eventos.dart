@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
+import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class cont_eventos extends StatefulWidget {
   cont_eventos({Key key}) : super(key: key);
@@ -26,55 +28,82 @@ class _cont_eventosState extends State<cont_eventos> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: FutureBuilder<EventosList>(
-      future: lista,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          EventosList data = snapshot.data;
-          return listaa(data);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-        // if (snapshot.data == null) {
-        //   return Center(
-        //     child: Text('No hay eventos registrados'),
-        //   );
-        // }
-        return Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Shimmer.fromColors(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: EdgeInsets.all(10),
-                            width: double.infinity,
-                            height: 300,
-                            child: Text(''),
+      child: FutureBuilder<EventosList>(
+        future: lista,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              if (snapshot.hasError) {
+                return Text("${snapshot.error} error            .");
+              } else {
+                return Center(
+                  child: Text('conecction.none'),
+                );
+              }
+
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                EventosList data = snapshot.data;
+
+                return listaa(data);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              } else if (snapshot.data == null) {
+                return WidgetsGenericos.ContainerEmptyData(context);
+              } else {
+                return WidgetsGenericos.ContainerErrorConection(
+                    context, InicioPage(2));
+              }
+
+              break;
+            case ConnectionState.waiting:
+              return Container(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return Shimmer.fromColors(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.all(10),
+                                  width: double.infinity,
+                                  height: 300,
+                                  child: Text(''),
+                                ),
+                                baseColor: Colors.grey[400],
+                                highlightColor: Colors.grey[300],
+                              );
+                            },
                           ),
-                          baseColor: Colors.grey[400],
-                          highlightColor: Colors.grey[300],
-                        );
-                      },
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    ));
+                ),
+              );
+
+              break;
+            case ConnectionState.active:
+              return Center(
+                child: Text('conecction.Active'),
+              );
+
+              break;
+            default:
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -184,16 +213,32 @@ Widget listaa(EventosList data) {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: Column(
-                          children: [
-                            Text('Dias faltantes',
-                                style: (TextStyle(color: Colors.white))),
-                            Text(
-                              data.eventos[index].ev_faltante.toString(),
-                              style: (TextStyle(color: Colors.white)),
-                            )
-                          ],
-                        ),
+                        child: data.eventos[index].ev_faltante > 0
+                            ? Container(
+                                color: Colors.green,
+                                child: Column(
+                                  children: [
+                                    Text('Dias faltantes',
+                                        style:
+                                            (TextStyle(color: Colors.white))),
+                                    Text(
+                                      data.eventos[index].ev_faltante
+                                          .toString(),
+                                      style: (TextStyle(color: Colors.white)),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                color: Colors.red,
+                                child: Column(
+                                  children: [
+                                    Text('Evento Finalizado',
+                                        style:
+                                            (TextStyle(color: Colors.white))),
+                                  ],
+                                ),
+                              ),
                       )
                     ],
                   ),

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:ui_flutter/src/services/service_url.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class ServicioSede {
   String url = Url().getUrl();
@@ -13,7 +14,7 @@ class ServicioSede {
     http.Response response;
     SedesList sedesList;
     try {
-      response = await http.get(url + "sede/").timeout(Duration(seconds: 30));
+      response = await http.get(url + "sede/").timeout(Duration(seconds: 10));
       final jsonResponse = json.decode(response.body)['data'];
       sedesList = SedesList.fromJson(jsonResponse);
     } on TimeoutException catch (e) {
@@ -63,7 +64,7 @@ class ServicioSede {
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
     try {
-      response = await http.post(
+      response = await http.put(
         url + "sede/" + sd_cdgo,
         body: {
           "sd_desc": cd_desc,
@@ -110,6 +111,19 @@ class ServicioSede {
       }
     } catch (exception) {
       print(exception);
+      return false;
+    }
+  }
+// ----------------------------------------------------------------------------------------
+
+  Future<bool> deleteSede(String sd_cdgo) async {
+    var response;
+    try {
+      response = await http.delete(url + 'sede/' + sd_cdgo);
+    } catch (error) {}
+    if (response.statusCode == 200) {
+      return true;
+    } else {
       return false;
     }
   }

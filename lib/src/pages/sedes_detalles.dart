@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 
@@ -42,107 +43,112 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder<Sede>(
-              future: searchSede,
-              builder: (context, snapshot) {
-                sede = snapshot.data;
-                if (snapshot.hasData)
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
+      body: Container(
+        child: FutureBuilder<Sede>(
+          future: searchSede,
+          builder: (context, snapshot) {
+            sede = snapshot.data;
+            if (snapshot.hasData)
+              return Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Stack(
                       children: [
-                        Stack(
+                        _imagen_fondo(screen, snapshot.data.sd_jersey),
+                        Column(
                           children: [
-                            _imagen_fondo(screen, snapshot.data.sd_jersey),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: screen.height / 3.0,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: new BorderRadius.vertical(
-                                          top: Radius.circular(70))),
-                                  child: Text(''),
-                                ),
-                                Container(
-                                  color: Colors.white,
-                                  // padding: EdgeInsets.only(top: 80),
-
-                                  child: Column(
-                                    children: [
-                                      // Texto Nombre Sede
-                                      nombre_sede(snapshot.data.sd_desc,
-                                          snapshot.data.cd_desc)
-                                      // -----------------
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                              height: screen.height / 3.0,
                             ),
-                            SafeArea(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: screen.height / 4.2,
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
                                     ),
-                                    _imagen_perfil(snapshot.data.sd_logo),
                                   ],
-                                ),
+                                  borderRadius: new BorderRadius.vertical(
+                                      top: Radius.circular(70))),
+                              child: Text(''),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              // padding: EdgeInsets.only(top: 80),
+
+                              child: Column(
+                                children: [
+                                  // Texto Nombre Sede
+                                  nombre_sede(snapshot.data.sd_desc,
+                                      snapshot.data.cd_desc)
+                                  // -----------------
+                                ],
                               ),
                             ),
                           ],
                         ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.only(left: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Mesa de trabajo:',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w500),
-                              ),
-                              RawMaterialButton(
-                                onPressed: () {},
-                                elevation: 4.0,
-                                fillColor: Theme.of(context).accentColor,
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 25.0,
+                        SafeArea(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: screen.height / 4.2,
                                 ),
-                                padding: EdgeInsets.all(15.0),
-                                shape: CircleBorder(),
-                              ),
-                            ],
+                                _imagen_perfil(snapshot.data.sd_logo),
+                              ],
+                            ),
                           ),
                         ),
-                        future_mesa(searchSede),
                       ],
                     ),
-                  );
-                else if (snapshot.hasError) return Text(snapshot.error);
-                return Center(
-                  child: Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('Cargando informacion')
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Mesa de trabajo:',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                          RawMaterialButton(
+                            onPressed: () {},
+                            elevation: 4.0,
+                            fillColor: Theme.of(context).accentColor,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 25.0,
+                            ),
+                            padding: EdgeInsets.all(15.0),
+                            shape: CircleBorder(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    future_mesa(searchSede),
+                  ],
+                ),
+              );
+            else if (snapshot.hasError) return Text(snapshot.error);
+            return Center(
+              child: Container(
+                child: GFLoader(
+                  type: GFLoaderType.square,
+                  size: GFSize.LARGE,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -245,21 +251,6 @@ Widget _imagen_fondo(Size screen, String url) {
       //   // En esta propiedad colocamos el alto de nuestra imagen
       width: double.infinity,
     ),
-    decoration: BoxDecoration(
-        // image: DecorationImage(
-        //   image: NetworkImage(url),
-        //   fit: BoxFit.cover,
-        // ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
   );
 }
 

@@ -7,7 +7,7 @@ import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_ciudad.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
-import 'package:ui_flutter/src/widgets/dialog.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class pageSedes extends StatefulWidget {
   final String estado;
@@ -68,7 +68,7 @@ class _pageSedesState extends State<pageSedes> {
             onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InicioPage(2),
+                    builder: (context) => InicioPage(3),
                   ),
                 )),
         // actions: [
@@ -80,7 +80,7 @@ class _pageSedesState extends State<pageSedes> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(2),
+            builder: (context) => InicioPage(3),
           ),
         ),
         child: Builder(
@@ -162,8 +162,8 @@ class _pageSedesState extends State<pageSedes> {
                                       Text('Logo Sede'),
                                       Container(
                                         margin: EdgeInsets.only(top: 10),
-                                        width: 150,
-                                        height: 150,
+                                        width: 130,
+                                        height: 130,
                                         color: Colors.grey[300],
                                         child: Center(
                                           child: urlLogo == null
@@ -171,12 +171,12 @@ class _pageSedesState extends State<pageSedes> {
                                                   ? Text('Seleccione un Logo')
                                                   : Image.file(
                                                       file,
-                                                      width: 400,
+                                                      width: 200,
                                                       height: 200,
                                                     )
                                               : Image.network(
                                                   urlLogo,
-                                                  width: 400,
+                                                  width: 200,
                                                   height: 200,
                                                 ),
                                         ),
@@ -193,8 +193,8 @@ class _pageSedesState extends State<pageSedes> {
                                       Text('Imagen Sede'),
                                       Container(
                                         margin: EdgeInsets.only(top: 10),
-                                        width: 150,
-                                        height: 150,
+                                        width: 130,
+                                        height: 130,
                                         color: Colors.grey[300],
                                         child: Center(
                                           child: urlJersey == null
@@ -202,12 +202,12 @@ class _pageSedesState extends State<pageSedes> {
                                                   ? Text('Seleccione un Perfil')
                                                   : Image.file(
                                                       fileJersey,
-                                                      width: 400,
+                                                      width: 200,
                                                       height: 200,
                                                     )
                                               : Image.network(
                                                   urlJersey,
-                                                  width: 400,
+                                                  width: 200,
                                                   height: 200,
                                                 ),
                                         ),
@@ -429,7 +429,8 @@ class _pageSedesState extends State<pageSedes> {
               if (fileJersey != null) {
                 imgJersey = base64Encode(fileJersey.readAsBytesSync());
               }
-              WidgetDialog.showLoaderDialog(context, true, 'Cargando..', null);
+              WidgetsGenericos.showLoaderDialog(
+                  context, true, 'Cargando..', null);
 
               try {
                 // guarda la informacion
@@ -441,8 +442,8 @@ class _pageSedesState extends State<pageSedes> {
                 if (res) {
                   // showLoaderDialogOk(context, Icons.check_circle_outlined,
                   //     'Registrado Correctamente');
-                  // WidgetDialog(false, 'Registrado Correctamente', null);
-                  WidgetDialog.showLoaderDialog(context, false,
+                  // WidgetsGenericos(false, 'Registrado Correctamente', null);
+                  WidgetsGenericos.showLoaderDialog(context, false,
                       'Registrado Correctamente', Icons.check_circle_outlined);
                   nombreTextController.clear();
 
@@ -458,7 +459,7 @@ class _pageSedesState extends State<pageSedes> {
                     ),
                   );
                 } else {
-                  WidgetDialog.showLoaderDialog(context, false,
+                  WidgetsGenericos.showLoaderDialog(context, false,
                       'Ha Ocurrido un error', Icons.error_outline);
                   await Future.delayed(Duration(milliseconds: 500));
                   Navigator.pop(context);
@@ -504,13 +505,14 @@ class _pageSedesState extends State<pageSedes> {
             if (fileJersey != null) {
               imgJersey = base64Encode(fileJersey.readAsBytesSync());
             }
-            WidgetDialog.showLoaderDialog(context, true, 'Cargando..', null);
+            WidgetsGenericos.showLoaderDialog(
+                context, true, 'Cargando..', null);
             res = await ser.updateSede(id, nombreTextController.text, imgLogo,
                 nombre_url_logo, imgJersey, nombre_url_jersey, ciudadSel);
             Navigator.pop(context);
 
             if (res) {
-              WidgetDialog.showLoaderDialog(context, false,
+              WidgetsGenericos.showLoaderDialog(context, false,
                   'Actualizado Correctamente', Icons.check_circle_outlined);
               await Future.delayed(Duration(milliseconds: 500));
 
@@ -522,7 +524,7 @@ class _pageSedesState extends State<pageSedes> {
               print(imgLogo);
               print(imgJersey);
             } else {
-              WidgetDialog.showLoaderDialog(
+              WidgetsGenericos.showLoaderDialog(
                   context, false, 'Ha Ocurrido un error', Icons.error_outline);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);

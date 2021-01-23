@@ -11,10 +11,10 @@ class ServicioEvento {
   Future<EventosList> getEventos() async {
     http.Response response;
     EventosList eventoList;
+    var jsonResponse = null;
     try {
-      response = await http.get(url + "evento/").timeout(Duration(seconds: 30));
-      final jsonResponse = json.decode(response.body)['data'];
-      eventoList = EventosList.fromJson(jsonResponse);
+      response = await http.get(url + "evento/").timeout(Duration(seconds: 10));
+      jsonResponse = json.decode(response.body)['data'];
     } on TimeoutException catch (e) {
       return null;
     } on SocketException catch (e) {
@@ -22,8 +22,14 @@ class ServicioEvento {
     } on Error catch (e) {
       return null;
     }
-
-    return eventoList;
+    if (jsonResponse == null) {
+      print(jsonResponse);
+      return jsonResponse;
+    } else {
+      eventoList = EventosList.fromJson(jsonResponse);
+      print(eventoList);
+      return eventoList;
+    }
   }
 
   Future<bool> addEvento(
