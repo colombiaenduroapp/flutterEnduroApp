@@ -8,6 +8,7 @@ import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
+import 'package:ui_flutter/src/pages/listas_sedes.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_ciudad.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
@@ -72,7 +73,7 @@ class _pageSedesState extends State<pageSedes> {
             onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InicioPage(3),
+                    builder: (context) => pages_listas_sedes(),
                   ),
                 )),
         // actions: [
@@ -84,7 +85,7 @@ class _pageSedesState extends State<pageSedes> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(3),
+            builder: (context) => pages_listas_sedes(),
           ),
         ),
         child: Builder(
@@ -156,22 +157,47 @@ class _pageSedesState extends State<pageSedes> {
                                         margin: EdgeInsets.only(top: 10),
                                         width: 130,
                                         height: 130,
-                                        color: Colors.grey[300],
-                                        child: Center(
-                                          child: urlLogo == null
-                                              ? file == null
-                                                  ? Text('Seleccione un Logo')
-                                                  : Image.file(
+                                        // color: Colors.grey[300],
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                spreadRadius: 2,
+                                                blurRadius: 1,
+                                                offset: Offset(2,
+                                                    2), // changes position of shadow
+                                              ),
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(80),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    'https://dev.monsoonmedialv.com/cannalv/wp-content/uploads/2016/02/camera.placeholder.lg_.png'))),
+
+                                        child: urlLogo == null
+                                            ? file == null
+                                                ? Text('')
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            80.0),
+                                                    child: Image.file(
                                                       file,
-                                                      width: 200,
-                                                      height: 200,
-                                                    )
-                                              : Image.network(
+                                                      width: 300,
+                                                      height: 300,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(80.0),
+                                                child: Image.network(
                                                   urlLogo,
                                                   width: 200,
                                                   height: 200,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                        ),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -184,23 +210,48 @@ class _pageSedesState extends State<pageSedes> {
                                     children: [
                                       Text('Imagen Sede'),
                                       Container(
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                                offset: Offset(2,
+                                                    2), // changes position of shadow
+                                              ),
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    'https://dev.monsoonmedialv.com/cannalv/wp-content/uploads/2016/02/camera.placeholder.lg_.png'))),
                                         margin: EdgeInsets.only(top: 10),
                                         width: 130,
                                         height: 130,
-                                        color: Colors.grey[300],
+                                        // color: Colors.grey[300],
                                         child: Center(
                                           child: urlJersey == null
                                               ? fileJersey == null
-                                                  ? Text('Seleccione un Perfil')
-                                                  : Image.file(
-                                                      fileJersey,
-                                                      width: 200,
-                                                      height: 200,
+                                                  ? Text('')
+                                                  : ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Image.file(
+                                                          fileJersey,
+                                                          width: 200,
+                                                          height: 200,
+                                                          fit: BoxFit.cover),
                                                     )
-                                              : Image.network(
-                                                  urlJersey,
-                                                  width: 200,
-                                                  height: 200,
+                                              : ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.network(
+                                                    urlJersey,
+                                                    width: 200,
+                                                    height: 200,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                         ),
                                       ),
@@ -376,11 +427,12 @@ class _pageSedesState extends State<pageSedes> {
                   file = null;
                   fileJersey = null;
                   await Future.delayed(Duration(milliseconds: 500));
-                  // Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => pageSedes('Registrar', null, null),
+                      builder: (context) => pages_listas_sedes(),
                     ),
                   );
                 } else {

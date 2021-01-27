@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/widgets/cont_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
@@ -16,6 +17,14 @@ class _pages_listas_sedesState extends State<pages_listas_sedes> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sedes'),
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InicioPage(0),
+                  ),
+                )),
       ),
       body: Container(
         child: cont_sedes(),
