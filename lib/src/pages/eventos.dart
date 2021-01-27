@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
@@ -86,48 +88,88 @@ class _pagesEventosState extends State<pagesEventos> {
               padding: EdgeInsets.only(top: 20),
               child: Column(
                 children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        formItemsDesign(
-                          Icons.description,
-                          TextFormField(
-                            autofocus: false,
-                            controller: descTextController,
-                            decoration: new InputDecoration(
-                              labelText: 'Nombre Evento',
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.blueGrey[50],
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          formItemsDesign(
+                            Icons.description,
+                            TextFormField(
+                              autofocus: false,
+                              controller: descTextController,
+                              decoration: new InputDecoration(
+                                labelText: 'Nombre Evento',
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                borderRadius: BorderRadius.circular(10.0),
                               ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Por favor ingrese un nombre';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Por favor ingrese un nombre';
-                              }
-                              return null;
-                            },
                           ),
-                        ),
-                        formItemsDesign(
-                          Icons.date_range_outlined,
+                          formItemsDesign(
+                            Icons.location_city_outlined,
+                            TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Por favor ingrese Informacion';
+                                }
+                                return null;
+                              },
+                              autofocus: false,
+                              controller: lugarTextController,
+                              maxLength: 1000,
+                              maxLines: 5,
+                              decoration: new InputDecoration(
+                                labelText: 'Descripcion  Evento',
+                                hintText:
+                                    'Describe el evento(lugar, hora, informacion, etc)',
+                              ),
+                              buildCounter: null,
+                            ),
+                          ),
+                          formItemsDesign(
+                            Icons.video_library,
+                            TextFormField(
+                              controller: urlTeextController,
+                              decoration: new InputDecoration(
+                                labelText: 'Url video Youtube',
+                              ),
+                              buildCounter: null,
+                            ),
+                          ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              RaisedButton(
-                                onPressed: () => _selectDate(context,
-                                    selected_fecha_inicio), // Refer step 3
-                                child: Text(
-                                  'Seleccione fecha de inicio ',
-                                ),
-                                color: Colors.blue[200],
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
+                              Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: SizedBox(
+                                      width: double.infinity,
+                                      child: GFButton(
+                                        onPressed: () => _selectDate(context,
+                                            selected_fecha_inicio), // Refer step 3
+                                        child: Text(
+                                          'Seleccione fecha de inicio ',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        color: Theme.of(context).accentColor,
+                                      ))),
                               Text(
                                 "${selected_fecha_inicio}".split(' ')[0],
                                 style: TextStyle(
@@ -136,22 +178,25 @@ class _pagesEventosState extends State<pagesEventos> {
                               ),
                             ],
                           ),
-                        ),
-                        formItemsDesign(
-                          Icons.date_range_outlined,
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              RaisedButton(
-                                onPressed: () => _selectDate_fin(context,
-                                    selected_fecha_fin), // Refer step 3
-                                child: Text(
-                                  'Seleccione fecha de finalizacion',
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: GFButton(
+                                    onPressed: () => _selectDate_fin(context,
+                                        selected_fecha_fin), // Refer step 3
+                                    child: Text(
+                                      'Seleccione fecha de finalizacion',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    ),
+                                    color: Theme.of(context).accentColor,
+                                  ),
                                 ),
-                                color: Colors.blue[200],
-                              ),
-                              SizedBox(
-                                height: 10.0,
                               ),
                               Text(
                                 "${selected_fecha_fin}".split(' ')[0],
@@ -161,79 +206,45 @@ class _pagesEventosState extends State<pagesEventos> {
                               ),
                             ],
                           ),
-                        ),
-                        formItemsDesign(
-                          Icons.location_city_outlined,
-                          TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Por favor ingrese Informacion';
-                              }
-                              return null;
+                          InkWell(
+                            onTap: () {
+                              _chooseLogo();
                             },
-                            autofocus: false,
-                            controller: lugarTextController,
-                            maxLength: 1000,
-                            maxLines: 5,
-                            decoration: new InputDecoration(
-                              labelText: 'Descripcion  Evento',
-                              hintText:
-                                  'Describe el evento(lugar, hora, informacion, etc)',
-                              border: OutlineInputBorder(),
-                            ),
-                            buildCounter: null,
-                          ),
-                        ),
-                        formItemsDesign(
-                          Icons.video_library,
-                          TextFormField(
-                            controller: urlTeextController,
-                            decoration: new InputDecoration(
-                              labelText: 'Url video Youtube',
-                              border: OutlineInputBorder(),
-                            ),
-                            buildCounter: null,
-                          ),
-                        ),
-                        formItemsDesign(
-                          Icons.image,
-                          Column(
-                            children: [
-                              RaisedButton(
-                                color: Colors.blue[200],
-                                onPressed: () {
-                                  _chooseLogo();
-                                },
-                                child: Column(
-                                  children: [
-                                    Text('Seleccione imagen de evento')
-                                  ],
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              ),
-                            ],
+                                Text('Imagen Sede'),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  width: 130,
+                                  height: 130,
+                                  color: Colors.grey[300],
+                                  child: Center(
+                                    child: urlLogo == null
+                                        ? file == null
+                                            ? Text('Seleccione una imagen')
+                                            : Image.file(
+                                                file,
+                                                width: 300,
+                                                height: 100,
+                                              )
+                                        : Image.network(
+                                            urlLogo,
+                                            width: 300,
+                                            height: 100,
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Column(
-                          children: [
-                            urlLogo == ''
-                                ? file == null
-                                    ? Text('Seleccione una imagen')
-                                    : Image.file(
-                                        file,
-                                        width: 300,
-                                        height: 100,
-                                      )
-                                : Image.network(
-                                    urlLogo,
-                                    width: 300,
-                                    height: 100,
-                                  )
-                          ],
-                        ),
-                        widget.estado == 'Registrar'
-                            ? boton_registrar()
-                            : boton_editar()
-                      ],
+                          widget.estado == 'Registrar'
+                              ? boton_registrar()
+                              : boton_editar()
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -316,49 +327,63 @@ class _pagesEventosState extends State<pagesEventos> {
 
   boton_registrar() {
     return Container(
-      padding: EdgeInsets.all(15),
-      child: RaisedButton(
-        onPressed: () async {
-          print(us_sede_sd_cdgo + us_cdgo);
-          print(us_sede_sd_cdgo);
-          if (_formKey.currentState.validate()) {
-            if (file != null) {
-              imgLogo = base64Encode(
-                file.readAsBytesSync(),
-              );
-              WidgetsGenericos.showLoaderDialog(
-                  context, true, 'Cargango...', null);
-              res = await ServicioEvento().addEvento(
-                us_sede_sd_cdgo,
-                us_cdgo,
-                descTextController.text,
-                selected_fecha_inicio,
-                selected_fecha_fin,
-                lugarTextController.text,
-                imgLogo,
-                urlTeextController.text,
-              );
-            } else {
-              return _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                  content: new Text('Por favor seleccione una imagen')));
-            }
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: SizedBox(
+        width: double.infinity,
+        child: GFButton(
+          onPressed: () async {
+            print(us_sede_sd_cdgo + us_cdgo);
+            print(us_sede_sd_cdgo);
+            if (_formKey.currentState.validate()) {
+              if (file != null) {
+                imgLogo = base64Encode(
+                  file.readAsBytesSync(),
+                );
+                WidgetsGenericos.showLoaderDialog(
+                    context, true, 'Cargando...', null, Colors.blue);
+                res = await ServicioEvento().addEvento(
+                  us_sede_sd_cdgo,
+                  us_cdgo,
+                  descTextController.text,
+                  selected_fecha_inicio,
+                  selected_fecha_fin,
+                  lugarTextController.text,
+                  imgLogo,
+                  urlTeextController.text,
+                );
+              } else {
+                return _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                    content: new Text('Por favor seleccione una imagen')));
+              }
 
-            if (res) {
-              Navigator.pop(context);
-              print('true');
-              WidgetsGenericos.showLoaderDialog(context, false,
-                  'Registrado Exitosamente', Icons.check_circle_outlined);
-              await Future.delayed(Duration(milliseconds: 500));
-              Navigator.pop(context);
-            } else {
-              WidgetsGenericos.showLoaderDialog(
-                  context, false, 'Ha ocurrido un error', Icons.error_outline);
-              Navigator.pop(context);
+              if (res) {
+                Navigator.pop(context);
+                print('true');
+                WidgetsGenericos.showLoaderDialog(
+                    context,
+                    false,
+                    'Registrado Exitosamente',
+                    Icons.check_circle_outlined,
+                    Colors.green);
+                await Future.delayed(Duration(milliseconds: 500));
+                Navigator.pop(context);
+              } else {
+                WidgetsGenericos.showLoaderDialog(context, false,
+                    'Ha ocurrido un error', Icons.error_outline, Colors.red);
+                Navigator.pop(context);
+              }
             }
-          }
-        },
-        color: Colors.blue[200],
-        child: Text('Registrar'),
+          },
+          icon: Icon(Icons.check),
+          type: GFButtonType.solid,
+          shape: GFButtonShape.pills,
+          color: Theme.of(context).accentColor,
+          child: Text(
+            'Registrar',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+        ),
       ),
     );
   }
@@ -376,10 +401,9 @@ class _pagesEventosState extends State<pagesEventos> {
                 file.readAsBytesSync(),
               );
             }
-            // print(imgLogo);
 
             WidgetsGenericos.showLoaderDialog(
-                context, true, 'Cargango...', null);
+                context, true, 'Cargando...', null, Colors.blue);
             res = await ServicioEvento().updateSede(
               id_ev_cdgo,
               us_sede_sd_cdgo,
@@ -395,15 +419,19 @@ class _pagesEventosState extends State<pagesEventos> {
 
             if (res) {
               Navigator.pop(context);
-              WidgetsGenericos.showLoaderDialog(context, false,
-                  'Actualizado Exitosamente', Icons.check_circle_outlined);
+              WidgetsGenericos.showLoaderDialog(
+                  context,
+                  false,
+                  'Actualizado Exitosamente',
+                  Icons.check_circle_outlined,
+                  Colors.green);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
               // print('false');
-              WidgetsGenericos.showLoaderDialog(
-                  context, false, 'Ha ocurrido un error', Icons.error_outline);
+              WidgetsGenericos.showLoaderDialog(context, false,
+                  'Ha ocurrido un error', Icons.error_outline, Colors.red);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             }

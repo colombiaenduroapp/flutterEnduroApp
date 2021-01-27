@@ -21,7 +21,7 @@ class _pages_listas_sedesState extends State<pages_listas_sedes> {
         child: cont_sedes(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: WidgetsGenericos.floating_button_registrar(
+      floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
           context, pageSedes('Registrar', null, null)),
     );
   }

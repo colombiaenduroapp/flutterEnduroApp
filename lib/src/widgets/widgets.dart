@@ -7,8 +7,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 class WidgetsGenericos {
-  static Widget showLoaderDialog(
-      BuildContext context, bool estado, String texto, IconData icon) {
+  static Widget showLoaderDialog(BuildContext context, bool estado,
+      String texto, IconData icon, Color color) {
     AlertDialog alert = AlertDialog(
       content: new Row(
         children: [
@@ -16,7 +16,13 @@ class WidgetsGenericos {
           Container(
               margin: EdgeInsets.only(left: 7),
               child: Row(
-                children: [Icon(icon), Text(texto)],
+                children: [
+                  Icon(icon, color: color),
+                  Text(
+                    '  ' + texto,
+                    style: TextStyle(color: color),
+                  )
+                ],
               )),
         ],
       ),
@@ -30,7 +36,7 @@ class WidgetsGenericos {
     );
   }
 
-  static Widget ShimmerList() {
+  static Widget shimmerList() {
     return Column(
       children: [
         SizedBox(
@@ -86,7 +92,7 @@ class WidgetsGenericos {
   }
 
 // ________________________________________________________________________________
-  static Widget ItemList(
+  static Widget itemList(
       String title, String url, BuildContext context, Widget pagina) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
@@ -187,7 +193,7 @@ class WidgetsGenericos {
 
 // _______________________________________________________________
 
-  static Widget ContainerErrorConection(BuildContext context, Widget pagina) {
+  static Widget containerErrorConection(BuildContext context, Widget pagina) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +237,7 @@ class WidgetsGenericos {
     );
   }
 
-  static Widget ContainerEmptyData(BuildContext context) {
+  static Widget containerEmptyData(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -275,7 +281,7 @@ class WidgetsGenericos {
     );
   }
 
-  static Widget floating_button_registrar(BuildContext context, Widget pagina) {
+  static Widget floatingButtonRegistrar(BuildContext context, Widget pagina) {
     return FloatingActionButton(
       shape: StadiumBorder(),
       onPressed: () => Navigator.pushReplacement(
@@ -284,6 +290,18 @@ class WidgetsGenericos {
       ),
       backgroundColor: Theme.of(context).accentColor,
       child: Icon(Icons.add, size: 35.0, color: Colors.white),
+    );
+  }
+
+  static formItemsDesign(icon, item) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+      child: Card(
+        child: ListTile(
+          leading: Icon(icon),
+          title: item,
+        ),
+      ),
     );
   }
 }

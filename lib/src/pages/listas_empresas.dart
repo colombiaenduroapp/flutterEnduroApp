@@ -38,13 +38,12 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
       if (_filter.text.isEmpty) {
         setState(() {
           _searchText = "";
-          print('vacio');
+
           // filteredNames = names;
         });
       } else {
         setState(() {
           _searchText = _filter.text;
-          print(_searchText);
         });
       }
     });
@@ -91,7 +90,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
 
                 break;
               case ConnectionState.waiting:
-                return Center(child: WidgetsGenericos.ShimmerList());
+                return Center(child: WidgetsGenericos.shimmerList());
 
                 break;
               case ConnectionState.active:
@@ -106,11 +105,10 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
-        floatingActionButton: WidgetsGenericos.floating_button_registrar(
+        floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
             context, pagesEmpresa(null, null, 'Registrar')),
       );
     } catch (exception) {
-      print(exception);
       return Center(
         child:
             Text('Ha ocurrido un error de conexion o No hay datos por mostrar'),
@@ -154,26 +152,16 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Widget _jobsListView(data) {
     List tempList = new List();
     if (!(_searchText.isEmpty)) {
-      int a = 0;
       for (int i = 0; i < emplist.empresas.length; i++) {
         if (emplist.empresas[i].em_nombre
             .toLowerCase()
             .contains(_searchText.toLowerCase())) {
           tempList.add(data.empresas[i]);
-          a++;
-          print(emplist.empresas[i].em_correo);
         }
       }
-      // jsonEncode(tempList)
-      // print(tempList[1].em_cdgo);
-      // tempList
-
-      // filteredNames = tempList;
     } else {
       for (int i = 0; i < emplist.empresas.length; i++) {
         tempList.add(data.empresas[i]);
-
-        print(tempList[i].em_nombre);
       }
     }
 
@@ -185,7 +173,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             return Slidable(
               key: ValueKey(emplist.empresas[index]),
               closeOnScroll: true,
-              child: WidgetsGenericos.ItemList(
+              child: WidgetsGenericos.itemList(
                 tempList[index].em_nombre,
                 tempList[index].em_logo,
                 context,
@@ -240,7 +228,8 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                         context,
                                         false,
                                         'Cargando...',
-                                        Icons.check_circle_outlined);
+                                        Icons.check_circle_outlined,
+                                        Colors.blue);
 
                                     if (res) {
                                       Navigator.pop(context);
@@ -248,7 +237,8 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                           context,
                                           false,
                                           'Eliminado Correctamente',
-                                          Icons.check_circle_outlined);
+                                          Icons.check_circle_outlined,
+                                          Colors.green);
                                       // await Future.delayed(
                                       //     Duration(milliseconds: 500));
 
@@ -271,7 +261,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
       } else {
         return Container(
           child: Center(
-            child: WidgetsGenericos.ContainerEmptyData(context),
+            child: WidgetsGenericos.containerEmptyData(context),
           ),
         );
       }

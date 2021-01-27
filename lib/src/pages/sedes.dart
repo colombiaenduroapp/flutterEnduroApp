@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/shape/gf_button_shape.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
@@ -106,7 +110,7 @@ class _pageSedesState extends State<pageSedes> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           // input nombre sede
-                          formItemsDesign(
+                          WidgetsGenericos.formItemsDesign(
                             Icons.person,
                             TextFormField(
                               autofocus: false,
@@ -129,22 +133,10 @@ class _pageSedesState extends State<pageSedes> {
                             ),
                           ),
 
-                          formItemsDesign(
+                          WidgetsGenericos.formItemsDesign(
                             Icons.location_city,
                             dropdwon(),
                           ),
-                          // input file logo
-                          // formItemsDesign(
-                          //   Icons.image,
-                          //   RaisedButton(
-                          //     onPressed: () {
-                          //       _chooseLogo();
-                          //     },
-                          //     child: Column(
-                          //       children: [Text('Subir Logo')],
-                          //     ),
-                          //   ),
-                          // ),
 
                           // ------------------------------
                           Container(
@@ -220,55 +212,6 @@ class _pageSedesState extends State<pageSedes> {
                           ),
                           // -----------------------------
 
-                          // Column(
-                          //   children: [
-                          //     urlLogo == null
-                          //         ? file == null
-                          //             ? Text('Seleccione una imagen')
-                          //             : Image.file(
-                          //                 file,
-                          //                 width: 300,
-                          //                 height: 100,
-                          //               )
-                          //         : Image.network(
-                          //             urlLogo,
-                          //             width: 300,
-                          //             height: 100,
-                          //           )
-                          //   ],
-                          // ),
-                          // input file subir jersey
-                          // formItemsDesign(
-                          //   Icons.image,
-                          //   RaisedButton(
-                          //     onPressed: () {
-                          //       _chooseJersey();
-                          //     },
-                          //     child: Column(
-                          //       children: [Text('Subir Jersey')],
-                          //     ),
-                          //   ),
-                          // ),
-                          // Column(
-                          //   children: [
-                          //     urlJersey == null
-                          //         ? fileJersey == null
-                          //             ? Text('Seleccione una imagen')
-                          //             : Image.file(
-                          //                 fileJersey,
-                          //                 width: 300,
-                          //                 height: 100,
-                          //               )
-                          //         : Image.network(
-                          //             urlJersey,
-                          //             width: 300,
-                          //             height: 100,
-                          //           )
-                          //   ],
-                          // ),
-
-                          // input dropdown lista ciudades
-
                           // Boton registrar
                           widget.estado == 'Registrar'
                               ? boton_registrar()
@@ -301,19 +244,6 @@ class _pageSedesState extends State<pageSedes> {
       id = sede.sd_cdgo.toString();
       print(urlLogo);
     }
-  }
-
-// diseño  de inputs form
-  formItemsDesign(icon, item) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-      child: Card(
-        child: ListTile(
-          leading: Icon(icon),
-          title: item,
-        ),
-      ),
-    );
   }
 
 // subir logo sede
@@ -364,7 +294,7 @@ class _pageSedesState extends State<pageSedes> {
     return null;
   }
 
-  dropdwon() {
+  Widget dropdwon() {
     try {
       return statelist != null
           ? DropdownButton(
@@ -412,13 +342,7 @@ class _pageSedesState extends State<pageSedes> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: SizedBox(
         width: double.infinity,
-        child: RaisedButton.icon(
-          label: Text('Registrar'),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-              side: BorderSide(color: Colors.red)),
-          icon: Icon(Icons.check),
-          color: Theme.of(context).accentColor,
+        child: GFButton(
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               // valida si existe logo y lo convierte en base 64
@@ -430,7 +354,7 @@ class _pageSedesState extends State<pageSedes> {
                 imgJersey = base64Encode(fileJersey.readAsBytesSync());
               }
               WidgetsGenericos.showLoaderDialog(
-                  context, true, 'Cargando..', null);
+                  context, true, 'Cargando..', null, Colors.grey);
 
               try {
                 // guarda la informacion
@@ -440,11 +364,12 @@ class _pageSedesState extends State<pageSedes> {
                 Navigator.pop(context);
                 // si se guarda la informacion muestra dialog ok y resfresca la pantalla
                 if (res) {
-                  // showLoaderDialogOk(context, Icons.check_circle_outlined,
-                  //     'Registrado Correctamente');
-                  // WidgetsGenericos(false, 'Registrado Correctamente', null);
-                  WidgetsGenericos.showLoaderDialog(context, false,
-                      'Registrado Correctamente', Icons.check_circle_outlined);
+                  WidgetsGenericos.showLoaderDialog(
+                      context,
+                      false,
+                      'Registrado Correctamente',
+                      Icons.check_circle_outlined,
+                      Colors.green);
                   nombreTextController.clear();
 
                   nombreTextController.text = '';
@@ -460,7 +385,7 @@ class _pageSedesState extends State<pageSedes> {
                   );
                 } else {
                   WidgetsGenericos.showLoaderDialog(context, false,
-                      'Ha Ocurrido un error', Icons.error_outline);
+                      'Ha Ocurrido un error', Icons.error_outline, Colors.red);
                   await Future.delayed(Duration(milliseconds: 500));
                   Navigator.pop(context);
                 }
@@ -469,33 +394,26 @@ class _pageSedesState extends State<pageSedes> {
               }
             }
           },
-          // child: Padding(
-          //   padding: const EdgeInsets.all(15.0),
-          //   child: Column(
-          //     children: [Icon(Icons.check)],
-          //   ),
-          // ),
+          icon: Icon(Icons.check),
+          type: GFButtonType.solid,
+          shape: GFButtonShape.pills,
+          color: Theme.of(context).accentColor,
+          child: Text(
+            'Registrar',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
         ),
       ),
     );
   }
 
   Widget boton_editar() {
-    return
-        // Padding(
-        //   padding: EdgeInsets.all(10.0),
-        Container(
+    return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: SizedBox(
         width: double.infinity,
-        child: RaisedButton.icon(
-          splashColor: Theme.of(context).primaryColor,
-          label: Text('Actualizar'),
-          icon: Icon(Icons.update),
-          color: Theme.of(context).accentColor,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-              side: BorderSide(color: Colors.red)),
+        child: GFButton(
           onPressed: () async {
             // valida si existe logo y lo convierte en base 64
             if (file != null) {
@@ -506,14 +424,18 @@ class _pageSedesState extends State<pageSedes> {
               imgJersey = base64Encode(fileJersey.readAsBytesSync());
             }
             WidgetsGenericos.showLoaderDialog(
-                context, true, 'Cargando..', null);
+                context, true, 'Cargando..', null, Colors.grey);
             res = await ser.updateSede(id, nombreTextController.text, imgLogo,
                 nombre_url_logo, imgJersey, nombre_url_jersey, ciudadSel);
             Navigator.pop(context);
 
             if (res) {
-              WidgetsGenericos.showLoaderDialog(context, false,
-                  'Actualizado Correctamente', Icons.check_circle_outlined);
+              WidgetsGenericos.showLoaderDialog(
+                  context,
+                  false,
+                  'Actualizado Correctamente',
+                  Icons.check_circle_outlined,
+                  Colors.green);
               await Future.delayed(Duration(milliseconds: 500));
 
               imgLogo = '';
@@ -524,12 +446,21 @@ class _pageSedesState extends State<pageSedes> {
               print(imgLogo);
               print(imgJersey);
             } else {
-              WidgetsGenericos.showLoaderDialog(
-                  context, false, 'Ha Ocurrido un error', Icons.error_outline);
+              WidgetsGenericos.showLoaderDialog(context, false,
+                  'Ha Ocurrido un error', Icons.error_outline, Colors.red);
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
             }
           },
+          icon: Icon(Icons.check),
+          type: GFButtonType.solid,
+          shape: GFButtonShape.pills,
+          color: Theme.of(context).accentColor,
+          child: Text(
+            'Actualizar',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
         ),
       ),
     );

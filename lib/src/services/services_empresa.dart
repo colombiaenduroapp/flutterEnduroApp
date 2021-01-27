@@ -45,6 +45,7 @@ class ServicioEmpresa {
       if (response.statusCode == 200) {
         return true;
       } else {
+        print(response.statusCode);
         return false;
       }
     } catch (exception) {
@@ -69,6 +70,7 @@ class ServicioEmpresa {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body)['data'];
+      final jsonResponse1 = json.decode(response.body)['status'];
 
       Empresa evento = Empresa.fromJson(jsonResponse);
       return evento;

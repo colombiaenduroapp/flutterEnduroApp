@@ -5,7 +5,8 @@ import 'package:ui_flutter/src/services/services_sedes.dart';
 
 class page_sedes_detalles extends StatefulWidget {
   final String data;
-  page_sedes_detalles(this.data, {Key key}) : super(key: key);
+  final String nombre;
+  page_sedes_detalles(this.data, this.nombre, {Key key}) : super(key: key);
 
   @override
   _page_sedes_detallesState createState() => _page_sedes_detallesState();
@@ -18,7 +19,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
   @override
   void initState() {
     searchSede = ServicioSede().searchSede(widget.data);
-
     // TODO: implement initState
     super.initState();
   }
@@ -28,7 +28,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sede'),
+        title: Text(widget.nombre),
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.edit_outlined),

@@ -50,9 +50,9 @@ class _cont_eventosState extends State<cont_eventos> {
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               } else if (snapshot.data == null) {
-                return WidgetsGenericos.ContainerEmptyData(context);
+                return WidgetsGenericos.containerEmptyData(context);
               } else {
-                return WidgetsGenericos.ContainerErrorConection(
+                return WidgetsGenericos.containerErrorConection(
                     context, InicioPage(2));
               }
 
@@ -203,43 +203,19 @@ Widget listaa(EventosList data) {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'Fecha: ' + data.eventos[index].ev_fecha_inicio,
+                              'Fecha inicio: ' +
+                                  data.eventos[index].ev_fecha_inicio,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
+                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: data.eventos[index].ev_faltante > 0
-                            ? Container(
-                                color: Colors.green,
-                                child: Column(
-                                  children: [
-                                    Text('Dias faltantes',
-                                        style:
-                                            (TextStyle(color: Colors.white))),
-                                    Text(
-                                      data.eventos[index].ev_faltante
-                                          .toString(),
-                                      style: (TextStyle(color: Colors.white)),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                color: Colors.red,
-                                child: Column(
-                                  children: [
-                                    Text('Evento Finalizado',
-                                        style:
-                                            (TextStyle(color: Colors.white))),
-                                  ],
-                                ),
-                              ),
-                      )
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: etiqueta(data, index))
                     ],
                   ),
                 ),
@@ -250,4 +226,51 @@ Widget listaa(EventosList data) {
       );
     },
   );
+}
+
+Widget etiqueta(data, index) {
+  if (data.eventos[index].ev_estado_ev == 1) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.green,
+      ),
+      child: Row(
+        children: [
+          Text('Dias faltantes:  ', style: (TextStyle(color: Colors.white))),
+          Text(
+            data.eventos[index].ev_faltante.toString(),
+            style: (TextStyle(color: Colors.white)),
+          )
+        ],
+      ),
+    );
+  } else if (data.eventos[index].ev_estado_ev == 0) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.blue,
+      ),
+      child: Column(
+        children: [
+          Text('En curso ', style: (TextStyle(color: Colors.white))),
+        ],
+      ),
+    );
+  } else {
+    return Container(
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.red,
+      ),
+      child: Column(
+        children: [
+          Text('Finalizado ', style: (TextStyle(color: Colors.white))),
+        ],
+      ),
+    );
+  }
 }

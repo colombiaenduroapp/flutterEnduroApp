@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/pages/bitacora_personal.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
@@ -56,9 +57,7 @@ class Nav_drawerState extends State<Nav_drawer> {
               image: DecorationImage(
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(0.1), BlendMode.dstATop),
-                image: NetworkImage(
-                  'https://scontent-bog1-1.xx.fbcdn.net/v/t1.0-9/44431290_706071719755557_15078917211684864_n.jpg?_nc_cat=111&ccb=2&_nc_sid=85a577&_nc_ohc=5AcKETNm2YwAX_0wX-k&_nc_ht=scontent-bog1-1.xx&oh=59194151bb669a05cf6a5c7923b0550f&oe=5FFCED25',
-                ),
+                image: NetworkImage('https://picsum.photos/200/300'),
               ),
             ),
           ),
@@ -77,6 +76,17 @@ class Nav_drawerState extends State<Nav_drawer> {
               context,
               MaterialPageRoute(
                 builder: (context) => InicioPage(2),
+              ),
+            ),
+          ),
+          Divider(),
+          _createDrawerItem(
+            icon: Icons.apps,
+            text: 'Bitacoras',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PagesBitacoraPersonal(),
               ),
             ),
           ),

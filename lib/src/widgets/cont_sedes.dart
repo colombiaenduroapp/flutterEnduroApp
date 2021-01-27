@@ -21,12 +21,21 @@ class _cont_sedesState extends State<cont_sedes> {
   bool res = false;
   final TextEditingController _filter = new TextEditingController();
 
-  String _searchText = "";
+  String _searchText;
 
   @override
   void initState() {
+    _searchText = "";
+
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchText;
+    _filter.dispose();
+    super.dispose();
   }
 
   _cont_sedesState() {
@@ -93,14 +102,14 @@ class _cont_sedesState extends State<cont_sedes> {
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               } else {
-                return WidgetsGenericos.ContainerErrorConection(
+                return WidgetsGenericos.containerErrorConection(
                     context, InicioPage(3));
               }
 
               break;
             case ConnectionState.waiting:
               return Center(
-                child: WidgetsGenericos.ShimmerList(),
+                child: WidgetsGenericos.shimmerList(),
               );
 
               break;
@@ -148,11 +157,12 @@ class _cont_sedesState extends State<cont_sedes> {
               return Slidable(
                 key: ValueKey(data.sedes[index]),
                 closeOnScroll: true,
-                child: WidgetsGenericos.ItemList(
+                child: WidgetsGenericos.itemList(
                     sedes[index].sd_desc,
                     sedes[index].sd_logo,
                     context,
-                    page_sedes_detalles(sedes[index].sd_cdgo.toString())),
+                    page_sedes_detalles(sedes[index].sd_cdgo.toString(),
+                        sedes[index].sd_desc.toString())),
                 actions: <Widget>[
                   IconSlideAction(
                       icon: Icons.delete_outline_rounded,
@@ -198,7 +208,8 @@ class _cont_sedesState extends State<cont_sedes> {
                                           context,
                                           false,
                                           'Cargando...',
-                                          Icons.check_circle_outlined);
+                                          Icons.check_circle_outlined,
+                                          Colors.green);
 
                                       if (res) {
                                         Navigator.pop(context);
@@ -206,7 +217,8 @@ class _cont_sedesState extends State<cont_sedes> {
                                             context,
                                             false,
                                             'Eliminado Correctamente',
-                                            Icons.check_circle_outlined);
+                                            Icons.check_circle_outlined,
+                                            Colors.red);
                                         // await Future.delayed(
                                         //     Duration(milliseconds: 500));
 
@@ -232,7 +244,7 @@ class _cont_sedesState extends State<cont_sedes> {
               //     page_sedes_detalles(data.sedes[index].sd_cdgo.toString()));
             });
       } else {
-        return Center(child: WidgetsGenericos.ContainerEmptyData(context));
+        return Center(child: WidgetsGenericos.containerEmptyData(context));
       }
     } catch (e) {}
   }
