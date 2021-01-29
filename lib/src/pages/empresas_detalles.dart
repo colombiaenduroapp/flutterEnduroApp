@@ -27,7 +27,6 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.empresa.em_correo);
     return Scaffold(
       appBar: AppBar(title: Text('Empresa'), actions: <Widget>[
         IconButton(
@@ -43,14 +42,27 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
           ),
         ),
       ]),
-      body: Container(
-        child: Column(
-          children: [
-            _imagen_evento(widget.empresa.em_logo),
-            _nombre_evento(widget.empresa.em_nombre),
-            _cont_empresa(widget.empresa)
-          ],
-        ),
+      body: FutureBuilder<Empresa>(
+        future: future_empresa,
+        // initialData: InitialData,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            empresa = snapshot.data;
+            return Container(
+              child: Column(
+                children: [
+                  _imagen_evento(snapshot.data.em_logo),
+                  _nombre_evento(snapshot.data.em_nombre),
+                  _cont_empresa(snapshot.data)
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }

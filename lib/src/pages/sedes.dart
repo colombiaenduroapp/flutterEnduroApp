@@ -30,7 +30,7 @@ class _pageSedesState extends State<pageSedes> {
   Future<Ciudad> ciudad;
   String urlLogo;
   String urlJersey;
-  bool res = true;
+  bool res = false;
   String imgJersey = '';
   String imgLogo = '';
   String nombre_url_logo;
@@ -38,7 +38,7 @@ class _pageSedesState extends State<pageSedes> {
   var nombreTextController = TextEditingController();
   List statelist;
   String id;
-  String ciudadSel;
+  String ciudadSel = null;
   File file;
   File fileJersey;
   String textValue = '?';
@@ -61,9 +61,11 @@ class _pageSedesState extends State<pageSedes> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title:
@@ -330,7 +332,6 @@ class _pageSedesState extends State<pageSedes> {
   Future getCiudad() async {
     // Ciudad ciudad;
     http.Response response;
-    print('object');
     try {
       response = await http
           .get(Url().getUrl() + 'ciudad')
@@ -385,7 +386,6 @@ class _pageSedesState extends State<pageSedes> {
         ),
       );
     }
-    ;
   }
 
   Widget boton_registrar() {
@@ -404,42 +404,59 @@ class _pageSedesState extends State<pageSedes> {
               if (fileJersey != null) {
                 imgJersey = base64Encode(fileJersey.readAsBytesSync());
               }
-              WidgetsGenericos.showLoaderDialog(
-                  context, true, 'Cargando..', null, Colors.grey);
 
               try {
-                // guarda la informacion
-                res = await ser.addSede(
-                    nombreTextController.text, imgLogo, imgJersey, ciudadSel);
-                // ---------------------
-                Navigator.pop(context);
-                // si se guarda la informacion muestra dialog ok y resfresca la pantalla
-                if (res) {
+                if (ciudadSel != null) {
                   WidgetsGenericos.showLoaderDialog(
-                      context,
-                      false,
-                      'Registrado Correctamente',
-                      Icons.check_circle_outlined,
-                      Colors.green);
-                  nombreTextController.clear();
-
-                  nombreTextController.text = '';
-                  file = null;
-                  fileJersey = null;
-                  await Future.delayed(Duration(milliseconds: 500));
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => pages_listas_sedes(),
-                    ),
+                      context, true, 'Cargando..', null, Colors.grey);
+                  print(ciudadSel);
+                  // guarda la informacion
+                  res = await ser.addSede(
+                    nombreTextController.text,
+                    imgLogo,
+                    imgJersey,
+                    ciudadSel,
                   );
-                } else {
-                  WidgetsGenericos.showLoaderDialog(context, false,
-                      'Ha Ocurrido un error', Icons.error_outline, Colors.red);
-                  await Future.delayed(Duration(milliseconds: 500));
+
+                  // ---------------------
                   Navigator.pop(context);
+                  // si se guarda la informacion muestra dialog ok y resfresca la pantalla
+                  if (res) {
+                    WidgetsGenericos.showLoaderDialog(
+                        context,
+                        false,
+                        'Registrado Correctamente',
+                        Icons.check_circle_outlined,
+                        Colors.green);
+                    nombreTextController.clear();
+
+                    nombreTextController.text = '';
+                    file = null;
+                    fileJersey = null;
+                    await Future.delayed(Duration(milliseconds: 500));
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => pages_listas_sedes(),
+                      ),
+                    );
+                  } else {
+                    WidgetsGenericos.showLoaderDialog(
+                        context,
+                        false,
+                        'Ha Ocurrido un error',
+                        Icons.error_outline,
+                        Colors.red);
+                    await Future.delayed(Duration(milliseconds: 500));
+                    Navigator.pop(context);
+                  }
+                } else {
+                  _scaffoldKey.currentState.showSnackBar(SnackBar(
+                    content: Text('Assign a GlobalKey to the Scaffold'),
+                    duration: Duration(seconds: 3),
+                  ));
                 }
               } catch (e) {
                 return Text('Ha ocurrido un error');

@@ -103,8 +103,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             }
           },
         ),
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
         floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
             context, pagesEmpresa(null, null, 'Registrar')),
       );
@@ -146,7 +145,11 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   }
 
   void _showSnackBar(BuildContext context, String text) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
   }
 
   Widget _jobsListView(data) {

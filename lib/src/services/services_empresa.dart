@@ -27,8 +27,14 @@ class ServicioEmpresa {
     return empresalist;
   }
 
-  Future<bool> addEmpresa(String em_nit, String em_logo, String em_nombre,
-      String em_desc, String em_telefono, String em_correo) async {
+  Future<bool> addEmpresa(
+      String em_nit,
+      String em_logo,
+      String em_nombre,
+      String em_desc,
+      String em_telefono,
+      String em_correo,
+      int us_sede_sd_cdgo) async {
     try {
       final response = await http.post(
         url + "empresa",
@@ -39,6 +45,7 @@ class ServicioEmpresa {
           "em_desc": em_desc,
           "em_telefono": em_telefono,
           "em_correo": em_correo,
+          "us_sede_sd_cdgo": us_sede_sd_cdgo
         },
       ).timeout(Duration(seconds: 20));
 

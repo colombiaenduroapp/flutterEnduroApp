@@ -151,6 +151,7 @@ class _cont_sedesState extends State<cont_sedes> {
       if (sedes.length > 0) {
         return ListView.builder(
             // scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: sedes.length,
             itemBuilder: (context, index) {

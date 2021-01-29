@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class pagesEmpresa extends StatefulWidget {
 //   final String em_cdgo;
@@ -48,6 +49,11 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   bool res = false;
   int us_cdgo, us_sede_sd_cdgo;
   String us_nombres;
+  addStringToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    us_sede_sd_cdgo = prefs.getInt('us_sede_sd_cdgo') ?? 0;
+  }
+
   @override
   void initState() {
     cargar_evento(widget.empresa);
@@ -220,23 +226,54 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                               children: [
                                 Text('Logo Sede'),
                                 Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        spreadRadius: 2,
+                                        blurRadius: 1,
+                                        offset: Offset(
+                                            2, 2), // changes position of shadow
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          'https://dev.monsoonmedialv.com/cannalv/wp-content/uploads/2016/02/camera.placeholder.lg_.png'),
+                                    ),
+                                  ),
                                   margin: EdgeInsets.only(top: 10),
-                                  width: 130,
+                                  width: 200,
                                   height: 130,
-                                  color: Colors.grey[300],
-                                  child: Center(
+                                  // color: Colors.grey[300],
+                                  child: Container(
                                     child: urlLogo == null
                                         ? file == null
-                                            ? Text('Seleccione un Logo')
-                                            : Image.file(
-                                                file,
-                                                width: 200,
-                                                height: 200,
+                                            ? Text(
+                                                'Seleccione un Logo',
+                                                style: TextStyle(
+                                                    color: Colors.black54),
+                                                textAlign: TextAlign.center,
                                               )
-                                        : Image.network(
-                                            urlLogo,
-                                            width: 200,
-                                            height: 200,
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                child: Image.file(
+                                                  file,
+                                                  width: 200,
+                                                  height: 200,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            child: Image.network(
+                                              urlLogo,
+                                              width: 200,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                   ),
                                 ),
@@ -315,12 +352,14 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);
               res = await ServicioEmpresa().addEmpresa(
-                  nitTextController.text,
-                  imgLogo,
-                  nombreTextController.text,
-                  descTextController.text,
-                  telefonoTextController.text,
-                  emailTextController.text);
+                nitTextController.text,
+                imgLogo,
+                nombreTextController.text,
+                descTextController.text,
+                telefonoTextController.text,
+                emailTextController.text,
+                us_sede_sd_cdgo,
+              );
 
               if (res) {
                 Navigator.pop(context);
