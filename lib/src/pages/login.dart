@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ui_flutter/src/pages/conocenos.dart';
+import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PageLogin extends StatefulWidget {
@@ -136,7 +137,15 @@ class _PageLoginState extends State<PageLogin> {
                             type: GFButtonType.solid,
                             shape: GFButtonShape.pills,
                             color: Theme.of(context).accentColor,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      InicioPage(1),
+                                ),
+                              );
+                            },
                             child: Text(
                               'Iniciar Sesión',
                               style: TextStyle(fontSize: 18),
@@ -178,10 +187,12 @@ class _PageLoginState extends State<PageLogin> {
                             color: Theme.of(context).accentColor,
                             onPressed: () {
                               Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          PageConocenos()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      PageConocenos(),
+                                ),
+                              );
                             },
                             child: Text(
                               'Conocenos',

@@ -70,7 +70,7 @@ class _cont_inicioState extends State<cont_inicio> {
 
               break;
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator.adaptive());
+              return Center(child: CircularProgressIndicator());
 
               break;
             case ConnectionState.active:
