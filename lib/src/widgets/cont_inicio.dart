@@ -178,6 +178,7 @@ class _cont_inicioState extends State<cont_inicio> {
                     itemBuilder: (context, index) {
                       return WidgetsGenericos.itemList(
                           'imagen ${index}',
+                          null,
                           'https://picsum.photos/200',
                           context,
                           page_sedes_detalles('110', 'Buenaventura'));
@@ -193,6 +194,7 @@ class _cont_inicioState extends State<cont_inicio> {
                       itemBuilder: (context, index) {
                         return WidgetsGenericos.itemList(
                             'imagen ${index}',
+                            null,
                             'https://picsum.photos/200',
                             context,
                             page_sedes_detalles('110', 'Buenaventura'));

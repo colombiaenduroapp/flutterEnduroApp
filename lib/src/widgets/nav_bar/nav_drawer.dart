@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/pages/listas_sedes.dart';
+
 import 'package:ui_flutter/src/pages/bitacora_personal.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
@@ -64,10 +66,24 @@ class Nav_drawerState extends State<Nav_drawer> {
           _createDrawerItem(
             icon: Icons.home,
             text: 'Inicio',
-            onTap: () => Navigator.of(context).pushNamed('/'),
+            onTap: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InicioPage(1),
+              ),
+            ),
           ),
           Divider(),
-          _createDrawerItem(icon: Icons.event_available, text: 'Eventos'),
+          _createDrawerItem(
+            icon: Icons.event_available,
+            text: 'Eventos',
+            onTap: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InicioPage(2),
+              ),
+            ),
+          ),
           Divider(),
           _createDrawerItem(
             icon: Icons.apps,
@@ -75,7 +91,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InicioPage(2),
+                builder: (context) => PagesListasSedes(),
               ),
             ),
           ),

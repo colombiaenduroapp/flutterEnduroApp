@@ -1,31 +1,31 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
+import 'package:ui_flutter/src/pages/eventos_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'empresas.dart';
 
-class pages_listas_empresas extends StatefulWidget {
-  pages_listas_empresas({Key key}) : super(key: key);
+class pages_listas_eventos extends StatefulWidget {
+  pages_listas_eventos({Key key}) : super(key: key);
 
   @override
-  _pages_listas_empresasState createState() => _pages_listas_empresasState();
+  _pages_listas_eventosState createState() => _pages_listas_eventosState();
 }
 
-class _pages_listas_empresasState extends State<pages_listas_empresas> {
-  Future<EmpresaList> lista = ServicioEmpresa().getEmpresa();
-  EmpresaList emplist;
+class _pages_listas_eventosState extends State<pages_listas_eventos> {
+  Future<EventosList> lista = ServicioEvento().getEventos();
+  EventosList eventolist;
   final TextEditingController _filter = new TextEditingController();
 
   String _searchText = "";
 
   Icon _searchIcon = Icon(Icons.search);
-  Widget _appBarTitle = new Text('Empresa');
+  Widget _appBarTitle = new Text('Eventos');
   bool res = true;
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
     super.initState();
   }
 
-  _pages_listas_empresasState() {
+  _pages_listas_eventosState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -48,6 +48,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     try {
@@ -61,7 +62,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             ),
           ],
         ),
-        body: FutureBuilder<EmpresaList>(
+        body: FutureBuilder<EventosList>(
           future: lista,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -77,9 +78,9 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                 break;
               case ConnectionState.done:
                 if (snapshot.hasData) {
-                  emplist = snapshot.data;
+                  eventolist = snapshot.data;
 
-                  return _jobsListView(emplist);
+                  return _jobsListView(eventolist);
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 } else {
@@ -152,42 +153,48 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   }
 
   Widget _jobsListView(data) {
-    List tempList = new List();
+    List teventolist = new List();
     if (!(_searchText.isEmpty)) {
-      for (int i = 0; i < emplist.empresas.length; i++) {
-        if (emplist.empresas[i].em_nombre
+      for (int i = 0; i < eventolist.eventos.length; i++) {
+        if (eventolist.eventos[i].ev_desc
             .toLowerCase()
             .contains(_searchText.toLowerCase())) {
-          tempList.add(data.empresas[i]);
+          teventolist.add(data.eventos[i]);
         }
       }
     } else {
-      for (int i = 0; i < emplist.empresas.length; i++) {
-        tempList.add(data.empresas[i]);
+      for (int i = 0; i < eventolist.eventos.length; i++) {
+        teventolist.add(data.eventos[i]);
       }
     }
 
     try {
-      if (tempList.length > 0) {
+      if (teventolist.length > 0) {
         return SingleChildScrollView(
           child: Column(
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: tempList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: teventolist.length,
                 itemBuilder: (context, index) {
                   return Slidable(
-                    key: ValueKey(emplist.empresas[index]),
+                    key: ValueKey(eventolist.eventos[index]),
                     closeOnScroll: true,
                     child: WidgetsGenericos.itemList(
-                      tempList[index].em_nombre,
-                      null,
-                      tempList[index].em_logo,
+                      teventolist[index].ev_desc,
+                      teventolist[index].ev_estado_ev == 1
+                          ? 'Dias faltantes:${teventolist[index].ev_faltante.toString()}'
+                          : teventolist[index].ev_estado_ev == 0
+                              ? 'En Curso'
+                              : teventolist[index].ev_estado_ev == 2
+                                  ? 'Finalizado'
+                                  : null,
+                      teventolist[index].ev_img,
                       context,
-                      pages_empresas_detalles(
-                        tempList[index].em_cdgo.toString(),
-                        tempList[index],
-                      ),
+                      page_eventos_detalles(teventolist[index].ev_cdgo
+                          // teventolist[index],
+                          ),
                     ),
                     actions: <Widget>[
                       IconSlideAction(

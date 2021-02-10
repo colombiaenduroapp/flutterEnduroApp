@@ -193,7 +193,10 @@ Widget lista_mesa(Sede sede) {
               ),
               subtitle: Text(
                   '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
-              trailing: Icon(Icons.more_vert_outlined),
+              trailing: InkWell(
+                onTap: () {},
+                child: Icon(Icons.more_vert_outlined),
+              ),
             ),
           );
         } else {

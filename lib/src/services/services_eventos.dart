@@ -105,7 +105,7 @@ class ServicioEvento {
       String ev_url_video) async {
     var response;
     try {
-      response = await http.post(
+      response = await http.put(
         url + "evento/" + ev_cdgo,
         body: {
           "us_sede_sd_cdgo": us_sede_sd_cdgo.toString(),

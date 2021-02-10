@@ -4,14 +4,14 @@ import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/widgets/cont_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
-class pages_listas_sedes extends StatefulWidget {
-  pages_listas_sedes({Key key}) : super(key: key);
+class PagesListasSedes extends StatefulWidget {
+  PagesListasSedes({Key key}) : super(key: key);
 
   @override
-  _pages_listas_sedesState createState() => _pages_listas_sedesState();
+  _PagesListasSedesState createState() => _PagesListasSedesState();
 }
 
-class _pages_listas_sedesState extends State<pages_listas_sedes> {
+class _PagesListasSedesState extends State<PagesListasSedes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,6 @@ class _pages_listas_sedesState extends State<pages_listas_sedes> {
       body: Container(
         child: cont_sedes(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
           context, pageSedes('Registrar', null, null)),
     );

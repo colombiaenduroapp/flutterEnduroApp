@@ -92,102 +92,152 @@ class WidgetsGenericos {
   }
 
 // ________________________________________________________________________________
-  static Widget itemList(
-      String title, String url, BuildContext context, Widget pagina) {
+  static Widget itemList(String title, String subtitles, String url,
+      BuildContext context, Widget pagina) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => pagina),
-          );
-          timeDilation = 1.5;
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: Colors.black12, width: 0.7)),
-          ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          // Logo Sede
-                          Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: url != null
-                                  ? Container(
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(25.0),
-                                        child: FadeInImage.assetNetwork(
-                                          placeholder: 'assets/loading.gif',
-                                          // image: url,
-                                          image: url,
-                                          imageErrorBuilder:
-                                              (BuildContext context,
-                                                  Object exception,
-                                                  StackTrace stackTrace) {
-                                            return Icon(Icons
-                                                .image_not_supported_rounded);
-                                          },
-                                          fit: BoxFit.cover,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => pagina),
+            );
+            timeDilation = 1.5;
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              bottom: BorderSide(color: Colors.black12, width: 0.7),
+            )),
+            child: ListTile(
+              minVerticalPadding: 10,
+              leading: url != null
+                  ? Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.0),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/loading.gif',
+                          // image: url,
+                          image: url,
+                          imageErrorBuilder: (BuildContext context,
+                              Object exception, StackTrace stackTrace) {
+                            return Icon(Icons.image_not_supported_rounded);
+                          },
+                          fit: BoxFit.cover,
 
-                                          //   // En esta propiedad colocamos el alto de nuestra imagen
-                                          width: double.infinity,
-                                          height: 50,
-                                        ),
-                                      ),
-                                      width: 50.0,
-                                      height: 50.0,
-                                      decoration: new BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                    )
-                                  : Container(
-                                      child: Icon(Icons.business_outlined),
-                                      width: 50,
-                                      height: 50,
-                                    )),
-                          // Nombre Sede
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // icon next
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [Icon(Icons.navigate_next)],
+                          //   // En esta propiedad colocamos el alto de nuestra imagen
+                          width: double.infinity,
+                          height: 50,
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                  : Container(
+                      child: Icon(Icons.business_outlined),
+                      width: 50,
+                      height: 50,
+                    ),
+              title: Text(title),
+              subtitle: subtitles == null ? null : Text(subtitles),
+              trailing: Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: Icon(Icons.navigate_next)),
+            ),
+          )
+          // Container(
+          //   decoration: BoxDecoration(
+          //     border:
+          //         Border(bottom: BorderSide(color: Colors.black12, width: 0.7)),
+          //   ),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Expanded(
+          //         child: Padding(
+          //           padding: const EdgeInsets.all(8.0),
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //             children: [
+          //               Row(
+          //                 children: [
+          //                   // Logo Sede
+          //                   Padding(
+          //                       padding:
+          //                           const EdgeInsets.symmetric(horizontal: 5.0),
+          //                       child: url != null
+          //                           ? Container(
+          //                               child: ClipRRect(
+          //                                 borderRadius:
+          //                                     BorderRadius.circular(25.0),
+          //                                 child: FadeInImage.assetNetwork(
+          //                                   placeholder: 'assets/loading.gif',
+          //                                   // image: url,
+          //                                   image: url,
+          //                                   imageErrorBuilder:
+          //                                       (BuildContext context,
+          //                                           Object exception,
+          //                                           StackTrace stackTrace) {
+          //                                     return Icon(Icons
+          //                                         .image_not_supported_rounded);
+          //                                   },
+          //                                   fit: BoxFit.cover,
+
+          //                                   //   // En esta propiedad colocamos el alto de nuestra imagen
+          //                                   width: double.infinity,
+          //                                   height: 50,
+          //                                 ),
+          //                               ),
+          //                               width: 50.0,
+          //                               height: 50.0,
+          //                               decoration: new BoxDecoration(
+          //                                 shape: BoxShape.circle,
+          //                               ),
+          //                             )
+          //                           : Container(
+          //                               child: Icon(Icons.business_outlined),
+          //                               width: 50,
+          //                               height: 50,
+          //                             )),
+          //                   // Nombre Sede
+          //                   Container(
+          //                     padding: const EdgeInsets.only(left: 10.0),
+          //                     child: Text(
+          //                         MediaQuery.of(context).size.width > 360
+          //                             ? title
+          //                             : title.length > 30
+          //                                 ? title.substring(0, 27) + ' ...'
+          //                                 : title,
+          //                         textScaleFactor: 1,
+          //                         style: TextStyle(
+          //                           fontSize: 16,
+          //                           color: Colors.black,
+          //                         ),
+          //                         maxLines: 3,
+          //                         overflow: TextOverflow.clip,
+          //                         textAlign: TextAlign.start),
+          //                   ),
+          //                 ],
+          //               ),
+
+          //               // icon next
+          //               Padding(
+          //                 padding: const EdgeInsets.only(right: 15.0),
+          //                 child: Column(
+          //                   mainAxisAlignment: MainAxisAlignment.start,
+          //                   children: [Icon(Icons.navigate_next)],
+          //                 ),
+          //               )
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           ),
-        ),
-      ),
     );
   }
 

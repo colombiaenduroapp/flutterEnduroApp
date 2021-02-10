@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 
@@ -50,10 +51,13 @@ class _InicioPageState extends State<InicioPage>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.blueGrey[800]),
+    );
     return new DefaultTabController(
         length: 3,
         child: Scaffold(
-          // resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomPadding: false,
           appBar: AppBar(
             title: Text(
               'COLOMBIA ENDURO',

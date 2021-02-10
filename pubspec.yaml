@@ -23,6 +23,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_spinkit: "^4.1.2"
   multi_image_picker: ^4.7.14 
   carousel_slider: ^2.3.1
   getwidget: ^1.2.4
@@ -60,7 +61,11 @@ flutter:
   assets:
     - assets/loading.gif
     - assets/error1.png
+    - assets/icons/descarga32.png
     - assets/empty_data11.png
+    - assets/fondo_login.jpg
+    - assets/mision.png
+    
 
 
 

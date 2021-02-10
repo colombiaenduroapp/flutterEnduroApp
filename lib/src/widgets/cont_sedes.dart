@@ -149,101 +149,116 @@ class _cont_sedesState extends State<cont_sedes> {
 
     try {
       if (sedes.length > 0) {
-        return ListView.builder(
-            // scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: sedes.length,
-            itemBuilder: (context, index) {
-              return Slidable(
-                key: ValueKey(data.sedes[index]),
-                closeOnScroll: true,
-                child: WidgetsGenericos.itemList(
-                    sedes[index].sd_desc,
-                    sedes[index].sd_logo,
-                    context,
-                    page_sedes_detalles(sedes[index].sd_cdgo.toString(),
-                        sedes[index].sd_desc.toString())),
-                actions: <Widget>[
-                  IconSlideAction(
-                      icon: Icons.delete_outline_rounded,
-                      caption: 'Eliminar',
-                      color: Colors.red,
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              ListView.builder(
+                  // scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: sedes.length,
+                  itemBuilder: (context, index) {
+                    return Slidable(
+                      key: ValueKey(data.sedes[index]),
+                      closeOnScroll: true,
+                      child: WidgetsGenericos.itemList(
+                          sedes[index].sd_desc,
+                          null,
+                          sedes[index].sd_logo,
+                          context,
+                          page_sedes_detalles(sedes[index].sd_cdgo.toString(),
+                              sedes[index].sd_desc.toString())),
+                      actions: <Widget>[
+                        IconSlideAction(
+                            icon: Icons.delete_outline_rounded,
+                            caption: 'Eliminar',
+                            color: Colors.red,
 
-                      //not defined closeOnTap so list will get closed when clicked
-                      onTap: () async {
-                        showDialog<bool>(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              title: Text(
-                                'Advertencia!',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              content: Text(
-                                'Estas seguro de eliminar',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(false),
-                                ),
-                                FlatButton(
-                                    child: Text(
-                                      'Ok',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                            //not defined closeOnTap so list will get closed when clicked
+                            onTap: () async {
+                              showDialog<bool>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    title: Text(
+                                      'Advertencia!',
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                    onPressed: () async {
-                                      res = await ServicioSede().deleteSede(
-                                          data.sedes[index].sd_cdgo.toString());
-                                      Navigator.pop(context);
-                                      WidgetsGenericos.showLoaderDialog(
-                                          context,
-                                          false,
-                                          'Cargando...',
-                                          Icons.check_circle_outlined,
-                                          Colors.green);
+                                    content: Text(
+                                      'Estas seguro de eliminar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                      ),
+                                      FlatButton(
+                                          child: Text(
+                                            'Ok',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                          onPressed: () async {
+                                            res = await ServicioSede()
+                                                .deleteSede(data
+                                                    .sedes[index].sd_cdgo
+                                                    .toString());
+                                            Navigator.pop(context);
+                                            WidgetsGenericos.showLoaderDialog(
+                                                context,
+                                                false,
+                                                'Cargando...',
+                                                Icons.check_circle_outlined,
+                                                Colors.green);
 
-                                      if (res) {
-                                        Navigator.pop(context);
-                                        WidgetsGenericos.showLoaderDialog(
-                                            context,
-                                            false,
-                                            'Eliminado Correctamente',
-                                            Icons.check_circle_outlined,
-                                            Colors.red);
-                                        // await Future.delayed(
-                                        //     Duration(milliseconds: 500));
+                                            if (res) {
+                                              Navigator.pop(context);
+                                              WidgetsGenericos.showLoaderDialog(
+                                                  context,
+                                                  false,
+                                                  'Eliminado Correctamente',
+                                                  Icons.check_circle_outlined,
+                                                  Colors.red);
+                                              // await Future.delayed(
+                                              //     Duration(milliseconds: 500));
 
-                                        Navigator.pop(context);
-                                        await setState(() {
-                                          data.sedes.removeAt(index);
-                                        });
-                                      } else {}
-                                    }),
-                              ],
-                            );
-                          },
-                        );
-                      }),
-                ],
-                actionPane: SlidableDrawerActionPane(),
-              );
+                                              Navigator.pop(context);
+                                              await setState(() {
+                                                data.sedes.removeAt(index);
+                                              });
+                                            } else {}
+                                          }),
+                                    ],
+                                  );
+                                },
+                              );
+                            }),
+                      ],
+                      actionPane: SlidableDrawerActionPane(),
+                    );
 
-              // WidgetsGenericos.ItemList(
-              //     data.sedes[index].sd_desc,
-              //     data.sedes[index].sd_logo,
-              //     context,
-              //     page_sedes_detalles(data.sedes[index].sd_cdgo.toString()));
-            });
+                    // WidgetsGenericos.ItemList(
+                    //     data.sedes[index].sd_desc,
+                    //     data.sedes[index].sd_logo,
+                    //     context,
+                    //     page_sedes_detalles(data.sedes[index].sd_cdgo.toString()));
+                  }),
+              SizedBox(
+                height: 80,
+              )
+            ],
+          ),
+        );
       } else {
         return Center(child: WidgetsGenericos.containerEmptyData(context));
       }

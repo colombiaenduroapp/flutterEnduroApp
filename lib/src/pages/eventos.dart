@@ -261,12 +261,10 @@ class _pagesEventosState extends State<pagesEventos> {
     if (evento != null) {
       descTextController.text = evento.ev_desc;
       // selected_fecha_inicio = DateTime.parse(evento.ev_fecha_inicio);
-      print(selected_fecha_inicio);
+
       lugarTextController.text = evento.ev_lugar;
       urlLogo = evento.ev_img;
       urlTeextController.text = evento.ev_url_video;
-
-      print(urlLogo);
     }
   }
 
@@ -332,8 +330,6 @@ class _pagesEventosState extends State<pagesEventos> {
         width: double.infinity,
         child: GFButton(
           onPressed: () async {
-            print(us_sede_sd_cdgo + us_cdgo);
-            print(us_sede_sd_cdgo);
             if (_formKey.currentState.validate()) {
               if (file != null) {
                 imgLogo = base64Encode(
@@ -393,10 +389,8 @@ class _pagesEventosState extends State<pagesEventos> {
       padding: EdgeInsets.all(15),
       child: RaisedButton(
         onPressed: () async {
-          print(id_ev_cdgo);
           if (_formKey.currentState.validate()) {
             if (file != null) {
-              print(file);
               imgLogo = base64Encode(
                 file.readAsBytesSync(),
               );
@@ -429,7 +423,7 @@ class _pagesEventosState extends State<pagesEventos> {
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
-              // print('false');
+              print('false');
               WidgetsGenericos.showLoaderDialog(context, false,
                   'Ha ocurrido un error', Icons.error_outline, Colors.red);
               await Future.delayed(Duration(milliseconds: 500));
