@@ -110,7 +110,7 @@ class WidgetsGenericos {
               bottom: BorderSide(color: Colors.black12, width: 0.7),
             )),
             child: ListTile(
-              minVerticalPadding: 10,
+              //minVerticalPadding: 10,
               leading: url != null
                   ? Container(
                       child: ClipRRect(
