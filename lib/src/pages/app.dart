@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Colombia Enduro',
       theme: ThemeData(
         primarySwatch: Colors.orange,
-        primaryColor: Colors.blueGrey[100],
+        primaryColor: Colors.blueGrey[500],
         primaryColorLight: Colors.blueGrey[300],
         dialogBackgroundColor: Colors.blueGrey[200],
 

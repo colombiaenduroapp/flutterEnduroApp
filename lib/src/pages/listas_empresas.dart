@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

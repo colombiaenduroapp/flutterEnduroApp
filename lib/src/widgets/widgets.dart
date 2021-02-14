@@ -4,7 +4,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:ui_flutter/src/pages/inicio.dart';
+// import 'package:ui_flutter/src/pages/inicio.dart';
 
 class WidgetsGenericos {
   static Widget showLoaderDialog(BuildContext context, bool estado,
@@ -115,20 +115,7 @@ class WidgetsGenericos {
                   ? Container(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(25.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/loading.gif',
-                          // image: url,
-                          image: url,
-                          imageErrorBuilder: (BuildContext context,
-                              Object exception, StackTrace stackTrace) {
-                            return Icon(Icons.image_not_supported_rounded);
-                          },
-                          fit: BoxFit.cover,
-
-                          //   // En esta propiedad colocamos el alto de nuestra imagen
-                          width: double.infinity,
-                          height: 50,
-                        ),
+                        child: loadImage(url),
                       ),
                       width: 50.0,
                       height: 50.0,
@@ -263,5 +250,29 @@ class WidgetsGenericos {
         ),
       ),
     );
+  }
+
+  static loadImage(String url) {
+    try {
+      return FadeInImage.assetNetwork(
+        placeholder: 'assets/loading.gif',
+        // image: url,
+        image: url,
+        imageErrorBuilder:
+            (BuildContext context, Object exception, StackTrace stackTrace) {
+          return Icon(Icons.image_not_supported_rounded);
+        },
+        fit: BoxFit.cover,
+
+        //   // En esta propiedad colocamos el alto de nuestra imagen
+        width: double.infinity,
+        height: 50,
+      );
+    } catch (e) {
+      print('e');
+      return Container(
+        child: Text('axx'),
+      );
+    }
   }
 }

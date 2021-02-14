@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
@@ -47,12 +48,8 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   String urlLogo = null;
   String imgLogo = null;
   bool res = false;
-  int us_cdgo, us_sede_sd_cdgo;
+  int us_cdgo;
   String us_nombres;
-  addStringToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    us_sede_sd_cdgo = prefs.getInt('us_sede_sd_cdgo') ?? 0;
-  }
 
   @override
   void initState() {
@@ -358,7 +355,6 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                 descTextController.text,
                 telefonoTextController.text,
                 emailTextController.text,
-                us_sede_sd_cdgo,
               );
 
               if (res) {

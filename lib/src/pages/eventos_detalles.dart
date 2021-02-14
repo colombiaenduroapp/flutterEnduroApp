@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -148,7 +149,7 @@ class _page_eventos_detallesState extends State<page_eventos_detalles> {
         width: double.infinity,
         height: 220,
         fit: BoxFit.cover,
-        placeholder: 'assest/loading.gif',
+        placeholder: 'assets/loading_img.gif',
         image: evento.ev_img,
       ),
     );

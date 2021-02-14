@@ -7,6 +7,7 @@ import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 import 'package:ui_flutter/src/services/service_url.dart';

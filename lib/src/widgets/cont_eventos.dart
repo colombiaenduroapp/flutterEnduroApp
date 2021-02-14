@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';

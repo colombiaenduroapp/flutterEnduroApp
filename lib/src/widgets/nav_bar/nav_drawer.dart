@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 
 import 'package:ui_flutter/src/pages/bitacora_personal.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
+import 'package:ui_flutter/src/pages/login.dart';
 
 class Nav_drawer extends StatefulWidget {
   Nav_drawer({Key key}) : super(key: key);
@@ -34,6 +36,23 @@ Widget _createDrawerItem(
 }
 
 class Nav_drawerState extends State<Nav_drawer> {
+  String us_nombres = '', us_alias = '';
+  addStringToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
+    setState(() {
+      us_nombres = prefs.getString('us_nombres') ?? '';
+      us_alias = prefs.getString('us_alias') ?? '';
+    });
+  }
+
+  @override
+  void initState() {
+    addStringToSF();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -43,13 +62,13 @@ class Nav_drawerState extends State<Nav_drawer> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              'Juanito Perez',
+              us_nombres,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 30.0,
               ),
             ),
-            accountEmail: Text('Juancho',
+            accountEmail: Text(us_alias,
                 style: TextStyle(
                   color: Colors.black45,
                   fontSize: 18.0,
@@ -142,6 +161,19 @@ class Nav_drawerState extends State<Nav_drawer> {
               icon: Icons.contacts,
               text: 'Acerca de',
               onTap: () => Navigator.pop(context)),
+          Divider(),
+          _createDrawerItem(
+            icon: Icons.contacts,
+            text: 'Cerrar sesión',
+            onTap: () async {
+              SharedPreferences prefes = await SharedPreferences.getInstance();
+              await prefes.clear();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => PageLogin()));
+            },
+          ),
         ],
       ),
     );

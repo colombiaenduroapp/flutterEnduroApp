@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 
@@ -86,7 +87,7 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
                 width: double.infinity,
                 height: 220,
                 fit: BoxFit.cover,
-                placeholder: 'assest/loading.gif',
+                placeholder: 'assets/loading_img.gif',
                 image: url,
                 imageErrorBuilder: (BuildContext context, Object exception,
                     StackTrace stackTrace) {

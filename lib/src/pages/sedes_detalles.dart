@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 
@@ -247,7 +248,7 @@ Widget _imagen_fondo(Size screen, String url) {
   return Container(
     height: screen.height / 2.6,
     child: FadeInImage.assetNetwork(
-      placeholder: 'assets/loading.gif',
+      placeholder: 'assets/loading_img.gif',
       image: url,
       fit: BoxFit.cover,
 

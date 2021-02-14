@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/empresas_detalles.dart';
+import 'package:ui_flutter/src/models/model_evento.dart';
+import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
-import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
-
-import 'empresas.dart';
 
 class pages_listas_eventos extends StatefulWidget {
   pages_listas_eventos({Key key}) : super(key: key);
@@ -84,9 +82,8 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 } else {
-                  return Center(
-                    child: Text('No hay empresas Registradas'),
-                  );
+                  return WidgetsGenericos.containerErrorConection(
+                      context, pages_listas_eventos());
                 }
 
                 break;
@@ -105,7 +102,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
           },
         ),
         floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-            context, pagesEmpresa(null, null, 'Registrar')),
+            context, pagesEventos(null, null, 'Registrar')),
       );
     } catch (exception) {
       return Center(
@@ -236,9 +233,9 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                                               fontSize: 20),
                                         ),
                                         onPressed: () async {
-                                          res = await ServicioEmpresa()
-                                              .deleteEmpresa(data
-                                                  .empresas[index].em_cdgo
+                                          res = await ServicioEvento()
+                                              .deleteEvento(data
+                                                  .eventos[index].em_cdgo
                                                   .toString());
                                           Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
@@ -261,7 +258,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
 
                                             Navigator.pop(context);
                                             await setState(() {
-                                              data.empresas.removeAt(index);
+                                              data.eventos.removeAt(index);
                                             });
                                           } else {}
                                         }),

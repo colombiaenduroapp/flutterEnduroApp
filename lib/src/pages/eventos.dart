@@ -6,6 +6,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
@@ -39,14 +40,13 @@ class _pagesEventosState extends State<pagesEventos> {
   String urlLogo = '';
   String imgLogo = '';
   bool res = false;
-  int us_cdgo, us_sede_sd_cdgo;
+  int us_cdgo;
   String us_nombres;
 // utilizar preferencias
   addStringToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     us_cdgo = prefs.getInt('us_cdgo') ?? 0;
     us_nombres = prefs.getString('us_nombres') ?? '';
-    us_sede_sd_cdgo = prefs.getInt('us_sede_sd_cdgo') ?? 0;
   }
 
   @override
@@ -338,7 +338,6 @@ class _pagesEventosState extends State<pagesEventos> {
                 WidgetsGenericos.showLoaderDialog(
                     context, true, 'Cargando...', null, Colors.blue);
                 res = await ServicioEvento().addEvento(
-                  us_sede_sd_cdgo,
                   us_cdgo,
                   descTextController.text,
                   selected_fecha_inicio,
@@ -400,7 +399,6 @@ class _pagesEventosState extends State<pagesEventos> {
                 context, true, 'Cargando...', null, Colors.blue);
             res = await ServicioEvento().updateSede(
               id_ev_cdgo,
-              us_sede_sd_cdgo,
               us_cdgo,
               descTextController.text,
               selected_fecha_inicio,

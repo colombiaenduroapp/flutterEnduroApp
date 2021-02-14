@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
@@ -58,7 +59,10 @@ class _cont_inicioState extends State<cont_inicio> {
               if (snapshot.hasData) {
                 SedesList data = snapshot.data;
 
-                return carousel(data);
+                // return carousel(data);
+                return Center(
+                  child: Text('Hola mundo'),
+                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               } else {
