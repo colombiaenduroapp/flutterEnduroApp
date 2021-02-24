@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:shimmer/shimmer.dart';
 // import 'package:ui_flutter/src/pages/inicio.dart';
 
@@ -102,7 +104,6 @@ class WidgetsGenericos {
               context,
               MaterialPageRoute(builder: (context) => pagina),
             );
-            timeDilation = 1.5;
           },
           child: Container(
             decoration: BoxDecoration(
@@ -254,25 +255,51 @@ class WidgetsGenericos {
 
   static loadImage(String url) {
     try {
-      return FadeInImage.assetNetwork(
-        placeholder: 'assets/loading.gif',
-        // image: url,
-        image: url,
-        imageErrorBuilder:
-            (BuildContext context, Object exception, StackTrace stackTrace) {
-          return Icon(Icons.image_not_supported_rounded);
-        },
-        fit: BoxFit.cover,
-
-        //   // En esta propiedad colocamos el alto de nuestra imagen
-        width: double.infinity,
-        height: 50,
+      return CachedNetworkImage(
+        imageUrl: url,
+        placeholder: (context, url) =>
+            Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => Icon(Icons.error),
       );
+
+      // FadeInImage.assetNetwork(
+      //   placeholder: 'assets/loading.gif',
+      //   // image: url,
+      //   image: url,
+      //   imageErrorBuilder:
+      //       (BuildContext context, Object exception, StackTrace stackTrace) {
+      //     return Icon(Icons.image_not_supported_rounded);
+      //   },
+      //   fit: BoxFit.cover,
+
+      //   //   // En esta propiedad colocamos el alto de nuestra imagen
+      //   width: double.infinity,
+      //   height: 50,
+      // );
     } catch (e) {
       print('e');
       return Container(
         child: Text('axx'),
       );
     }
+  }
+
+  static fullDialogImage(String url) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text('Imagen'),
+      ),
+      body: SizedBox.expand(
+        child: Container(
+          color: Colors.black,
+          child: InteractiveViewer(
+            child: Image(
+              image: NetworkImage(url),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:ui_flutter/src/models/model_convenio.dart';
+
 class Empresa {
   final int em_cdgo;
   final String em_nit;
@@ -8,18 +10,26 @@ class Empresa {
   final String em_correo;
   final String em_error;
 
-  Empresa(
-      {this.em_cdgo,
-      this.em_nit,
-      this.em_logo,
-      this.em_nombre,
-      this.em_desc,
-      this.em_telefono,
-      this.em_correo,
-      this.em_error});
+  final List<Convenio> convenios;
+
+  Empresa({
+    this.em_cdgo,
+    this.em_nit,
+    this.em_logo,
+    this.em_nombre,
+    this.em_desc,
+    this.em_telefono,
+    this.em_correo,
+    this.em_error,
+    this.convenios,
+  });
 
   factory Empresa.fromJson(Map<String, dynamic> json) {
-    return new Empresa(
+    if (json['em_convenios'] != null) {
+      var list = json['em_convenios'] as List;
+      List<Convenio> convenioList =
+          list.map((i) => Convenio.fromJson(i)).toList();
+      return new Empresa(
         em_cdgo: json['em_cdgo'],
         em_nit: json['em_nit'],
         em_logo: json['em_logo'],
@@ -27,7 +37,22 @@ class Empresa {
         em_desc: json['em_desc'],
         em_telefono: json['em_telefono'],
         em_correo: json['em_correo'],
-        em_error: json['em_error']);
+        em_error: json['em_error'],
+        convenios: convenioList,
+      );
+    } else {
+      return new Empresa(
+        em_cdgo: json['em_cdgo'],
+        em_nit: json['em_nit'],
+        em_logo: json['em_logo'],
+        em_nombre: json['em_nombre'],
+        em_desc: json['em_desc'],
+        em_telefono: json['em_telefono'],
+        em_correo: json['em_correo'],
+        em_error: json['em_error'],
+        // convenios: convenioList,
+      );
+    }
   }
 }
 

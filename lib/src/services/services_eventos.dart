@@ -120,11 +120,12 @@ class ServicioEvento {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http.put(
-        url + "evento/" + ev_cdgo,
+        url + "evento/" + ev_cdgo.toString(),
         headers: {
           "x-access-token": prefs.getString('token'),
         },
         body: {
+          "us_sede_sd_cdgo": '110',
           "us_cdgo": us_cdgo.toString(),
           "ev_desc": ev_desc,
           "ev_fecha_inicio": ev_fecha_inicio.toString(),
@@ -134,7 +135,7 @@ class ServicioEvento {
           "ev_url_img": ev_url_img,
           "ev_url_video": ev_url_video,
         },
-      ).timeout(Duration(seconds: 40));
+      ).timeout(Duration(seconds: 10));
     } on TimeoutException catch (e) {
       print('Timeout');
     } on Error catch (e) {

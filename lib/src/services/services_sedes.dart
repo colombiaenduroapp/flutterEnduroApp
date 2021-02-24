@@ -9,13 +9,25 @@ import 'dart:async';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
+import 'package:path_provider/path_provider.dart';
+
 class ServicioSede {
   String url = Url().getUrl();
+  String fileName = 'sedData.json';
 
   Future<SedesList> cargarSedes() async {
+    var dir = await getTemporaryDirectory();
+    File file = new File(dir.path + "/" + fileName);
     http.Response response;
     SedesList sedesList;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // if (file.existsSync()) {
+    //   var jsonDtata = file.readAsStringSync();
+    //   SedesList response = SedesList.fromJson((json.decode(jsonDtata)['data']));
+    //   print('holaaa');
+    //   return response;
+    // }
     try {
       response = await http.get(
         url + "sede/",
@@ -32,7 +44,9 @@ class ServicioSede {
     } on Error catch (e) {
       return null;
     }
+    file.writeAsStringSync(response.body, flush: true, mode: FileMode.write);
 
+    print('hola');
     return sedesList;
   }
 
@@ -106,6 +120,9 @@ class ServicioSede {
   Future<bool> addSede(
       String cd_desc, String logo, String jersey, String ciudad) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    var dir = await getTemporaryDirectory();
+    File file = new File(dir.path + "/" + fileName);
+    file.deleteSync();
     try {
       final response = await http.post(
         url + "sede",

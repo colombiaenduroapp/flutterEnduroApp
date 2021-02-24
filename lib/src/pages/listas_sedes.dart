@@ -20,9 +20,29 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   bool res = false;
+
   final TextEditingController _filter = new TextEditingController();
 
-  String _searchText;
+  String _searchText = "";
+
+  Icon _searchIcon = Icon(Icons.search);
+  Widget _appBarTitle = new Text('Sedes');
+
+  _PagesListasSedesState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+
+          // filteredNames = names;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -42,97 +62,111 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Sedes'),
-          leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => InicioPage(0),
-                    ),
-                  )),
+      appBar: AppBar(
+        title: _appBarTitle,
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InicioPage(0),
+            ),
+          ),
         ),
-        body: FutureBuilder(
-          future: lista,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                if (snapshot.hasError) {
-                  return Text("${snapshot.error} error            .");
-                } else {
-                  return Center(
-                    child: Text('conecction.none'),
-                  );
-                }
-
-                break;
-              case ConnectionState.done:
-                if (snapshot.hasData) {
-                  SedesList data = snapshot.data;
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          child: TextField(
-                            controller: _filter,
-                            // autofocus: true,
-                            // style: TextStyle(color: Colors.white),
-                            decoration: new InputDecoration(
-                              // fillColor: Colors.white,
-                              // filled: true,
-                              prefixIcon: new Icon(
-                                Icons.search,
-                                // color: Colors.white,
-                              ),
-                              contentPadding: const EdgeInsets.only(top: 15),
-                              focusColor: Colors.white,
-                              hintText: "Buscar:",
-                              // hintStyle: TextStyle(color: Colors.white54),
-                            ),
-                          ),
-                        ),
-                        Container(child: _jobsListView(data)),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                } else {
-                  return WidgetsGenericos.containerErrorConection(
-                      context, PagesListasSedes());
-                }
-
-                break;
-              case ConnectionState.waiting:
+        actions: [
+          IconButton(
+            icon: _searchIcon,
+            onPressed: _searchPressed,
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future: lista,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              if (snapshot.hasError) {
+                return Text("${snapshot.error} error            .");
+              } else {
                 return Center(
-                  child: WidgetsGenericos.shimmerList(),
+                  child: Text('conecction.none'),
                 );
+              }
 
-                break;
-              case ConnectionState.active:
-                return Center(
-                  child: Text('conecction.Active'),
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                SedesList data = snapshot.data;
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(child: _jobsListView(data)),
+                    ],
+                  ),
                 );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              } else {
+                return WidgetsGenericos.containerErrorConection(
+                    context, PagesListasSedes());
+              }
 
-                break;
-              default:
-            }
-          },
-        )
+              break;
+            case ConnectionState.waiting:
+              return Center(
+                child: WidgetsGenericos.shimmerList(),
+              );
 
-        // body: Container(
-        //   child: cont_sedes(),
-        // ),
-        // floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-        //   context,
-        //   pageSedes('Registrar', null, null),
-        // ),
+              break;
+            case ConnectionState.active:
+              return Center(
+                child: Text('conecction.Active'),
+              );
+
+              break;
+            default:
+          }
+        },
+      ),
+      floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
+        context,
+        pageSedes('Registrar', null, null),
+      ),
+    );
+  }
+
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: _filter,
+          autofocus: true,
+          style: TextStyle(color: Colors.white),
+          decoration: new InputDecoration(
+              fillColor: Colors.white,
+              // filled: true,
+              // prefixIcon: new Icon(
+              //   Icons.search,
+              //   color: Colors.white,
+              // ),
+              contentPadding: const EdgeInsets.all(20),
+              focusColor: Colors.white,
+              hintText: "Buscar:",
+              hintStyle: TextStyle(color: Colors.white54)),
         );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text('Search Example');
+        // filteredNames = names;
+        _filter.clear();
+      }
+    });
   }
 
   Widget _jobsListView(data) {
     List sedes = new List();
+
     if (!(_searchText.isEmpty)) {
       for (int i = 0; i < data.sedes.length; i++) {
         if (data.sedes[i].sd_desc
@@ -143,6 +177,8 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
       }
     } else {
       for (int i = 0; i < data.sedes.length; i++) {
+        print(_searchText);
+
         sedes.add(data.sedes[i]);
       }
     }
@@ -153,8 +189,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
           child: Column(
             children: [
               ListView.builder(
-                  // scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: sedes.length,
                   itemBuilder: (context, index) {
@@ -233,7 +268,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                                               //     Duration(milliseconds: 500));
 
                                               Navigator.pop(context);
-                                              await setState(() {
+                                              setState(() {
                                                 data.sedes.removeAt(index);
                                               });
                                             } else {}
@@ -246,12 +281,6 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                       ],
                       actionPane: SlidableDrawerActionPane(),
                     );
-
-                    // WidgetsGenericos.ItemList(
-                    //     data.sedes[index].sd_desc,
-                    //     data.sedes[index].sd_logo,
-                    //     context,
-                    //     page_sedes_detalles(data.sedes[index].sd_cdgo.toString()));
                   }),
               SizedBox(
                 height: 80,

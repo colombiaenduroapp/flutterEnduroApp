@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/models/model_evento.dart';
+import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -31,109 +32,104 @@ class _page_eventos_detallesState extends State<page_eventos_detalles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(centerTitle: true, title: Text(titulo), actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.edit_outlined),
-            iconSize: 30,
-            tooltip: 'Editar',
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    pagesEventos(widget.ev_cdgo.toString(), evento, 'Editar'),
-              ),
+      appBar: AppBar(centerTitle: true, title: Text(titulo), actions: <Widget>[
+        IconButton(
+          icon: new Icon(Icons.edit_outlined),
+          iconSize: 30,
+          tooltip: 'Editar',
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  pagesEventos(widget.ev_cdgo.toString(), evento, 'Editar'),
             ),
           ),
-        ]),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              FutureBuilder<Evento>(
-                future: future_evento,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  evento = snapshot.data;
-                  if (snapshot.hasData) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: _imagen_evento(evento),
-                          ),
-                          _nombre_evento(evento),
+        ),
+      ]),
+      body: FutureBuilder<Evento>(
+        future: future_evento,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          evento = snapshot.data;
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: _imagenEvento(evento),
+                    ),
+                    _nombreEvento(evento),
 
-                          // fechas
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  'Inicia:  ' + evento.ev_fecha_inicio,
-                                  style: TextStyle(fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  'Finaliza: ' + evento.ev_fecha_fin,
-                                  style: TextStyle(fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
+                    // fechas
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Inicia:  ' + evento.ev_fecha_inicio,
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          // fin fechas
-                          Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Text(
-                                  'Descripcion del evento',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black26, width: 1)),
-                                padding: EdgeInsets.all(20),
-                                alignment: Alignment.topLeft,
-                                child: Text(evento.ev_lugar),
-                              ),
-                              // -----revisar
-                              evento.ev_url_video != null
-                                  ? Column(
-                                      children: [
-                                        Text(
-                                          'Video del Evento',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(15),
-                                          child: _cargar_video(
-                                              evento.ev_url_video),
-                                        ),
-                                      ],
-                                    )
-                                  : Text('No hay video ha mostrar'),
-                            ],
-                          )
+                          Text(
+                            'Finaliza: ' + evento.ev_fecha_fin,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                         ],
                       ),
-                    );
-                  } else {
-                    return Center(
-                      child: Text('vacio'),
-                    );
-                  }
-                },
+                    ),
+                    // fin fechas
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            'Descripcion del evento',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black26, width: 1)),
+                          padding: EdgeInsets.all(20),
+                          alignment: Alignment.topLeft,
+                          child: Text(evento.ev_lugar),
+                        ),
+                        // -----revisar
+                        evento.ev_url_video != null
+                            ? Column(
+                                children: [
+                                  Text(
+                                    'Video del Evento',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    child: _cargarVideo(evento.ev_url_video),
+                                  ),
+                                ],
+                              )
+                            : Text('No hay video ha mostrar'),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ],
-          ),
-        ));
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
   }
 
-  _imagen_evento(Evento evento) {
+  _imagenEvento(Evento evento) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -155,7 +151,7 @@ class _page_eventos_detallesState extends State<page_eventos_detalles> {
     );
   }
 
-  _nombre_evento(Evento evento) {
+  _nombreEvento(Evento evento) {
     return Container(
       padding: EdgeInsets.all(15.0),
       child: Text(
@@ -168,7 +164,7 @@ class _page_eventos_detallesState extends State<page_eventos_detalles> {
     );
   }
 
-  _cargar_video(String ev_url_video) {
+  _cargarVideo(String ev_url_video) {
     videoId = YoutubePlayer.convertUrlToId(ev_url_video);
     _controller1 = YoutubePlayerController(
       initialVideoId: videoId,
@@ -189,5 +185,54 @@ class _page_eventos_detallesState extends State<page_eventos_detalles> {
       //   // TotalDuration(),
       // ],
     );
+  }
+
+  Widget _listaMesa(Sede sede) {
+    if (sede.mesas.length > 0) {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: sede.mesas.length,
+        itemBuilder: (context, index) {
+          if (sede.mesas != null) {
+            return Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.black26, width: 0.5),
+                ),
+              ),
+              child: ListTile(
+                leading: Icon(Icons.verified_user),
+                title: Text(
+                  '${sede.mesas[index].us_nombres}',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                    '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
+                trailing: InkWell(
+                  onTap: () {},
+                  child: Icon(Icons.more_vert_outlined),
+                ),
+              ),
+            );
+          } else {
+            return Container(
+                child: ListTile(
+              title: Text('vacio'),
+            ));
+          }
+        },
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Container(
+            child: Center(
+          child: Text(
+            'No se han agregado integrantes a la mesa de trabajo',
+            style: TextStyle(color: Colors.black26),
+          ),
+        )),
+      );
+    }
   }
 }

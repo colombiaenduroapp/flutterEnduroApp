@@ -235,7 +235,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                                         onPressed: () async {
                                           res = await ServicioEvento()
                                               .deleteEvento(data
-                                                  .eventos[index].em_cdgo
+                                                  .eventos[index].ev_cdgo
                                                   .toString());
                                           Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
@@ -253,6 +253,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                                                 'Eliminado Correctamente',
                                                 Icons.check_circle_outlined,
                                                 Colors.green);
+
                                             // await Future.delayed(
                                             //     Duration(milliseconds: 500));
 
@@ -260,7 +261,15 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                                             await setState(() {
                                               data.eventos.removeAt(index);
                                             });
-                                          } else {}
+                                          } else {
+                                            Navigator.pop(context);
+                                            WidgetsGenericos.showLoaderDialog(
+                                                context,
+                                                false,
+                                                ' Ha ocurrido un error',
+                                                Icons.error_outline,
+                                                Colors.red);
+                                          }
                                         }),
                                   ],
                                 );

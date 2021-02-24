@@ -7,6 +7,7 @@ import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
@@ -334,9 +335,13 @@ class _pageSedesState extends State<pageSedes> {
     // Ciudad ciudad;
     http.Response response;
     try {
-      response = await http
-          .get(Url().getUrl() + 'ciudad')
-          .timeout(Duration(seconds: 30));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      response = await http.get(
+        Url().getUrl() + 'ciudad',
+        headers: {
+          "x-access-token": prefs.getString('token'),
+        },
+      ).timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body)['data'];
       // ciudad = Ciudad.fromJson(jsonResponse);
       setState(() {
@@ -353,7 +358,7 @@ class _pageSedesState extends State<pageSedes> {
           ? DropdownButton(
               value: ciudadSel,
               onChanged: (String value) {
-                setState(() {
+                this.setState(() {
                   ciudadSel = value;
                   getCiudad();
                 });

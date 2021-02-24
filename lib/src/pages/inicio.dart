@@ -107,34 +107,7 @@ class _InicioPageState extends State<InicioPage>
               tabs: myTabs,
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-          floatingActionButton: _bottomButtons(),
           drawer: Nav_drawer(),
         ));
-  }
-
-  Widget _bottomButtons() {
-    if (tabController.index == 2) {
-      return FloatingActionButton(
-        shape: StadiumBorder(),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => pagesEventos(null, null, 'Registrar'))),
-        child: Icon(Icons.add, size: 35.0, color: Colors.white),
-      );
-    }
-    // else if (tabController.index == 3) {
-    //   return FloatingActionButton(
-    //     child: Icon(Icons.add, size: 35.0, color: Colors.white),
-    //     shape: StadiumBorder(),
-    //     hoverColor: Colors.blue,
-    //     focusColor: Colors.blue,
-    //     onPressed: () => Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => pageSedes('Registrar', null, null))),
-    //   );
-    // }
   }
 }
