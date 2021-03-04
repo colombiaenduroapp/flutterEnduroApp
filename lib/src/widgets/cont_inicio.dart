@@ -24,7 +24,6 @@ class _cont_inicioState extends State<cont_inicio> {
 
   void cargalist() async {
     sedelist = await lista;
-    print(sedelist.sedes[1].sd_desc);
   }
 
   @override

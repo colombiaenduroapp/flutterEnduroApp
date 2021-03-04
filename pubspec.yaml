@@ -23,6 +23,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  adhara_socket_io: ^0.4.2+1
+  font_awesome_flutter: ^8.11.0
   path_provider:
   jwt_decoder: ^1.0.4
   octo_image: ^0.3.0

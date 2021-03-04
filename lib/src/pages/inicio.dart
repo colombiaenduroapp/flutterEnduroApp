@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ui_flutter/src/pages/sedes.dart';
 
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_gestionar.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
-import 'package:ui_flutter/src/widgets/tab_bar/tab_sede.dart';
 
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
-import 'eventos.dart';
-
 class InicioPage extends StatefulWidget {
-  int tab_index;
-  InicioPage(this.tab_index, {Key key}) : super(key: key);
+  int tabIndex;
+  InicioPage(this.tabIndex, {Key key}) : super(key: key);
 
   @override
   _InicioPageState createState() => _InicioPageState();
@@ -40,7 +36,7 @@ class _InicioPageState extends State<InicioPage>
   void initState() {
     addStringToSF();
     tabController = new TabController(vsync: this, length: myTabs.length);
-    tabController.index = widget.tab_index;
+    tabController.index = widget.tabIndex;
     tabController.addListener(() {
       setState(() {
         fabIndex = tabController.index;
