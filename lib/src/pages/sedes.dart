@@ -68,7 +68,7 @@ class _pageSedesState extends State<pageSedes> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
             widget.estado == 'Editar' ? Text('Editar Sede') : Text('Registrar'),
