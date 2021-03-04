@@ -57,7 +57,7 @@ class _InicioPageState extends State<InicioPage>
     return new DefaultTabController(
         length: 3,
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
               'COLOMBIA ENDURO',
