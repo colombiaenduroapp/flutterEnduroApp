@@ -2,7 +2,7 @@ import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 class socketRes {
   Future<SocketIO> conexion() async {
-    String URI = "http://192.168.100.181:5000";
+    String URI = "https://colombiaenduro.herokuapp.com/";
     SocketIOManager manager;
     SocketIO socket;
     manager = SocketIOManager();

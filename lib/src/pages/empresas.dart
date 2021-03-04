@@ -69,9 +69,12 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
       socket = await socketRes().conexion();
       socket.on('respuesta', (data) {
         print(data['datos']);
-        setState(() {
-          dato = data['datos'];
-        });
+        if (this.mounted) {
+          // check whether the state object is in tree
+          setState(() {
+            dato = data['datos'];
+          });
+        }
       });
     } on FormatException {}
   }

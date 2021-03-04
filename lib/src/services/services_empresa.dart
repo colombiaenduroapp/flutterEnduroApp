@@ -135,6 +135,7 @@ class ServicioEmpresa {
     if (response.statusCode == 200) {
       socket.emit('evento', [
         {
+          "em_cdgo": em_cdgo,
           "em_nit": em_nit,
           // "em_logo": em_logo,
           "em_nombre": em_nombre,
