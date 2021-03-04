@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:ui_flutter/src/services/socket.dart';
 
 class ServicioEmpresa {
   String url = Url().getUrl();
+  SocketIO socket;
 
   Future<EmpresaList> getEmpresa() async {
     http.Response response;
@@ -109,6 +112,7 @@ class ServicioEmpresa {
       String em_telefono,
       String em_correo) async {
     var response;
+    socket = await socketRes().conexion();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http.put(
@@ -129,6 +133,16 @@ class ServicioEmpresa {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
+      socket.emit('evento', [
+        {
+          "em_nit": em_nit,
+          // "em_logo": em_logo,
+          "em_nombre": em_nombre,
+          "em_desc": em_desc,
+          "em_telefono": em_telefono,
+          "em_correo": em_correo,
+        }
+      ]);
       return true;
     } else {
       return false;

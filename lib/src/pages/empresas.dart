@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // class pagesEmpresa extends StatefulWidget {
 //   final String em_cdgo;
@@ -45,17 +46,34 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   File file;
   String id_ev_cdgo;
   String nombre_url_logo = '';
-  String urlLogo = null;
+  String urlLogo;
   String imgLogo = null;
+  String dato;
   bool res = false;
   int us_cdgo;
   String us_nombres;
+  SocketIO socket;
 
   @override
   void initState() {
+    dato = 'jhsdfhj';
     cargar_evento(widget.empresa);
+
     // TODO: implement initState
     super.initState();
+    cargarSocket();
+  }
+
+  cargarSocket() async {
+    try {
+      socket = await socketRes().conexion();
+      socket.on('respuesta', (data) {
+        print(data['datos']);
+        setState(() {
+          dato = data['datos'];
+        });
+      });
+    } on FormatException {}
   }
 
   @override
@@ -63,7 +81,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Registrar Empresa'),
+        title: Text(dato),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushReplacement(
@@ -86,6 +104,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
               child: Column(
                 children: [
                   // -------------------------Formulario-----------------------
+
                   Container(
                     margin: EdgeInsets.symmetric(
                       horizontal: 20,
@@ -143,6 +162,10 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                               ),
                               buildCounter: null,
                             ),
+                          ),
+                          Text(
+                            dato,
+                            style: TextStyle(color: Colors.black),
                           ),
 
                           formItemsDesign(

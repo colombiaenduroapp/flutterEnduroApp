@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -173,7 +174,7 @@ class _PageConocenosState extends State<PageConocenos> {
                                     ? Column(
                                         children: [
                                           Text(
-                                            'Video del Evento',
+                                            'Video de invitación',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 22.0,
@@ -188,30 +189,56 @@ class _PageConocenosState extends State<PageConocenos> {
                                     : Text('No hay video ha mostrar'),
                               ),
                               SizedBox(height: 40.0),
-                              // SizedBox(height: 15.0),
-                              // Text(
-                              //   'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //     fontSize: 16.0,
-                              //   ),
-                              // ),
-
-                              Text(
-                                'Contactanos',
-                                // style: kTitleStyle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22.0,
+                              Center(
+                                child: Text(
+                                  'Contactanos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22.0,
+                                  ),
                                 ),
                               ),
-                              GFButton(
-                                type: GFButtonType.outline,
-                                shape: GFButtonShape.pills,
-                                onPressed: () {
-                                  launch(('tel://312567e7'));
-                                },
-                                child: Text('hola mundo'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: GFButton(
+                                  type: GFButtonType.outline,
+                                  shape: GFButtonShape.pills,
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    launch(('tel://312567e7'));
+                                  },
+                                  child: Text(
+                                    'Comunicate con nosotros...',
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 40),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GFIconButton(
+                                      onPressed: () {},
+                                      // shape: GFIconButtonShape.pills,
+                                      type: GFButtonType.solid,
+                                      icon: FaIcon(FontAwesomeIcons.facebook),
+                                    ),
+                                    GFIconButton(
+                                      onPressed: () {},
+                                      // shape: GFIconButtonShape.pills,
+                                      type: GFButtonType.solid,
+                                      color: GFColors.SUCCESS,
+                                      icon: FaIcon(
+                                        FontAwesomeIcons.whatsapp,
+                                        // color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
