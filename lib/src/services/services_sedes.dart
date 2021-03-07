@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,27 +8,19 @@ import 'package:ui_flutter/src/models/model_sede.dart';
 import 'dart:async';
 
 import 'package:ui_flutter/src/services/service_url.dart';
-import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 
 class ServicioSede {
   String url = Url().getUrl();
-  String fileName = 'sedData.json';
 
   Future<SedesList> cargarSedes() async {
-    var dir = await getTemporaryDirectory();
-    File file = new File(dir.path + "/" + fileName);
     http.Response response;
     SedesList sedesList;
+    var jsonResponse;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // if (file.existsSync()) {
-    //   var jsonDtata = file.readAsStringSync();
-    //   SedesList response = SedesList.fromJson((json.decode(jsonDtata)['data']));
-    //   print('holaaa');
-    //   return response;
-    // }
     try {
       response = await http.get(
         url + "sede/",
@@ -35,7 +28,7 @@ class ServicioSede {
           "x-access-token": prefs.getString('token'),
         },
       ).timeout(Duration(seconds: 10));
-      final jsonResponse = json.decode(response.body)['data'];
+      jsonResponse = json.decode(response.body)['data'];
       sedesList = SedesList.fromJson(jsonResponse);
     } on TimeoutException catch (e) {
       return null;
@@ -44,9 +37,7 @@ class ServicioSede {
     } on Error catch (e) {
       return null;
     }
-    file.writeAsStringSync(response.body, flush: true, mode: FileMode.write);
 
-    print('hola');
     return sedesList;
   }
 
@@ -89,6 +80,8 @@ class ServicioSede {
   Future<bool> updateSede(String sd_cdgo, String cd_desc, String logo,
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
+    SocketIO socket = await socketRes().conexion();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await http.put(
@@ -111,6 +104,7 @@ class ServicioSede {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
+      socket.emit('sedes', ['true']);
       return true;
     } else {
       return false;
@@ -119,10 +113,8 @@ class ServicioSede {
 
   Future<bool> addSede(
       String cd_desc, String logo, String jersey, String ciudad) async {
+    SocketIO socket = await socketRes().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var dir = await getTemporaryDirectory();
-    File file = new File(dir.path + "/" + fileName);
-    file.deleteSync();
     try {
       final response = await http.post(
         url + "sede",
@@ -138,6 +130,7 @@ class ServicioSede {
       ).timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200) {
+        socket.emit('sedes', ['true']);
         return true;
       } else {
         return false;
@@ -151,6 +144,7 @@ class ServicioSede {
 
   Future<bool> deleteSede(String sd_cdgo) async {
     var response;
+    SocketIO socket = await socketRes().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await http.delete(
@@ -161,6 +155,7 @@ class ServicioSede {
       );
     } catch (error) {}
     if (response.statusCode == 200) {
+      socket.emit('sedes', ['true']);
       return true;
     } else {
       return false;

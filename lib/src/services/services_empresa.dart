@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:adhara_socket_io/adhara_socket_io.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
@@ -14,8 +15,10 @@ class ServicioEmpresa {
   SocketIO socket;
 
   Future<EmpresaList> getEmpresa() async {
+    var jsonResponse;
     http.Response response;
     EmpresaList empresalist;
+    socket = await socketRes().conexion();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -25,7 +28,7 @@ class ServicioEmpresa {
           "x-access-token": prefs.getString('token'),
         },
       ).timeout(Duration(seconds: 30));
-      final jsonResponse = json.decode(response.body)['data'];
+      jsonResponse = json.decode(response.body)['data'];
       empresalist = EmpresaList.fromJson(jsonResponse);
     } on TimeoutException catch (e) {
       return null;
@@ -47,6 +50,7 @@ class ServicioEmpresa {
     String em_correo,
   ) async {
     try {
+      socket = await socketRes().conexion();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final response = await http.post(
         url + "empresa",
@@ -112,14 +116,14 @@ class ServicioEmpresa {
       String em_telefono,
       String em_correo) async {
     var response;
-    socket = await socketRes().conexion();
+
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http.put(
         url + "empresa/" + em_cdgo,
         headers: {"x-access-token": prefs.getString('token')},
         body: {
-          "em_nit": em_nit,
+          // "em_nit": em_nit,
           "em_logo": em_logo,
           "em_nombre": em_nombre,
           "em_desc": em_desc,
@@ -133,17 +137,6 @@ class ServicioEmpresa {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
-      socket.emit('evento', [
-        {
-          "em_cdgo": em_cdgo,
-          "em_nit": em_nit,
-          // "em_logo": em_logo,
-          "em_nombre": em_nombre,
-          "em_desc": em_desc,
-          "em_telefono": em_telefono,
-          "em_correo": em_correo,
-        }
-      ]);
       return true;
     } else {
       return false;
