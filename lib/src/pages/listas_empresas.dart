@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'empresas.dart';
@@ -28,11 +32,30 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = new Text('Empresa');
   bool res = true;
+
+  var dato;
   @override
   void initState() {
     // TODO: implement initS
     super.initState();
   }
+
+  // cargarSocket() async {
+  //   try {
+  //     socket = await socketRes().conexion();
+  //     socket.on('respuesta', (data) {
+  //       print(data['data'].toString());
+  //       if (this.mounted) {
+  //         // check whether the state object is in tree
+  //         setState(() {
+  //           emp = Empresa.fromJson(data['data']);
+  //           ;
+  //           print(emp.em_correo);
+  //         });
+  //       }
+  //     });
+  //   } on FormatException {}
+  // }
 
   _pages_listas_empresasState() {
     _filter.addListener(() {

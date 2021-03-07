@@ -48,7 +48,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
   String nombre_url_logo = '';
   String urlLogo;
   String imgLogo = null;
-  String dato;
+  var dato;
   bool res = false;
   int us_cdgo;
   String us_nombres;
@@ -56,27 +56,11 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
 
   @override
   void initState() {
-    dato = 'jhsdfhj';
+    dato = 'Empresa';
     cargar_evento(widget.empresa);
 
     // TODO: implement initState
     super.initState();
-    cargarSocket();
-  }
-
-  cargarSocket() async {
-    try {
-      socket = await socketRes().conexion();
-      socket.on('respuesta', (data) {
-        print(data['datos']);
-        if (this.mounted) {
-          // check whether the state object is in tree
-          setState(() {
-            dato = data['datos'];
-          });
-        }
-      });
-    } on FormatException {}
   }
 
   @override

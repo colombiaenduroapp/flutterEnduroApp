@@ -24,7 +24,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   final TextEditingController _filter = new TextEditingController();
 
   String _searchText = "";
-  List sedes = new List();
+  // List sedes = new List();
 
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = new Text('Sedes');
@@ -166,7 +166,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   }
 
   Widget _jobsListView(data) {
-    // List sedes = new List();
+    List sedes = new List();
 
     if (!(_searchText.isEmpty)) {
       for (int i = 0; i < data.sedes.length; i++) {
@@ -178,8 +178,6 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
       }
     } else {
       for (int i = 0; i < data.sedes.length; i++) {
-        print(_searchText);
-
         sedes.add(data.sedes[i]);
       }
     }

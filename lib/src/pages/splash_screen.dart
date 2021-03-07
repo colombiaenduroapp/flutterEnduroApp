@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/login.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -22,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    socketRes().conexion();
     super.initState();
     _loadWidget();
   }
