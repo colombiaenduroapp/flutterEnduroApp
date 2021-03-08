@@ -16,7 +16,7 @@ class cont_sedes extends StatefulWidget {
 }
 
 class _cont_sedesState extends State<cont_sedes> {
-  Future<SedesList> lista = ServicioSede().cargarSedes();
+  Future<SedesList> lista = ServicioSede().cargarSedes(true);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   bool res = false;

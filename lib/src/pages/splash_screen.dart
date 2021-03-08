@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/login.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -36,6 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationPage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('token') != null) {
+      ServicioSede().cargarSedes(true);
+      SocketIO socket = await socketRes().conexion();
+      socket.on('sedesres', (_) {
+        print('sedes cambio');
+        ServicioSede().cargarSedes(true);
+      });
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => InicioPage(1)));
     } else {

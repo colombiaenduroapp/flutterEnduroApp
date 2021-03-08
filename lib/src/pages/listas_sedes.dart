@@ -1,10 +1,13 @@
+import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive/hive.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/cont_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
@@ -16,10 +19,12 @@ class PagesListasSedes extends StatefulWidget {
 }
 
 class _PagesListasSedesState extends State<PagesListasSedes> {
-  Future<SedesList> lista = ServicioSede().cargarSedes();
+  Future<dynamic> lista = ServicioSede().cargarSedes(false);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   bool res = false;
+
+  List sedes1 = Hive.box('sedesdb').get('data', defaultValue: []);
 
   final TextEditingController _filter = new TextEditingController();
 
@@ -48,9 +53,31 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   @override
   void initState() {
     _searchText = "";
+    cargar();
+    socket();
 
     // TODO: implement initState
     super.initState();
+  }
+
+  socket() async {
+    SocketIO socket = await socketRes().conexion();
+    socket.on('sedesres', (_) async {
+      print('sedes cambio second');
+      sedes1 = await ServicioSede().cargarSedes(true);
+      if (mounted) {
+        setState(() {
+          print('cambiando');
+          sedes1 = sedes1;
+        });
+      }
+    });
+  }
+
+  cargar() async {
+    if (!sedes1.isNotEmpty) {
+      sedes1 = await ServicioSede().cargarSedes(true);
+    }
   }
 
   @override
@@ -97,11 +124,11 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
               break;
             case ConnectionState.done:
               if (snapshot.hasData) {
-                SedesList data = snapshot.data;
+                List data = sedes1;
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(child: _jobsListView(data)),
+                      Container(child: _jobsListView(sedes1)),
                     ],
                   ),
                 );
@@ -166,19 +193,17 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   }
 
   Widget _jobsListView(data) {
-    List sedes = new List();
+    List<dynamic> sedes = new List();
 
     if (!(_searchText.isEmpty)) {
-      for (int i = 0; i < data.sedes.length; i++) {
-        if (data.sedes[i].sd_desc
-            .toLowerCase()
-            .contains(_searchText.toLowerCase())) {
-          sedes.add(data.sedes[i]);
+      for (int i = 0; i < data.length; i++) {
+        if (data[i].sd_desc.toLowerCase().contains(_searchText.toLowerCase())) {
+          sedes.add(data[i]);
         }
       }
     } else {
-      for (int i = 0; i < data.sedes.length; i++) {
-        sedes.add(data.sedes[i]);
+      for (int i = 0; i < data.length; i++) {
+        sedes.add(data[i]);
       }
     }
 
@@ -193,15 +218,16 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                   itemCount: sedes.length,
                   itemBuilder: (context, index) {
                     return Slidable(
-                      key: ValueKey(data.sedes[index]),
+                      key: ValueKey(data[index]),
                       closeOnScroll: true,
                       child: WidgetsGenericos.itemList(
-                          sedes[index].sd_desc,
+                          sedes[index]['sd_desc'],
                           null,
-                          sedes[index].sd_logo,
+                          sedes[index]['sd_logo'],
                           context,
-                          page_sedes_detalles(sedes[index].sd_cdgo.toString(),
-                              sedes[index].sd_desc.toString())),
+                          page_sedes_detalles(
+                              sedes[index]['sd_cdgo'].toString(),
+                              sedes[index]['sd_desc'].toString())),
                       actions: <Widget>[
                         IconSlideAction(
                             icon: Icons.delete_outline_rounded,
@@ -244,8 +270,8 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                                           ),
                                           onPressed: () async {
                                             res = await ServicioSede()
-                                                .deleteSede(data
-                                                    .sedes[index].sd_cdgo
+                                                .deleteSede(data[index]
+                                                        ['sd_cdgo']
                                                     .toString());
                                             Navigator.pop(context);
                                             WidgetsGenericos.showLoaderDialog(
@@ -268,7 +294,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
 
                                               Navigator.pop(context);
                                               setState(() {
-                                                data.sedes.removeAt(index);
+                                                data.removeAt(index);
                                               });
                                             } else {}
                                           }),

@@ -1,8 +1,10 @@
+import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class cont_inicio extends StatefulWidget {
@@ -15,11 +17,22 @@ class cont_inicio extends StatefulWidget {
 class _cont_inicioState extends State<cont_inicio> {
   int currentPos = 0;
 
-  Future<SedesList> lista = ServicioSede().cargarSedes();
+  Future<dynamic> lista = ServicioSede().cargarSedes(true);
   SedesList sedelist;
+  SocketIO socket;
   @override
   void initState() {
+    sockets();
     super.initState();
+  }
+
+  sockets() async {
+    socket = await socketRes().conexion();
+    print('hola socket');
+    socket.connect();
+    socket.on('sedesres', (_) {
+      print('sedes');
+    });
   }
 
   void cargalist() async {
@@ -38,10 +51,10 @@ class _cont_inicioState extends State<cont_inicio> {
     ));
   }
 
-  Widget res_carousel(Future<SedesList> lista) {
+  Widget res_carousel(Future<dynamic> lista) {
     return Container(
       child: FutureBuilder(
-        future: lista,
+        future: ServicioSede().cargarSedes(false),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -56,7 +69,7 @@ class _cont_inicioState extends State<cont_inicio> {
               break;
             case ConnectionState.done:
               if (snapshot.hasData) {
-                SedesList data = snapshot.data;
+                // SedesList data = snapshot.data;
 
                 // return carousel(data);
                 return Center(
@@ -88,7 +101,7 @@ class _cont_inicioState extends State<cont_inicio> {
     );
   }
 
-  Widget carousel(SedesList data) {
+  Widget carousel(List data) {
     return Container(
       child: Column(
         children: [
@@ -108,7 +121,7 @@ class _cont_inicioState extends State<cont_inicio> {
                 );
               },
             ),
-            itemCount: data.sedes.length,
+            itemCount: data.length,
             itemBuilder: (context, index) {
               return cont_carousel(data, index);
             },
@@ -118,7 +131,7 @@ class _cont_inicioState extends State<cont_inicio> {
     );
   }
 
-  Widget cont_carousel(SedesList data, int index) {
+  Widget cont_carousel(List data, int index) {
     return Stack(
       children: [
         Container(
@@ -126,7 +139,7 @@ class _cont_inicioState extends State<cont_inicio> {
           width: double.infinity,
           color: Colors.white,
           child: Image.network(
-            data.sedes[index].sd_jersey,
+            data[index]['sd_jersey'],
             fit: BoxFit.cover,
           ),
         ),
@@ -149,7 +162,7 @@ class _cont_inicioState extends State<cont_inicio> {
             child: Column(
               children: [
                 Text(
-                  data.sedes[index].sd_desc,
+                  data[index]['sd_desc'],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,

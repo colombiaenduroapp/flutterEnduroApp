@@ -297,7 +297,6 @@ class _pageSedesState extends State<pageSedes> {
       nombre_url_jersey = urlJersey.replaceAll(url + "sede/imagejersey/", "");
       ciudadSel = sede.cd_cdgo;
       id = sede.sd_cdgo.toString();
-      print(urlLogo);
     }
   }
 
@@ -364,7 +363,6 @@ class _pageSedesState extends State<pageSedes> {
                 });
               },
               items: statelist.map((item) {
-                // print(item['cd_desc']);
                 return DropdownMenuItem(
                   value: item['id'].toString(),
                   child: Text(item['nombre']),
@@ -415,7 +413,6 @@ class _pageSedesState extends State<pageSedes> {
                 if (ciudadSel != null) {
                   WidgetsGenericos.showLoaderDialog(
                       context, true, 'Cargando..', null, Colors.grey);
-                  print(ciudadSel);
                   // guarda la informacion
                   res = await ser.addSede(
                     nombreTextController.text,
@@ -518,8 +515,6 @@ class _pageSedesState extends State<pageSedes> {
               file = null;
               fileJersey = null;
               Navigator.pop(context);
-              print(imgLogo);
-              print(imgJersey);
             } else {
               WidgetsGenericos.showLoaderDialog(context, false,
                   'Ha Ocurrido un error', Icons.error_outline, Colors.red);

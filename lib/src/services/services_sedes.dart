@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
@@ -15,21 +16,30 @@ import 'package:ui_flutter/src/services/socket.dart';
 class ServicioSede {
   String url = Url().getUrl();
 
-  Future<SedesList> cargarSedes() async {
+  Future<dynamic> cargarSedes(bool cambio) async {
     http.Response response;
     SedesList sedesList;
     var jsonResponse;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
-      response = await http.get(
-        url + "sede/",
-        headers: {
-          "x-access-token": prefs.getString('token'),
-        },
-      ).timeout(Duration(seconds: 10));
-      jsonResponse = json.decode(response.body)['data'];
-      sedesList = SedesList.fromJson(jsonResponse);
+      final sedes = Hive.box('sedesdb').get('data', defaultValue: []);
+      if (!cambio) {
+        if (sedes.isNotEmpty) {
+          return sedes;
+        }
+      } else {
+        response = await http.get(
+          url + "sede/",
+          headers: {
+            "x-access-token": prefs.getString('token'),
+          },
+        ).timeout(Duration(seconds: 10));
+        jsonResponse = json.decode(response.body)['data'];
+        sedesList = SedesList.fromJson(jsonResponse);
+        Hive.box('sedesdb').put('data', jsonResponse);
+        return jsonResponse;
+      }
     } on TimeoutException catch (e) {
       return null;
     } on SocketException catch (e) {
@@ -37,8 +47,6 @@ class ServicioSede {
     } on Error catch (e) {
       return null;
     }
-
-    return sedesList;
   }
 
   Future<List> getCiudad() async {
@@ -81,6 +89,7 @@ class ServicioSede {
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
     SocketIO socket = await socketRes().conexion();
+    socket.connect();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
