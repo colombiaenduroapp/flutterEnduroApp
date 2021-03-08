@@ -7,5 +7,6 @@ import 'src/pages/app.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('sedesdb');
+  await Hive.openBox('empresasdb');
   runApp(MyApp());
 }

@@ -60,6 +60,8 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
     super.initState();
   }
 
+// el metodo socket crea una conexion con el servidor de sockets y escucha el
+// evento sedes para hacer cambios en tiempo real
   socket() async {
     SocketIO socket = await socketRes().conexion();
     socket.on('sedesres', (_) async {
@@ -74,6 +76,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
     });
   }
 
+// el metodo cargar() carga la base de datos local en el caso de que esta se encuentre vacia
   cargar() async {
     if (!sedes1.isNotEmpty) {
       sedes1 = await ServicioSede().cargarSedes(true);

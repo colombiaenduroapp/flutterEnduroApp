@@ -25,16 +25,9 @@ class _InicioPageState extends State<InicioPage>
     new Tab(text: "Eventos"),
   ];
   TabController tabController;
-  addStringToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('us_cdgo', 1);
-    prefs.setString('us_nombres', "Yuri Marcela");
-    prefs.setInt('us_sede_sd_cdgo', 110);
-  }
 
   @override
   void initState() {
-    addStringToSF();
     tabController = new TabController(vsync: this, length: myTabs.length);
     tabController.index = widget.tabIndex;
     tabController.addListener(() {

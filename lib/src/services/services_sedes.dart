@@ -16,9 +16,11 @@ import 'package:ui_flutter/src/services/socket.dart';
 class ServicioSede {
   String url = Url().getUrl();
 
+// esta funcion carga la lista de sedes la variable cambio sirve para determinar
+// si hubieron cambion en el servidor  true=hubieron cambios, false=no hubieron cambios
   Future<dynamic> cargarSedes(bool cambio) async {
     http.Response response;
-    SedesList sedesList;
+    // SedesList sedesList;
     var jsonResponse;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -36,7 +38,7 @@ class ServicioSede {
           },
         ).timeout(Duration(seconds: 10));
         jsonResponse = json.decode(response.body)['data'];
-        sedesList = SedesList.fromJson(jsonResponse);
+        // sedesList = SedesList.fromJson(jsonResponse);
         Hive.box('sedesdb').put('data', jsonResponse);
         return jsonResponse;
       }
