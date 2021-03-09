@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Container(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

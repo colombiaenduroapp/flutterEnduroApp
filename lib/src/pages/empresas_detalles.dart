@@ -528,7 +528,7 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
               child: Container(
                 margin: EdgeInsets.only(top: 5),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  // color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.2),

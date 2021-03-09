@@ -22,14 +22,16 @@ class _cont_gestionarState extends State<cont_gestionar> {
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(color: Colors.blueGrey[50], boxShadow: [
-              BoxShadow(
-                color: Colors.black38,
-                spreadRadius: 3,
-                blurRadius: 10,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ]),
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    spreadRadius: 3,
+                    blurRadius: 10,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ]),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

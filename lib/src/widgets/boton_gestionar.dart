@@ -25,7 +25,7 @@ class BotonGestionar {
             Text(
               texto,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: TextStyle(color: Theme.of(context).textSelectionColor),
             ),
           ],
         ),
