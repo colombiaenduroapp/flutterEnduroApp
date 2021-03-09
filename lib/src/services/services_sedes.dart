@@ -140,7 +140,9 @@ class ServicioSede {
       ).timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200) {
-        socket.emit('sedes', ['true']);
+        socket.emit('sedes', [
+          {'tipo': 'registro', 'sede': cd_desc}
+        ]);
         return true;
       } else {
         return false;

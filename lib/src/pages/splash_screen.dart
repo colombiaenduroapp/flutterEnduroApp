@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/login.dart';
+import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
@@ -23,12 +24,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   String _versionName = 'V1.0';
   final splashDelay = 3;
+  LocalNotification localNotification;
 
   @override
   void initState() {
     socketRes().conexion();
     super.initState();
     _loadWidget();
+    localNotification = new LocalNotification();
   }
 
   _loadWidget() async {
@@ -42,7 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
       ServicioSede().cargarSedes(true);
       ServicioEmpresa().getEmpresa(true);
       SocketIO socket = await socketRes().conexion();
-      socket.on('sedesres', (_) {
+      socket.on('sedesres', (data) {
+        if (data['tipo'] == "registro")
+          localNotification.scheduleNotification(data['sede'], data['sede']);
         print('sedes cambio');
         ServicioSede().cargarSedes(true);
       });

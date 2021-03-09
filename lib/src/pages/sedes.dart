@@ -436,7 +436,7 @@ class _pageSedesState extends State<pageSedes> {
                     nombreTextController.text = '';
                     file = null;
                     fileJersey = null;
-                    await Future.delayed(Duration(milliseconds: 500));
+                    await ServicioSede().cargarSedes(true);
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pushReplacement(
