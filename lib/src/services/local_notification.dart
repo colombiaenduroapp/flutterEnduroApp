@@ -70,13 +70,18 @@ class LocalNotification {
         largeIcon: DrawableResourceAndroidBitmap('app_icon'),
         priority: Priority.high,
         importance: Importance.max,
+        setAsGroupSummary: true,
         groupKey: groupKey);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(0, title, description,
-        scheduledNotificationDateTime, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        DateTime.now().microsecond,
+        title,
+        description,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 
   Future<void> cancelNotification() async {
