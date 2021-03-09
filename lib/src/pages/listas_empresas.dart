@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
@@ -23,8 +24,8 @@ class pages_listas_empresas extends StatefulWidget {
 }
 
 class _pages_listas_empresasState extends State<pages_listas_empresas> {
-  Future<EmpresaList> lista = ServicioEmpresa().getEmpresa();
-  EmpresaList emplist;
+  Future<dynamic> lista = ServicioEmpresa().getEmpresa(false);
+  List emplist = Hive.box('empresasdb').get('data', defaultValue: []);
   final TextEditingController _filter = new TextEditingController();
 
   String _searchText = "";
@@ -36,26 +37,34 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   var dato;
   @override
   void initState() {
+    cargar();
+    socket();
     // TODO: implement initS
     super.initState();
   }
 
-  // cargarSocket() async {
-  //   try {
-  //     socket = await socketRes().conexion();
-  //     socket.on('respuesta', (data) {
-  //       print(data['data'].toString());
-  //       if (this.mounted) {
-  //         // check whether the state object is in tree
-  //         setState(() {
-  //           emp = Empresa.fromJson(data['data']);
-  //           ;
-  //           print(emp.em_correo);
-  //         });
-  //       }
-  //     });
-  //   } on FormatException {}
-  // }
+  // el metodo socket crea una conexion con el servidor de sockets y escucha el
+// evento sedeempresas para hacer cambios en tiempo real
+  socket() async {
+    SocketIO socket = await socketRes().conexion();
+    socket.on('empresasres', (_) async {
+      print('empresas cambio ');
+      emplist = await ServicioEmpresa().getEmpresa(true);
+      if (mounted) {
+        setState(() {
+          print('cambiando');
+          emplist = emplist;
+        });
+      }
+    });
+  }
+
+// el metodo cargar() carga la base de datos local en el caso de que esta se encuentre vacia
+  cargar() async {
+    if (!emplist.isNotEmpty) {
+      emplist = await await ServicioEmpresa().getEmpresa(true);
+    }
+  }
 
   _pages_listas_empresasState() {
     _filter.addListener(() {
@@ -85,7 +94,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             ),
           ],
         ),
-        body: FutureBuilder<EmpresaList>(
+        body: FutureBuilder(
           future: lista,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -101,8 +110,6 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                 break;
               case ConnectionState.done:
                 if (snapshot.hasData) {
-                  emplist = snapshot.data;
-
                   return _jobsListView(emplist);
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
@@ -178,16 +185,16 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Widget _jobsListView(data) {
     List tempList = new List();
     if (!(_searchText.isEmpty)) {
-      for (int i = 0; i < emplist.empresas.length; i++) {
-        if (emplist.empresas[i].em_nombre
+      for (int i = 0; i < emplist.length; i++) {
+        if (emplist[i]['em_nombre']
             .toLowerCase()
             .contains(_searchText.toLowerCase())) {
-          tempList.add(data.empresas[i]);
+          tempList.add(data[i]);
         }
       }
     } else {
-      for (int i = 0; i < emplist.empresas.length; i++) {
-        tempList.add(data.empresas[i]);
+      for (int i = 0; i < emplist.length; i++) {
+        tempList.add(data[i]);
       }
     }
 
@@ -201,15 +208,15 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                 itemCount: tempList.length,
                 itemBuilder: (context, index) {
                   return Slidable(
-                    key: ValueKey(emplist.empresas[index]),
+                    key: ValueKey(emplist[index]),
                     closeOnScroll: true,
                     child: WidgetsGenericos.itemList(
-                      tempList[index].em_nombre,
+                      tempList[index]['em_nombre'],
                       null,
-                      tempList[index].em_logo,
+                      tempList[index]['em_logo'],
                       context,
                       pages_empresas_detalles(
-                        tempList[index].em_cdgo.toString(),
+                        tempList[index]['em_cdgo'].toString(),
                         tempList[index],
                       ),
                     ),
@@ -254,8 +261,8 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                         ),
                                         onPressed: () async {
                                           res = await ServicioEmpresa()
-                                              .deleteEmpresa(data
-                                                  .empresas[index].em_cdgo
+                                              .deleteEmpresa(data[index]
+                                                      ['em_cdgo']
                                                   .toString());
                                           Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
@@ -278,7 +285,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
 
                                             Navigator.pop(context);
                                             await setState(() {
-                                              data.empresas.removeAt(index);
+                                              data.removeAt(index);
                                             });
                                           } else {}
                                         }),

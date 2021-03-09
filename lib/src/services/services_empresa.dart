@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:adhara_socket_io/adhara_socket_io.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
@@ -14,12 +15,17 @@ class ServicioEmpresa {
   String url = Url().getUrl();
   SocketIO socket;
 
-  Future<EmpresaList> getEmpresa() async {
+  Future<dynamic> getEmpresa(bool cambio) async {
     var jsonResponse;
     http.Response response;
-    EmpresaList empresalist;
-    socket = await socketRes().conexion();
+    // EmpresaList empresalist;
     try {
+      final empresas = Hive.box('empresasdb').get('data', defaultValue: []);
+      if (!cambio) {
+        if (empresas.isNotEmpty) {
+          return empresas;
+        }
+      }
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       response = await http.get(
@@ -29,7 +35,10 @@ class ServicioEmpresa {
         },
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
-      empresalist = EmpresaList.fromJson(jsonResponse);
+      // empresalist = EmpresaList.fromJson(jsonResponse);
+      Hive.box('empresasdb').put('data', jsonResponse);
+
+      return jsonResponse;
     } on TimeoutException catch (e) {
       return null;
     } on SocketException catch (e) {
@@ -37,8 +46,6 @@ class ServicioEmpresa {
     } on Error catch (e) {
       return null;
     }
-
-    return empresalist;
   }
 
   Future<bool> addEmpresa(
@@ -111,20 +118,23 @@ class ServicioEmpresa {
       String em_cdgo,
       String em_nit,
       String em_logo,
+      String em_logo_url,
       String em_nombre,
       String em_desc,
       String em_telefono,
       String em_correo) async {
     var response;
-
+    SocketIO socket = await socketRes().conexion();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
       response = await http.put(
         url + "empresa/" + em_cdgo,
         headers: {"x-access-token": prefs.getString('token')},
         body: {
-          // "em_nit": em_nit,
+          "em_nit": em_nit,
           "em_logo": em_logo,
+          "em_logo_url": em_logo_url,
           "em_nombre": em_nombre,
           "em_desc": em_desc,
           "em_telefono": em_telefono,
@@ -137,6 +147,8 @@ class ServicioEmpresa {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
+      print('hola mundp');
+      socket.emit('empresas', ['true']);
       return true;
     } else {
       return false;

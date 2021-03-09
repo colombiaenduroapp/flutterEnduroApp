@@ -14,7 +14,7 @@ import 'empresas.dart';
 
 class pages_empresas_detalles extends StatefulWidget {
   String em_cdgo;
-  Empresa empresa;
+  dynamic empresa;
   pages_empresas_detalles(this.em_cdgo, this.empresa, {Key key})
       : super(key: key);
 
@@ -543,7 +543,7 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
                   leading: Icon(Icons.verified_user),
                   title: Text(
                     '${sede.convenios[index].tp_desc}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    // style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   trailing: InkWell(
                     onTap: () {},

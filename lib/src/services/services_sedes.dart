@@ -91,7 +91,6 @@ class ServicioSede {
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
     SocketIO socket = await socketRes().conexion();
-    socket.connect();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
