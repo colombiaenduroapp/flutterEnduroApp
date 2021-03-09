@@ -71,6 +71,9 @@ class LocalNotification {
         priority: Priority.high,
         importance: Importance.max,
         setAsGroupSummary: true,
+        playSound: true,
+        onlyAlertOnce: true,
+        enableVibration: true,
         groupKey: groupKey);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
