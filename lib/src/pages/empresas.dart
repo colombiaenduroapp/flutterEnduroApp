@@ -45,9 +45,9 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
 
   File file;
   String id_ev_cdgo;
-  String nombre_url_logo = '';
   String urlLogo;
-  String imgLogo = null;
+  String imgLogo = '';
+  String nombre_url_logo;
   var dato;
   bool res = false;
   int us_cdgo;
@@ -254,7 +254,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                                   height: 130,
                                   // color: Colors.grey[300],
                                   child: Container(
-                                    child: urlLogo == null
+                                    child: urlLogo == ''
                                         ? file == null
                                             ? Text(
                                                 'Seleccione un Logo',
@@ -310,6 +310,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
 
       telefonoTextController.text = empresa.em_telefono;
       urlLogo = empresa.em_logo;
+      nombre_url_logo = urlLogo.replaceAll("sede/image/", "");
       nombreTextController.text = empresa.em_nombre;
       emailTextController.text = empresa.em_correo;
       descTextController.text = empresa.em_desc;
@@ -336,7 +337,7 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
     setState(() {
       if (imagen != null) {
         file = File(imagen.path);
-        urlLogo = null;
+        urlLogo = '';
       } else {
         print('No image selected.');
       }
@@ -413,12 +414,14 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                   file.readAsBytesSync(),
                 );
               }
+              print(urlLogo);
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);
               res = await ServicioEmpresa().updateEmpresa(
                   widget.em_cdgo,
                   nitTextController.text,
                   imgLogo,
+                  nombre_url_logo,
                   nombreTextController.text,
                   descTextController.text,
                   telefonoTextController.text,

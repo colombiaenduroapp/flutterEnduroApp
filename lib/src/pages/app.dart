@@ -10,9 +10,10 @@ class MyApp extends StatelessWidget {
       title: 'Colombia Enduro',
       theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: Colors.blueGrey[700],
-        primaryColorLight: Colors.blueGrey[200],
+        primaryColor: Colors.blueGrey[800],
+        primaryColorLight: Colors.blueGrey[500],
         dialogBackgroundColor: Colors.blueGrey[200],
+        textSelectionColor: Colors.black,
 
         secondaryHeaderColor: Colors.orange[100],
         accentColor: Colors.orange[400],
@@ -26,10 +27,11 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         //Se indica que el tema tiene un brillo oscuro
         brightness: Brightness.dark,
-        primaryColor: Colors.black26,
-        primaryColorLight: Colors.blueGrey[200],
-        dialogBackgroundColor: Colors.blueGrey[200],
-
+        primaryColor: Colors.grey[900],
+        primaryColorLight: Colors.grey[700],
+        dialogBackgroundColor: Colors.grey[600],
+        splashColor: Colors.blueGrey[200],
+        textSelectionColor: Colors.white,
         secondaryHeaderColor: Colors.orange[100],
         accentColor: Colors.orange[400],
       ),

@@ -64,7 +64,7 @@ class _InicioPageState extends State<InicioPage>
           bottomNavigationBar: Container(
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
               border: Border(
                 top: BorderSide(
                   //                    <--- top side
@@ -89,7 +89,7 @@ class _InicioPageState extends State<InicioPage>
                   fontWeight: FontWeight.w800),
               unselectedLabelStyle:
                   TextStyle(fontSize: 13.0, fontFamily: 'Family Name'),
-              unselectedLabelColor: Colors.black38,
+              unselectedLabelColor: Theme.of(context).textSelectionColor,
               labelColor: Theme.of(context).accentColor,
               indicatorWeight: 3,
               indicatorColor: Theme.of(context).accentColor,

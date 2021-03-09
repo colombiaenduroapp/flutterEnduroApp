@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/login.dart';
+import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 
@@ -39,10 +40,15 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('token') != null) {
       ServicioSede().cargarSedes(true);
+      ServicioEmpresa().getEmpresa(true);
       SocketIO socket = await socketRes().conexion();
       socket.on('sedesres', (_) {
         print('sedes cambio');
         ServicioSede().cargarSedes(true);
+      });
+      socket.on('empresasres', (_) {
+        print('empresas cambio');
+        ServicioEmpresa().getEmpresa(true);
       });
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => InicioPage(1)));
@@ -59,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Container(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
