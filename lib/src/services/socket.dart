@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class socketRes {
   Future<SocketIO> conexion() async {
-    String URI = "http://192.168.100.181:5000/";
+    //String URI = "http://192.168.100.181:5000/";
+    String URI = "http://192.168.1.3:5000/";
     SocketIOManager manager;
     SocketIO socket;
 
