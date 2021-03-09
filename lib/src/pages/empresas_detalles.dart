@@ -528,16 +528,13 @@ class _pages_empresas_detallesState extends State<pages_empresas_detalles> {
               child: Container(
                 margin: EdgeInsets.only(top: 5),
                 decoration: BoxDecoration(
-                  // color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 1), // changes position of shadow
+                  border: Border(
+                    bottom: BorderSide(
+                      //                   <--- left side
+                      color: Colors.black12,
+                      width: 1.0,
                     ),
-                  ],
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
                 child: ListTile(
                   leading: Icon(Icons.verified_user),

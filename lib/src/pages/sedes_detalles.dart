@@ -52,7 +52,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
             sede = snapshot.data;
             if (snapshot.hasData)
               return Container(
-                color: Colors.white,
                 child: Column(
                   children: [
                     Stack(
@@ -67,7 +66,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                               height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),
@@ -82,7 +81,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                               child: Text(''),
                             ),
                             Container(
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                               // padding: EdgeInsets.only(top: 80),
 
                               child: Column(
@@ -106,6 +105,24 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                 _imagen_perfil(snapshot.data.sd_logo),
                               ],
                             ),
+                          ),
+                        ),
+                        // este contenedor invisible se superpone a los demas wigdets para poder hacer fullscreen de la imagen de fondo
+                        Container(
+                          width: double.infinity,
+                          height: screen.height / 3.8,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      WidgetsGenericos.fullDialogImage(
+                                          snapshot.data.sd_jersey),
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],

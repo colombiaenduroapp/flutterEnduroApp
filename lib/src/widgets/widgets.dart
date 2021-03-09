@@ -116,7 +116,19 @@ class WidgetsGenericos {
                   ? Container(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(25.0),
-                        child: loadImage(url),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    WidgetsGenericos.fullDialogImage(url),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          child: loadImage(url),
+                        ),
                       ),
                       width: 50.0,
                       height: 50.0,
@@ -294,10 +306,14 @@ class WidgetsGenericos {
         child: Container(
           color: Colors.black,
           child: InteractiveViewer(
-            child: Image(
-              image: NetworkImage(url),
-            ),
-          ),
+              child: FadeInImage.assetNetwork(
+            placeholder: 'assets/loading_img.gif',
+            image: url,
+            // fit: BoxFit.cover,
+
+            //   // En esta propiedad colocamos el alto de nuestra imagen
+            width: double.infinity,
+          )),
         ),
       ),
     );
