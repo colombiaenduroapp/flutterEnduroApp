@@ -58,15 +58,19 @@ class LocalNotification {
   }
 
   Future<void> scheduleNotification(String title, String description) async {
+    String groupKey = 'com.android.example.WORK_EMAIL';
+    String groupChannelId = 'grouped channel id';
+    String groupChannelName = 'grouped channel name';
+    String groupChannelDescription = 'grouped channel description';
     var scheduledNotificationDateTime =
         DateTime.now().add(Duration(seconds: 5));
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'channel id',
-      'channel name',
-      'channel description',
-      icon: 'app_icon',
-      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
-    );
+        groupChannelId, groupChannelName, groupChannelDescription,
+        icon: 'app_icon',
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+        priority: Priority.high,
+        importance: Importance.max,
+        groupKey: groupKey);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
