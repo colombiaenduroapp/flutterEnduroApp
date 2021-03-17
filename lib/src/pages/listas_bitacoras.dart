@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'bitacora_personal.dart';
@@ -11,32 +12,54 @@ class pages_listas_bitacoras extends StatefulWidget {
 }
 
 class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
+  Future<dynamic> bitacoras;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    cargarBitacoras();
+  }
+
+  cargarBitacoras() async {
+    bitacoras = ServicioBitacoras().getBitacora(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('hola'),
-      ),
-      floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-          context, PagesBitacoraPersonal()),
-      body: SingleChildScrollView(
-        child: Container(
-          // decoration: Box,
-
-          child: Column(
-            children: [
-              cards('assets/error1.png'),
-              cards('assets/empty_data11.png'),
-              cards('assets/fondo_login.jpg'),
-              cards('assets/icons/descarga32.png'),
-            ],
-          ),
+        appBar: AppBar(
+          title: Text('hola'),
         ),
-      ),
+        floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
+            context, PagesBitacoraPersonal()),
+        body: SingleChildScrollView(
+            child: FutureBuilder(
+          future: bitacoras,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return listaBitacoras(snapshot.data);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        )));
+  }
+
+  Widget listaBitacoras(data) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        var lista_bitacoras = data[index];
+        return cards(lista_bitacoras);
+      },
     );
   }
 
-  Widget cards(String asset) {
+  Widget cards(data) {
     return Container(
       margin: EdgeInsets.only(bottom: 5),
       // decoration: BoxDecoration(
@@ -69,20 +92,13 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
                 ),
               ),
               Image(
-                image: AssetImage(
-                  asset,
+                image: NetworkImage(
+                  data['bi_img'][0]['imbi_img'],
                 ),
                 fit: BoxFit.cover,
                 height: 200.0,
                 width: double.infinity,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(16.0),
-              //   child: Text(
-              //     'Greyhound divisively hello coldly wonderfully marginally far upon excluding.',
-              //     style: TextStyle(color: Colors.black.withOpacity(0.6)),
-              //   ),
-              // ),
               Container(
                 margin: EdgeInsets.all(15),
                 child: Row(
@@ -90,7 +106,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
                   children: [
                     Container(
                       child: Text(
-                        'Lago Calima, Darien',
+                        data['bi_lugar'] + ', ' + data['bi_ciudad'],
                         style: Theme.of(context).textTheme.title,
                       ),
                     ),
