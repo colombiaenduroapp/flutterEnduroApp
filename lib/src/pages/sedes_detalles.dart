@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
+import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
+import 'package:http/http.dart' as http;
 
 class page_sedes_detalles extends StatefulWidget {
   final String data;
@@ -18,8 +23,17 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
   Future<Sede> searchSede;
   Sede sede;
   String id;
+  List statelist;
+  List userlist;
+  String textEror;
+  TextEditingController descTextController = new TextEditingController();
+  String cargoSel = null;
+  String userSel = null;
+  DateTime selected_fecha = DateTime.now();
   @override
   void initState() {
+    getCargo();
+    getUsuario();
     searchSede = ServicioSede().searchSede(widget.data);
     // TODO: implement initState
     super.initState();
@@ -140,7 +154,9 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
                           RawMaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              dialog();
+                            },
                             elevation: 4.0,
                             fillColor: Theme.of(context).accentColor,
                             child: Icon(
@@ -313,6 +329,309 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           ),
         ),
       ),
+    );
+  }
+
+  Future getCargo() async {
+    // Ciudad ciudad;
+    print(widget.data);
+    http.Response response;
+    try {
+      print(widget.data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      response = await http
+          .get(
+            Url().getUrl() + 'tipo_cargos/' + widget.data,
+            // headers: {
+            //   "x-access-token": prefs.getString('token'),
+            // },
+          )
+          .timeout(Duration(seconds: 30));
+      final jsonResponse = json.decode(response.body)['data'];
+      print(jsonResponse);
+      // ciudad = Ciudad.fromJson(jsonResponse);
+      setState(() {
+        statelist = jsonResponse;
+        print(jsonResponse);
+      });
+    } catch (e) {}
+
+    return null;
+  }
+
+  Future getUsuario() async {
+    // Ciudad ciudad;
+    http.Response response;
+    try {
+      print(widget.data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      response = await http
+          .get(
+            Url().getUrl() + 'usuarios/mesa_trabajo/' + widget.data,
+            // headers: {
+            //   "x-access-token": prefs.getString('token'),
+            // },
+          )
+          .timeout(Duration(seconds: 30));
+      final jsonResponse = json.decode(response.body)['data'];
+      print(jsonResponse);
+      // ciudad = Ciudad.fromJson(jsonResponse);
+      setState(() {
+        userlist = jsonResponse;
+      });
+    } catch (e) {}
+
+    return null;
+  }
+
+  Widget dropdwon() {
+    try {
+      return statelist != null
+          ? DropdownButton(
+              value: cargoSel,
+              onChanged: (String value) {
+                setState(() {
+                  cargoSel = value;
+                  Navigator.pop(context);
+                  dialog();
+                });
+              },
+              items: statelist.map((item) {
+                return DropdownMenuItem(
+                  value: item['ca_cdgo'].toString(),
+                  child: Text(item['ca_desc']),
+                );
+              }).toList(),
+              hint: Text('Seleccione un tipo Cargo'),
+              isExpanded: true,
+            )
+          : Container(
+              child: Center(
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Cargando Convenios...')
+                  ],
+                ),
+              ),
+            );
+    } catch (e) {
+      return Container(
+        child: Center(
+          child: Column(
+            children: [Text('A ocurrido  un error')],
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget dropdwonUser() {
+    try {
+      return userlist != null
+          ? DropdownButton(
+              value: userSel,
+              onChanged: (String value) {
+                setState(() {
+                  userSel = value;
+                  Navigator.pop(context);
+                  dialog();
+                });
+              },
+              items: userlist.map((item) {
+                return DropdownMenuItem(
+                  value: item['us_cdgo'].toString(),
+                  child: Text(item['us_alias']),
+                );
+              }).toList(),
+              hint: Text('Seleccione un usuario'),
+              isExpanded: true,
+            )
+          : Container(
+              child: Center(
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Cargando Convenios...')
+                  ],
+                ),
+              ),
+            );
+    } catch (e) {
+      return Container(
+        child: Center(
+          child: Column(
+            children: [Text('A ocurrido  un error')],
+          ),
+        ),
+      );
+    }
+  }
+
+  _selectDate(BuildContext context, DateTime selected) async {
+    final DateTime picked = await showDatePicker(
+      locale: Locale("es"),
+      context: context,
+      initialDate: selected, // Refer step 1
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selected)
+      setState(() {
+        selected_fecha = picked;
+        Navigator.pop(context);
+        dialog();
+      });
+  }
+
+  dialog() {
+    AlertDialog alert = AlertDialog(
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Registrar Convenio',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+            Divider(),
+            // dorpdown tipo convenio
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: dropdwon(),
+                  ),
+                ],
+              ),
+            ),
+            // dorpdown usuario
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: dropdwonUser(),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: GFButton(
+                          onPressed: () => _selectDate(
+                              context, selected_fecha), // Refer step 3
+                          child: Text(
+                            'Seleccione fecha de inicio ',
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                          color: Theme.of(context).accentColor,
+                        ))),
+                Text(
+                  "${selected_fecha}".split(' ')[0],
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+            // mensaje error
+            Center(
+              child: Text(textEror == null ? '' : textEror,
+                  style: TextStyle(color: Colors.red, fontSize: 12)),
+            )
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            textEror = null;
+            cargoSel = null;
+            descTextController.text = '';
+            Navigator.of(context).pop(false);
+          },
+        ),
+        FlatButton(
+          child: Text(
+            'Registrar',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
+            if (cargoSel == null) {
+              setState(() {
+                textEror = 'Por favor seleccione el tipo de cargo';
+              });
+              Navigator.pop(context);
+              dialog();
+            } else if (userSel == null) {
+              setState(() {
+                textEror = 'Por favor seleccione un usuario';
+              });
+              Navigator.pop(context);
+              dialog();
+            } else {
+              bool res = false;
+
+              WidgetsGenericos.showLoaderDialog(
+                  context, true, 'Cargando...', null, Colors.blue);
+              res = await ServicioSede()
+                  .addMesa(selected_fecha, cargoSel, userSel, widget.data);
+              if (res) {
+                textEror = null;
+                cargoSel = null;
+                userSel = null;
+                Navigator.pop(context);
+                WidgetsGenericos.showLoaderDialog(
+                    context,
+                    false,
+                    'Registrado Exitosamente',
+                    Icons.check_circle_outlined,
+                    Colors.green);
+                await Future.delayed(Duration(milliseconds: 500));
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        page_sedes_detalles(widget.data, widget.nombre),
+                  ),
+                );
+              }
+              // else {
+              //   Navigator.pop(context);
+              //   WidgetsGenericos.showLoaderDialog(context, false,
+              //       'Ha ocurrido un error', Icons.error_outline, Colors.red);
+              //   await Future.delayed(Duration(milliseconds: 500));
+              //   Navigator.pop(context);
+              // }
+            }
+          },
+        ),
+      ],
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

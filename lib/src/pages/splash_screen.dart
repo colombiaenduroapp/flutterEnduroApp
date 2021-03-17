@@ -47,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
       SocketIO socket = await socketRes().conexion();
       socket.on('sedesres', (data) {
         if (data['tipo'] == "registro")
-          localNotification.scheduleNotification(data['sede'], data['sede']);
+          localNotification.scheduleNotification(
+              'Se ha registrado una nueva sede ', data['sede']);
         print('sedes cambio');
         ServicioSede().cargarSedes(true);
       });

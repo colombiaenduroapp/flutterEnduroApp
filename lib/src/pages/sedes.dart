@@ -107,7 +107,7 @@ class _pageSedesState extends State<pageSedes> {
                       horizontal: 20,
                     ),
                     padding: EdgeInsets.symmetric(vertical: 10),
-                    color: Colors.blueGrey[50],
+                    color: Theme.of(context).cardColor,
                     // formulario
                     child: Form(
                       key: _formKey,
@@ -490,6 +490,8 @@ class _pageSedesState extends State<pageSedes> {
             // valida si existe logo y lo convierte en base 64
             if (file != null) {
               imgLogo = base64Encode(file.readAsBytesSync());
+
+              print(imgLogo);
             }
             // valida si hay imagen jersey y la convierte a base64
             if (fileJersey != null) {

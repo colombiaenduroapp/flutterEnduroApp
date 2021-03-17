@@ -29,7 +29,6 @@ class _cont_inicioState extends State<cont_inicio> {
   sockets() async {
     socket = await socketRes().conexion();
     print('hola socket');
-    socket.connect();
     socket.on('sedesres', (_) {
       print('sedes');
     });

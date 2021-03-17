@@ -6,6 +6,8 @@ import 'package:ui_flutter/src/pages/listas_sedes.dart';
 
 import 'package:ui_flutter/src/pages/bitacora_personal.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
+
+import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
@@ -121,7 +123,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PagesBitacoraPersonal(),
+                builder: (context) => pages_listas_bitacoras(),
               ),
             ),
           ),

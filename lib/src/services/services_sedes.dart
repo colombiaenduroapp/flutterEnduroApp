@@ -114,7 +114,9 @@ class ServicioSede {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
-      socket.emit('sedes', ['true']);
+      socket.emit('sedes', [
+        {'tipo': 'registro', 'sede': cd_desc}
+      ]);
       return true;
     } else {
       return false;
@@ -152,6 +154,34 @@ class ServicioSede {
       return false;
     }
   }
+
+  Future<bool> addMesa(DateTime mt_fecha, String mt_cargo_ca_cdgo,
+      String mt_usuario_us_cdgo, String mt_sede_sd_cdgo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final response = await http.post(
+        url + "mesa_trabajo",
+        headers: {
+          "x-access-token": prefs.getString('token'),
+        },
+        body: {
+          "mt_fecha": mt_fecha.toString(),
+          "mt_cargo_ca_cdgo": mt_cargo_ca_cdgo,
+          "mt_usuario_us_cdgo": mt_usuario_us_cdgo,
+          "mt_sede_sd_cdgo": mt_sede_sd_cdgo,
+        },
+      ).timeout(Duration(seconds: 20));
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception);
+      return false;
+    }
+  }
 // ----------------------------------------------------------------------------------------
 
   Future<bool> deleteSede(String sd_cdgo) async {
@@ -167,7 +197,9 @@ class ServicioSede {
       );
     } catch (error) {}
     if (response.statusCode == 200) {
-      socket.emit('sedes', ['true']);
+      socket.emit('sedes', [
+        {'tipo': 'Eliminar', 'sede': sd_cdgo}
+      ]);
       return true;
     } else {
       return false;
