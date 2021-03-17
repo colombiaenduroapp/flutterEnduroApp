@@ -38,6 +38,7 @@ class ServicioSede {
           },
         ).timeout(Duration(seconds: 10));
         jsonResponse = json.decode(response.body)['data'];
+        print(jsonResponse);
         // sedesList = SedesList.fromJson(jsonResponse);
         Hive.box('sedesdb').put('data', jsonResponse);
         return jsonResponse;

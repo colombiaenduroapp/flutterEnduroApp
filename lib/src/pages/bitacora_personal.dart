@@ -156,7 +156,13 @@ class _PagesBitacoraPersonalState extends State<PagesBitacoraPersonal> {
                                   descTextController.text,
                                   listBase);
                               print(res);
-                            } else {}
+                            } else {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text(
+                                    'Por favor seleccione al menos 1 imagen'),
+                                duration: Duration(seconds: 3),
+                              ));
+                            }
                           }
                         },
                         color: Theme.of(context).accentColor,

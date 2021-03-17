@@ -29,7 +29,6 @@ class ServicioBitacoras {
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
       // Hive.box('empresasdb').put('data', jsonResponse);
-      print(jsonResponse);
       return jsonResponse;
     } on Error catch (e) {
       return null;

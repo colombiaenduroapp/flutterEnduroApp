@@ -457,7 +457,7 @@ class _pageSedesState extends State<pageSedes> {
                   }
                 } else {
                   _scaffoldKey.currentState.showSnackBar(SnackBar(
-                    content: Text('Assign a GlobalKey to the Scaffold'),
+                    content: Text('Ha ocurrido un error'),
                     duration: Duration(seconds: 3),
                   ));
                 }
