@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/size/gf_size.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
@@ -24,7 +26,10 @@ class _PagesBitacoraDetallesState extends State<PagesBitacoraDetalles> {
             children: [
               carousel(widget.bitacora['bi_img']),
               Divider(),
-              titulo(widget.bitacora)
+              titulo(widget.bitacora),
+              usuario(widget.bitacora),
+              descripcion(widget.bitacora),
+              comentarios(widget.bitacora)
             ],
           ),
         ));
@@ -36,9 +41,114 @@ class _PagesBitacoraDetallesState extends State<PagesBitacoraDetalles> {
         children: [
           Text(
             data['bi_lugar'],
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline5,
           ),
           Text(data['bi_ciudad']),
+        ],
+      ),
+    );
+  }
+
+  Widget usuario(data) {
+    return Container(
+      margin: EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Usuario'),
+                  ],
+                ),
+                Text(
+                  data['us_alias'],
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ],
+            ),
+          ),
+// -----------------------------------------------
+          Container(
+            child: Column(
+              children: [
+                Text('Sede'),
+                Text(
+                  data['sd_desc'],
+                  style: Theme.of(context).textTheme.title,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget descripcion(data) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(15),
+      // width: double.infinity,
+      constraints: BoxConstraints(minHeight: 50, minWidth: double.infinity),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border.all(color: Colors.black26, width: 0.5),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            child: Text(data['bi_desc']),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget comentarios(data) {
+    return Container(
+      margin: EdgeInsets.all(15),
+      width: double.infinity,
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            width: double.infinity,
+            child: Text('Comentarios(0)'),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black26, width: 0.5),
+            ),
+            child: ListTile(
+              title: TextFormField(
+                autofocus: false,
+                // controller: descTextController,
+                maxLength: 1000,
+                // maxLines: 2,
+                decoration: new InputDecoration(
+                  labelText: 'Comentar',
+                  border: new OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                  ),
+                  // hintText: 'Describe el evento(lugar, hora, informacion, etc)',
+                ),
+              ),
+              trailing: GFIconButton(
+                size: GFSize.SMALL,
+                icon: Icon(
+                  Icons.send_rounded,
+                ),
+                onPressed: () {},
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -56,7 +166,7 @@ class _PagesBitacoraDetallesState extends State<PagesBitacoraDetalles> {
               autoPlayCurve: Curves.easeInBack,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
+              viewportFraction: 0.99,
               // onPageChanged: (index, reason) {
               //   setState(
               //     () {

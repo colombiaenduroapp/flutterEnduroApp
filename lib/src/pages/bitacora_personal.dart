@@ -150,12 +150,37 @@ class _PagesBitacoraPersonalState extends State<PagesBitacoraPersonal> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             if (listBase.length > 0) {
+                              WidgetsGenericos.showLoaderDialog(context, true,
+                                  'Cargando...', null, Colors.blue);
                               res = await ServicioBitacoras().addBitacora(
                                   ciudadTextController.text,
                                   lugarTextController.text,
                                   descTextController.text,
                                   listBase);
                               print(res);
+                              if (res) {
+                                Navigator.pop(context);
+                                WidgetsGenericos.showLoaderDialog(
+                                    context,
+                                    false,
+                                    'Registrado Exitosamente',
+                                    Icons.check_circle_outlined,
+                                    Colors.green);
+                                await Future.delayed(
+                                    Duration(milliseconds: 500));
+                                Navigator.pop(context);
+                              } else {
+                                Navigator.pop(context);
+                                WidgetsGenericos.showLoaderDialog(
+                                    context,
+                                    false,
+                                    'Ha ocurrido un error',
+                                    Icons.error_outline,
+                                    Colors.red);
+                                await Future.delayed(
+                                    Duration(milliseconds: 500));
+                                Navigator.pop(context);
+                              }
                             } else {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
                                 content: Text(
@@ -215,7 +240,7 @@ class _PagesBitacoraPersonalState extends State<PagesBitacoraPersonal> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 3,
+        maxImages: 4,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
@@ -231,9 +256,6 @@ class _PagesBitacoraPersonalState extends State<PagesBitacoraPersonal> {
       error = e.toString();
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {

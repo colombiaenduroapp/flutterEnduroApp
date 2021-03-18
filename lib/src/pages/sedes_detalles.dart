@@ -594,7 +594,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
             Navigator.of(context).pop(false);
           },
         ),
-        FlatButton(
+        GFButton(
           child: Text(
             'Registrar',
             style: TextStyle(color: Colors.white, fontSize: 20),

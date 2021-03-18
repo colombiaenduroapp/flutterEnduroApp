@@ -80,14 +80,14 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
           margin: EdgeInsets.all(5),
           shadowColor: Colors.black26,
           // semanticContainer: true,
-          color: Colors.grey[300],
+          color: Colors.grey[100],
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           // borderOnForeground: true,
           clipBehavior: Clip.antiAlias,
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black26, width: 0.5)),
+                border: Border.all(color: Colors.black26, width: 1.0)),
             padding: EdgeInsets.all(5),
             child: Column(
               children: [
@@ -96,7 +96,13 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
                     Icons.person,
                     size: 50,
                   ),
-                  title: const Text('Juanito Perez'),
+                  title: Row(
+                    children: [
+                      Text(data['us_alias']),
+                      Text(' (' + data['sd_desc'] + ')',
+                          style: Theme.of(context).textTheme.caption)
+                    ],
+                  ),
                   subtitle: Text(
                     'hace 5 minutos',
                     style: TextStyle(color: Colors.black.withOpacity(0.6)),
