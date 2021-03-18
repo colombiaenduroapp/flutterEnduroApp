@@ -129,7 +129,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
                     ],
                   ),
                   subtitle: Text(
-                    'hace 5 minutos',
+                    data['fecha'].toString(),
                     style: TextStyle(color: Colors.black.withOpacity(0.6)),
                   ),
                 ),

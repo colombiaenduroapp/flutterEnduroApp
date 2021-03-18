@@ -269,25 +269,22 @@ class WidgetsGenericos {
     try {
       return CachedNetworkImage(
         imageUrl: url,
-        placeholder: (context, url) =>
-            Center(child: CircularProgressIndicator()),
+        placeholder: (context, url) => Center(
+          child: Shimmer.fromColors(
+              baseColor: Colors.grey[400],
+              highlightColor: Colors.grey[300],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                width: 50,
+                height: 50,
+                child: Text(''),
+              )),
+        ),
         errorWidget: (context, url, error) => Icon(Icons.error),
       );
-
-      // FadeInImage.assetNetwork(
-      //   placeholder: 'assets/loading.gif',
-      //   // image: url,
-      //   image: url,
-      //   imageErrorBuilder:
-      //       (BuildContext context, Object exception, StackTrace stackTrace) {
-      //     return Icon(Icons.image_not_supported_rounded);
-      //   },
-      //   fit: BoxFit.cover,
-
-      //   //   // En esta propiedad colocamos el alto de nuestra imagen
-      //   width: double.infinity,
-      //   height: 50,
-      // );
     } catch (e) {
       print('e');
       return Container(
