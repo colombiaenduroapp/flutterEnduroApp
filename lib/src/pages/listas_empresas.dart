@@ -12,6 +12,7 @@ import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ui_flutter/src/services/socket.dart';
+import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import 'empresas.dart';
@@ -85,6 +86,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Widget build(BuildContext context) {
     try {
       return Scaffold(
+        drawer: Nav_drawer(),
         appBar: AppBar(
           title: _appBarTitle,
           actions: [

@@ -9,6 +9,7 @@ import 'package:ui_flutter/src/pages/inicio.dart';
 
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
+import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
@@ -44,20 +45,36 @@ class _SplashScreenState extends State<SplashScreen> {
     if (prefs.getString('token') != null) {
       ServicioSede().cargarSedes(true);
       ServicioEmpresa().getEmpresa(true);
+      ServicioBitacoras().getBitacora(true);
+
       SocketIO socket = await socketRes().conexion();
+
+// ----------socket--sedes-----------------------
       socket.on('sedesres', (data) {
         if (data['tipo'] == "registro")
           localNotification.scheduleNotification(
               'Se ha registrado una nueva sede ', data['sede']);
-        print('sedes cambio');
+
         ServicioSede().cargarSedes(true);
       });
+// -----------socket--bitacoras-----------------
+      socket.on('bitacorasres', (data) {
+        if (data['tipo'] == "registro")
+          localNotification.scheduleNotification(
+              'Se ha registrado una nueva bitacora ', data['lugar']);
+
+        ServicioBitacoras().getBitacora(true);
+      });
+
       socket.on('empresasres', (_) {
         print('empresas cambio');
         ServicioEmpresa().getEmpresa(true);
       });
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => InicioPage(1)));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  InicioPage(prefs.getInt('us_perfil'))));
     } else {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => PageLogin()));

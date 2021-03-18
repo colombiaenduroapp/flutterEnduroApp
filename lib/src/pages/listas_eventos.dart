@@ -6,6 +6,7 @@ import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ui_flutter/src/services/services_eventos.dart';
+import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class pages_listas_eventos extends StatefulWidget {
@@ -51,6 +52,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
   Widget build(BuildContext context) {
     try {
       return Scaffold(
+        drawer: Nav_drawer(),
         appBar: AppBar(
           title: _appBarTitle,
           actions: [

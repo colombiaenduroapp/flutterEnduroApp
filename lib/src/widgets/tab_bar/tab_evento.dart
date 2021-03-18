@@ -13,16 +13,8 @@ class tab_evento extends StatefulWidget {
 class _tab_eventoState extends State<tab_evento> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => InicioPage(1),
-        ),
-      ),
-      child: Container(
-        child: cont_eventos(),
-      ),
+    return Container(
+      child: cont_eventos(),
     );
   }
 }

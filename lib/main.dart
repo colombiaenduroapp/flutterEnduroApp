@@ -8,5 +8,6 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('sedesdb');
   await Hive.openBox('empresasdb');
+  await Hive.openBox('bitacorasdb');
   runApp(MyApp());
 }

@@ -39,12 +39,14 @@ Widget _createDrawerItem(
 
 class Nav_drawerState extends State<Nav_drawer> {
   String us_nombres = '', us_alias = '';
+  int us_perfil = 1;
   addStringToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
     setState(() {
       us_nombres = prefs.getString('us_nombres') ?? '';
       us_alias = prefs.getString('us_alias') ?? '';
+      us_perfil = prefs.getInt('us_perfil') ?? '';
     });
   }
 
@@ -87,10 +89,10 @@ class Nav_drawerState extends State<Nav_drawer> {
           _createDrawerItem(
             icon: Icons.home,
             text: 'Inicio',
-            onTap: () => Navigator.pushReplacement(
+            onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InicioPage(1),
+                builder: (context) => InicioPage(us_perfil),
               ),
             ),
           ),
@@ -98,10 +100,10 @@ class Nav_drawerState extends State<Nav_drawer> {
           _createDrawerItem(
             icon: Icons.event_available,
             text: 'Eventos',
-            onTap: () => Navigator.pushReplacement(
+            onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InicioPage(2),
+                builder: (context) => InicioPage(us_perfil),
               ),
             ),
           ),

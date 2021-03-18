@@ -102,9 +102,6 @@ class _cont_sedesState extends State<cont_sedes> {
                 );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
-              } else {
-                return WidgetsGenericos.containerErrorConection(
-                    context, InicioPage(3));
               }
 
               break;

@@ -9,6 +9,7 @@ import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/cont_sedes.dart';
+import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PagesListasSedes extends StatefulWidget {
@@ -93,17 +94,9 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Nav_drawer(),
       appBar: AppBar(
         title: _appBarTitle,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => InicioPage(0),
-            ),
-          ),
-        ),
         actions: [
           IconButton(
             icon: _searchIcon,

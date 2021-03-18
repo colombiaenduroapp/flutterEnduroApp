@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
@@ -18,9 +19,21 @@ class cont_eventos extends StatefulWidget {
 
 class _cont_eventosState extends State<cont_eventos> {
   Future<EventosList> lista;
+  String us_nombres = '', us_alias = '';
+  int us_perfil = 1;
+  addStringToSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
+    setState(() {
+      us_nombres = prefs.getString('us_nombres') ?? '';
+      us_alias = prefs.getString('us_alias') ?? '';
+      us_perfil = prefs.getInt('us_perfil') ?? '';
+    });
+  }
 
   @override
   void initState() {
+    addStringToSF();
     lista = ServicioEvento().getEventos();
     // TODO: implement initState
     super.initState();
@@ -54,7 +67,9 @@ class _cont_eventosState extends State<cont_eventos> {
                 return WidgetsGenericos.containerEmptyData(context);
               } else {
                 return WidgetsGenericos.containerErrorConection(
-                    context, InicioPage(2));
+                  context,
+                  InicioPage(us_perfil),
+                );
               }
 
               break;

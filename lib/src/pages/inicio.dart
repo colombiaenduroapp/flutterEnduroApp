@@ -9,8 +9,8 @@ import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
 class InicioPage extends StatefulWidget {
-  int tabIndex;
-  InicioPage(this.tabIndex, {Key key}) : super(key: key);
+  int us_perfil;
+  InicioPage(this.us_perfil, {Key key}) : super(key: key);
 
   @override
   _InicioPageState createState() => _InicioPageState();
@@ -18,18 +18,22 @@ class InicioPage extends StatefulWidget {
 
 class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
+  int us_per;
   int fabIndex;
-  final List<Tab> myTabs = <Tab>[
-    new Tab(text: "Gestionar"),
-    new Tab(text: "Inicio"),
-    new Tab(text: "Eventos"),
-  ];
+  List<Tab> myTabs;
+
   TabController tabController;
 
   @override
   void initState() {
+    us_per = widget.us_perfil;
+    myTabs = <Tab>[
+      if (us_per > 1) new Tab(text: "Gestionar"),
+      new Tab(text: "Inicio"),
+      new Tab(text: "Eventos"),
+    ];
     tabController = new TabController(vsync: this, length: myTabs.length);
-    tabController.index = widget.tabIndex;
+    tabController.index = us_per > 1 ? 1 : 0;
     tabController.addListener(() {
       setState(() {
         fabIndex = tabController.index;
@@ -44,7 +48,7 @@ class _InicioPageState extends State<InicioPage>
       SystemUiOverlayStyle(statusBarColor: Colors.blueGrey[800]),
     );
     return new DefaultTabController(
-        length: 3,
+        length: us_per > 1 ? 3 : 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -55,7 +59,7 @@ class _InicioPageState extends State<InicioPage>
           body: TabBarView(
             controller: tabController,
             children: [
-              tab_gestionar(),
+              if (us_per > 1) tab_gestionar(),
               tab_inicio(),
               tab_evento(),
               // tab_sede(),

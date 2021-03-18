@@ -40,12 +40,13 @@ class _pagesEventosState extends State<pagesEventos> {
   String urlLogo = '';
   String imgLogo = '';
   bool res = false;
-  int us_cdgo;
+  int us_cdgo, us_perfil;
   String us_nombres;
 // utilizar preferencias
   addStringToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     us_cdgo = prefs.getInt('us_cdgo') ?? 0;
+    us_perfil = prefs.getInt('us_perfil') ?? 0;
     us_nombres = prefs.getString('us_nombres') ?? '';
   }
 
@@ -70,7 +71,7 @@ class _pagesEventosState extends State<pagesEventos> {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => InicioPage(2),
+              builder: (context) => InicioPage(us_perfil),
             ),
           ),
         ),
@@ -79,7 +80,7 @@ class _pagesEventosState extends State<pagesEventos> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(2),
+            builder: (context) => InicioPage(us_perfil),
           ),
         ),
         child: Builder(

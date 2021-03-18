@@ -29,7 +29,7 @@ class _PagesBitacoraDetallesState extends State<PagesBitacoraDetalles> {
               titulo(widget.bitacora),
               usuario(widget.bitacora),
               descripcion(widget.bitacora),
-              comentarios(widget.bitacora)
+              // comentarios(widget.bitacora)
             ],
           ),
         ));
