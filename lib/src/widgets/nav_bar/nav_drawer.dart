@@ -11,6 +11,7 @@ import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
+import 'package:ui_flutter/src/pages/pqrs.dart';
 
 class Nav_drawer extends StatefulWidget {
   Nav_drawer({Key key}) : super(key: key);
@@ -157,9 +158,15 @@ class Nav_drawerState extends State<Nav_drawer> {
               onTap: () => Navigator.pop(context)),
           Divider(),
           _createDrawerItem(
-              icon: Icons.contacts,
-              text: 'Quejas y Reclamos',
-              onTap: () => Navigator.pop(context)),
+            icon: Icons.contacts,
+            text: 'Quejas y Reclamos',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PagesPQRS(),
+              ),
+            ),
+          ),
           Divider(),
           _createDrawerItem(
               icon: Icons.contacts,
