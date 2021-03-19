@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
-import 'package:octo_image/octo_image.dart';
 import 'package:shimmer/shimmer.dart';
-// import 'package:ui_flutter/src/pages/inicio.dart';
 
 class WidgetsGenericos {
   static Widget showLoaderDialog(BuildContext context, bool estado,

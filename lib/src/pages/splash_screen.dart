@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
-
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';

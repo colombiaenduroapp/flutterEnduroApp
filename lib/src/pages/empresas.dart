@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
-import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 // class pagesEmpresa extends StatefulWidget {

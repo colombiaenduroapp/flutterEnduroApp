@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/size/gf_size.dart';
-import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PagesBitacoraDetalles extends StatefulWidget {

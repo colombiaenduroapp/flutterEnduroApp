@@ -5,7 +5,6 @@ import 'package:getwidget/getwidget.dart';
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:flutter_onboarding_ui/utilities/styles.dart';
 
 class PageConocenos extends StatefulWidget {
   @override

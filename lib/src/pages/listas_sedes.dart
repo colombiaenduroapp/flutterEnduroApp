@@ -2,13 +2,10 @@ import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
-import 'package:ui_flutter/src/models/model_sede.dart';
-import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
-import 'package:ui_flutter/src/widgets/cont_sedes.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
