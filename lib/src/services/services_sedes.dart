@@ -180,6 +180,27 @@ class ServicioSede {
       return false;
     }
   }
+
+  Future<bool> deleteMesa(String sd_cdgo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final response = await http.delete(
+        url + "mesa_trabajo/" + sd_cdgo,
+        headers: {
+          "x-access-token": prefs.getString('token'),
+        },
+      ).timeout(Duration(seconds: 20));
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception);
+      return false;
+    }
+  }
 // ----------------------------------------------------------------------------------------
 
   Future<bool> deleteSede(String sd_cdgo) async {
