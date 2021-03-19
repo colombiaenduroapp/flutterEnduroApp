@@ -2,6 +2,7 @@ import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
@@ -24,6 +25,8 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   bool res = false;
+
+  int us_perfil = App.localStorage.getInt('us_perfil');
 
   List sedes1 = Hive.box('sedesdb').get('data', defaultValue: []);
 
@@ -152,10 +155,12 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
           }
         },
       ),
-      floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-        context,
-        pageSedes('Registrar', null, null),
-      ),
+      floatingActionButton: us_perfil > 1
+          ? WidgetsGenericos.floatingButtonRegistrar(
+              context,
+              pageSedes('Registrar', null, null),
+            )
+          : null,
     );
   }
 

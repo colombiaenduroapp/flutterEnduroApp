@@ -70,11 +70,8 @@ class _SplashScreenState extends State<SplashScreen> {
         print('empresas cambio');
         ServicioEmpresa().getEmpresa(true);
       });
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  InicioPage(prefs.getInt('us_perfil'))));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => InicioPage()));
     } else {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => PageLogin()));

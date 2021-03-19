@@ -93,7 +93,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InicioPage(us_perfil),
+                builder: (context) => InicioPage(),
               ),
             ),
           ),
@@ -104,7 +104,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InicioPage(us_perfil),
+                builder: (context) => InicioPage(),
               ),
             ),
           ),

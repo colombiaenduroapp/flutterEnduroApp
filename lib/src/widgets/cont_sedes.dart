@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 
