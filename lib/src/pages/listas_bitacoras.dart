@@ -130,7 +130,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
                   ),
                   subtitle: Text(
                     data['fecha'].toString(),
-                    style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                    style: TextStyle(color: Colors.black.withOpacity(0.5)),
                   ),
                 ),
                 Image(
