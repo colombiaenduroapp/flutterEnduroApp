@@ -33,6 +33,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
   DateTime selected_fecha = DateTime.now();
 
   int us_perfil = App.localStorage.getInt('us_perfil');
+  int us_sd_cdgo = App.localStorage.getInt('us_sd_cdgo');
   @override
   void initState() {
     getCargo();
@@ -49,17 +50,19 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
       appBar: AppBar(
         title: Text(widget.nombre),
         actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.edit_outlined),
-            iconSize: 30,
-            tooltip: 'Editar',
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => pageSedes('Editar', id, sede),
+          if ((us_sd_cdgo == int.parse(widget.data) && us_perfil == 2) ||
+              us_perfil == 3)
+            IconButton(
+              icon: new Icon(Icons.edit_outlined),
+              iconSize: 30,
+              tooltip: 'Editar',
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => pageSedes('Editar', id, sede),
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: Container(
@@ -182,7 +185,9 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                           color: Colors.red,
                                           child: Text('Renovar mesa'),
                                           shape: GFButtonShape.pills),
-                                    if (us_perfil > 1)
+                                    if ((us_sd_cdgo == int.parse(widget.data) &&
+                                            us_perfil == 2) ||
+                                        us_perfil == 3)
                                       RawMaterialButton(
                                         onPressed: () {
                                           dialog();
@@ -382,10 +387,8 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
 
   Future getCargo() async {
     // Ciudad ciudad;
-    print(widget.data);
     http.Response response;
     try {
-      print(widget.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http
           .get(
@@ -396,11 +399,9 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           )
           .timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body)['data'];
-      print(jsonResponse);
       // ciudad = Ciudad.fromJson(jsonResponse);
       setState(() {
         statelist = jsonResponse;
-        print(jsonResponse);
       });
     } catch (e) {}
 
@@ -411,7 +412,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
     // Ciudad ciudad;
     http.Response response;
     try {
-      print(widget.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http
           .get(
@@ -422,7 +422,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           )
           .timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body)['data'];
-      print(jsonResponse);
       // ciudad = Ciudad.fromJson(jsonResponse);
       setState(() {
         userlist = jsonResponse;

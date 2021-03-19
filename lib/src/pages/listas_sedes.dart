@@ -154,7 +154,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
           }
         },
       ),
-      floatingActionButton: us_perfil > 1
+      floatingActionButton: us_perfil == 3
           ? WidgetsGenericos.floatingButtonRegistrar(
               context,
               pageSedes('Registrar', null, null),

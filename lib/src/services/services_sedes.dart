@@ -35,10 +35,18 @@ class ServicioSede {
           },
         ).timeout(Duration(seconds: 10));
         jsonResponse = json.decode(response.body)['data'];
-        print(jsonResponse);
+        if (response.statusCode == 200) {
+          print('todo bien');
+          Hive.box('sedesdb').put('data', jsonResponse);
+          return jsonResponse;
+        }
+        // Error de token
+        else if (response.statusCode == 403) {
+          print('error token');
+          return sedes;
+        }
         // sedesList = SedesList.fromJson(jsonResponse);
-        Hive.box('sedesdb').put('data', jsonResponse);
-        return jsonResponse;
+
       }
     } on TimeoutException catch (e) {
       return null;
