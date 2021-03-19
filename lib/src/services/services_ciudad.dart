@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:ui_flutter/src/services/service_url.dart';
-import 'package:http/http.dart' as http;
 
 class ServicioCiudad {
   String url = Url().getUrl();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/inicio.dart';
 
 import '../cont_eventos.dart';
 

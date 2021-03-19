@@ -4,8 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:http/http.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';

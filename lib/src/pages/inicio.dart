@@ -6,7 +6,6 @@ import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_gestionar.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
-
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
 class InicioPage extends StatefulWidget {

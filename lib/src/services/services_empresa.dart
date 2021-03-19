@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/services/service_url.dart';

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
