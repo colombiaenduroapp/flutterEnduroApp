@@ -32,7 +32,6 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   final TextEditingController _filter = new TextEditingController();
 
   String _searchText = "";
-  // List sedes = new List();
 
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = new Text('Sedes');
@@ -106,53 +105,12 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: lista,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              if (snapshot.hasError) {
-                return Text("${snapshot.error} error            .");
-              } else {
-                return Center(
-                  child: Text('conecction.none'),
-                );
-              }
-
-              break;
-            case ConnectionState.done:
-              if (snapshot.hasData) {
-                List data = sedes1;
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(child: _jobsListView(sedes1)),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              } else {
-                return WidgetsGenericos.containerErrorConection(
-                    context, PagesListasSedes());
-              }
-
-              break;
-            case ConnectionState.waiting:
-              return Center(
-                child: WidgetsGenericos.shimmerList(),
-              );
-
-              break;
-            case ConnectionState.active:
-              return Center(
-                child: Text('conecction.Active'),
-              );
-
-              break;
-            default:
-          }
-        },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(child: _jobsListView(sedes1)),
+          ],
+        ),
       ),
       floatingActionButton: us_perfil == 3
           ? WidgetsGenericos.floatingButtonRegistrar(
