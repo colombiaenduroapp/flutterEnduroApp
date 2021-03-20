@@ -8,25 +8,21 @@ import 'package:http/http.dart' as http;
 class ServicioPQRS {
   String url = Url().getUrl();
 
-  Future<dynamic> getPQRS(bool cambio) async {
+  Future<dynamic> getPQRS() async {
     try {
-      if (!cambio) {
-        final pqrs = Hive.box('pqrsdb').get('data', defaultValue: []);
-        return pqrs;
-      } else {
-        final response = await http.get(
-          url + 'pqrs',
-          headers: {'x-access-token': App.localStorage.getString('token')},
-        ).timeout(Duration(seconds: 15));
+      final response = await http.get(
+        url + 'pqrs',
+        headers: {'x-access-token': App.localStorage.getString('token')},
+      ).timeout(Duration(seconds: 15));
 
-        if (response.statusCode == 200) {
-          final jsonResponse = json.decode(response.body)['data'];
-          Hive.box('pqrsdb').put('data', jsonResponse);
-        }
-
-        final pqrs = Hive.box('pqrsdb').get('data', defaultValue: []);
-        return pqrs;
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        Hive.box('pqrsdb')
+            .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
       }
+
+      final pqrs = Hive.box('pqrsdb').get('data');
+      return pqrs;
     } catch (e) {}
   }
 

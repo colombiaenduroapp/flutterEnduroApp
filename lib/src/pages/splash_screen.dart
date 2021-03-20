@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       ServicioEmpresa().getEmpresa(true);
       ServicioBitacoras().getBitacora(true);
-      ServicioPQRS().getPQRS(true);
+      ServicioPQRS().getPQRS();
       SocketIO socket = await socketRes().conexion();
 
 // ----------socket--sedes-----------------------
