@@ -6,6 +6,7 @@ import 'package:adhara_socket_io/socket.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/socket.dart';
@@ -43,6 +44,7 @@ class ServicioSede {
         // Error de token
         else if (response.statusCode == 403) {
           print('error token');
+          App.localStorage.setString('token', null);
           return sedes;
         }
         // sedesList = SedesList.fromJson(jsonResponse);
@@ -64,7 +66,7 @@ class ServicioSede {
       response = await http.get(
         url + "sede/" + sd_cdgo,
         headers: {
-          "x-access-token": prefs.getString('token'),
+          "x-access-token": '',
         },
       ).timeout(Duration(seconds: 40));
     } on TimeoutException catch (e) {
@@ -77,6 +79,9 @@ class ServicioSede {
       final jsonResponse = json.decode(response.body)['data'];
       Sede sede = Sede.fromJson(jsonResponse);
       return sede;
+    } else if (response.statusCode == 403) {
+      print('error token');
+      return null;
     } else {
       return null;
     }
@@ -113,6 +118,10 @@ class ServicioSede {
         {'tipo': 'registro', 'sede': cd_desc}
       ]);
       return true;
+    } else if (response.statusCode == 403) {
+      print('error token');
+      App.localStorage.setString('token', null);
+      return null;
     } else {
       return false;
     }

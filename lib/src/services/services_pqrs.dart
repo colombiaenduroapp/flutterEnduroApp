@@ -1,18 +1,42 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
 
 class ServicioPQRS {
-  String URL = Url().getUrl();
+  String url = Url().getUrl();
 
-  Future<bool> addPQRS(String pqrs_asunto, String pqrs_desc) async {
+  Future<dynamic> getPQRS(bool cambio) async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (!cambio) {
+        final pqrs = Hive.box('pqrsdb').get('data', defaultValue: []);
+        return pqrs;
+      } else {
+        final response = await http.get(
+          url + 'pqrs',
+          headers: {'x-access-token': App.localStorage.getString('token')},
+        ).timeout(Duration(seconds: 15));
+
+        if (response.statusCode == 200) {
+          final jsonResponse = json.decode(response.body)['data'];
+          Hive.box('pqrsdb').put('data', jsonResponse);
+        }
+
+        final pqrs = Hive.box('pqrsdb').get('data', defaultValue: []);
+        return pqrs;
+      }
+    } catch (e) {}
+  }
+
+  Future<bool> addPQRS(String pqrsAsunto, String pqrsDesc) async {
+    try {
       final response = await http.post(
-        URL + 'pqrs',
-        headers: {'x-access-token': prefs.getString('token')},
-        body: {'pqrs_asunto': pqrs_asunto, 'pqrs_desc': pqrs_desc},
-      ).timeout(Duration(seconds: 20));
+        url + 'pqrs',
+        headers: {'x-access-token': App.localStorage.getString('token')},
+        body: {'pqrs_asunto': pqrsAsunto, 'pqrs_desc': pqrsDesc},
+      ).timeout(Duration(seconds: 15));
       return (response.statusCode == 200) ? true : false;
     } catch (e) {
       print(e);

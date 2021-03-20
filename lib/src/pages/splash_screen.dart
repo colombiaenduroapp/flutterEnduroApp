@@ -5,14 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
-import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/services/services_carga.dart';
-import 'package:ui_flutter/src/services/services_empresa.dart';
-import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 
 import '../../main.dart';
@@ -48,21 +44,19 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationPage() async {
     if (App.localStorage.getString('token') != null) {
       List viejasede = Hive.box('sedesdb').get('data', defaultValue: []);
-      List nuevasede = await ServicioSede().cargarSedes(true);
-      ServicioEmpresa().getEmpresa(true);
-      ServicioBitacoras().getBitacora(true);
 
-      if (nuevasede.length == viejasede.length) {
-        print('viejasede');
-        App.localStorage.setInt('cambio_sede', 0);
-      } else {
-        int dif = nuevasede.length - viejasede.length;
-        print(dif);
-        App.localStorage.setInt('cambio_sede', dif);
-        print('nuevasede');
-      }
+      // if (nuevasede.length == viejasede.length) {
+      //   print('viejasede');
+      //   App.localStorage.setInt('cambio_sede', 0);
+      // } else {
+      //   int dif = nuevasede.length - viejasede.length;
+      //   print(dif);
+      //   App.localStorage.setInt('cambio_sede', dif);
+      //   print('nuevasede');
+      // }
 
       await ServicioCarga().iniciaSockets();
+      await ServicioCarga().cargarNuevosDatos();
 
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => InicioPage()));

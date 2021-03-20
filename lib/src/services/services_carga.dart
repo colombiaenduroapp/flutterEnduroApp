@@ -29,7 +29,7 @@ class ServicioCarga {
     nuevaEmpresa = await ServicioEmpresa().getEmpresa(true);
     // nuevaEvento = await ServicioEvento().getEventos();
     nuevaBitacora = await ServicioBitacoras().getBitacora(true);
-    // nuevaPqrs=await ServicioPQRS()
+    nuevaPqrs = await ServicioPQRS().getPQRS(true);
   }
 
   // ------------------socket sede-----------

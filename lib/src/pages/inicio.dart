@@ -61,8 +61,8 @@ class _InicioPageState extends State<InicioPage>
           body: TabBarView(
             controller: tabController,
             children: [
-              if (us_per > 1) tab_gestionar(),
-              tab_inicio(),
+              tab_gestionar(),
+              if (us_per > 1) tab_inicio(),
               tab_evento(),
               // tab_sede(),
             ],

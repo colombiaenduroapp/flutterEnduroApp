@@ -83,136 +83,145 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                   break;
                 case ConnectionState.done:
                   if (snapshot.hasData) {
-                    return Container(
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              _imagen_fondo(screen, snapshot.data.sd_jersey),
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: screen.height / 3.0,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 5,
-                                            blurRadius: 7,
-                                            offset: Offset(0,
-                                                1), // changes position of shadow
-                                          ),
-                                        ],
-                                        borderRadius: new BorderRadius.vertical(
-                                            top: Radius.circular(70))),
-                                    child: Text(''),
-                                  ),
-                                  Container(
-                                    // color: Theme.of(context).primaryColor,
-                                    // padding: EdgeInsets.only(top: 80),
+                    if (snapshot.data != null) {
+                      return Container(
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                _imagen_fondo(screen, snapshot.data.sd_jersey),
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: screen.height / 3.0,
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Theme.of(context).backgroundColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
+                                            ),
+                                          ],
+                                          borderRadius:
+                                              new BorderRadius.vertical(
+                                                  top: Radius.circular(70))),
+                                      child: Text(''),
+                                    ),
+                                    Container(
+                                      // color: Theme.of(context).primaryColor,
+                                      // padding: EdgeInsets.only(top: 80),
 
+                                      child: Column(
+                                        children: [
+                                          // Texto Nombre Sede
+                                          nombre_sede(snapshot.data.sd_desc,
+                                              snapshot.data.cd_desc)
+                                          // -----------------
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SafeArea(
+                                  child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        // Texto Nombre Sede
-                                        nombre_sede(snapshot.data.sd_desc,
-                                            snapshot.data.cd_desc)
-                                        // -----------------
+                                        SizedBox(
+                                          height: screen.height / 4.2,
+                                        ),
+                                        _imagen_perfil(snapshot.data.sd_logo),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                              SafeArea(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: screen.height / 4.2,
-                                      ),
-                                      _imagen_perfil(snapshot.data.sd_logo),
-                                    ],
-                                  ),
                                 ),
-                              ),
-                              // este contenedor invisible se superpone a los demas wigdets para poder hacer fullscreen de la imagen de fondo
-                              Container(
-                                width: double.infinity,
-                                height: screen.height / 3.8,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute<void>(
-                                        builder: (BuildContext context) =>
-                                            WidgetsGenericos.fullDialogImage(
-                                                snapshot.data.sd_jersey),
-                                        fullscreenDialog: true,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          // boton add mesa trabajo y renovar mesa
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Mesa de trabajo:',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Row(
-                                  children: [
-                                    if (us_perfil == 3)
-                                      GFButton(
-                                          onPressed: () {
-                                            dialogRenovar();
-                                          },
-                                          elevation: 4.0,
-                                          color: Colors.red,
-                                          child: Text('Renovar mesa'),
-                                          shape: GFButtonShape.pills),
-                                    if ((us_sd_cdgo == int.parse(widget.data) &&
-                                            us_perfil == 2) ||
-                                        us_perfil == 3)
-                                      RawMaterialButton(
-                                        onPressed: () {
-                                          dialog();
-                                        },
-                                        elevation: 4.0,
-                                        fillColor:
-                                            Theme.of(context).accentColor,
-                                        child: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                          size: 25.0,
+                                // este contenedor invisible se superpone a los demas wigdets para poder hacer fullscreen de la imagen de fondo
+                                Container(
+                                  width: double.infinity,
+                                  height: screen.height / 3.8,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) =>
+                                              WidgetsGenericos.fullDialogImage(
+                                                  snapshot.data.sd_jersey),
+                                          fullscreenDialog: true,
                                         ),
-                                        padding: EdgeInsets.all(15.0),
-                                        shape: CircleBorder(),
-                                      ),
-                                  ],
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                          future_mesa(searchSede),
-                        ],
-                      ),
-                    );
+
+                            // boton add mesa trabajo y renovar mesa
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(left: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Mesa de trabajo:',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Row(
+                                    children: [
+                                      if (us_perfil == 3)
+                                        GFButton(
+                                            onPressed: () {
+                                              dialogRenovar();
+                                            },
+                                            elevation: 4.0,
+                                            color: Colors.red,
+                                            child: Text('Renovar mesa'),
+                                            shape: GFButtonShape.pills),
+                                      if ((us_sd_cdgo ==
+                                                  int.parse(widget.data) &&
+                                              us_perfil == 2) ||
+                                          us_perfil == 3)
+                                        RawMaterialButton(
+                                          onPressed: () {
+                                            dialog();
+                                          },
+                                          elevation: 4.0,
+                                          fillColor:
+                                              Theme.of(context).accentColor,
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: 25.0,
+                                          ),
+                                          padding: EdgeInsets.all(15.0),
+                                          shape: CircleBorder(),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            future_mesa(searchSede),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return WidgetsGenericos.containerErrorConection(context,
+                          page_sedes_detalles(widget.data, widget.nombre));
+                    }
                   } else if (snapshot.hasError) {
                     return WidgetsGenericos.containerErrorConection(context,
                         page_sedes_detalles(widget.data, widget.nombre));
@@ -243,7 +252,11 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Sede data = snapshot.data;
-            return lista_mesa(data);
+            if (snapshot.data != null) {
+              return lista_mesa(data);
+            } else {
+              return Container(child: CircularProgressIndicator());
+            }
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
@@ -254,47 +267,60 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
   }
 
   Widget lista_mesa(Sede sede) {
-    if (sede.mesas.length > 0) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: sede.mesas.length,
-        itemBuilder: (context, index) {
-          if (sede.mesas != null) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.black26, width: 0.5),
+    if (sede != null) {
+      if (sede.mesas.length > 0) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: sede.mesas.length,
+          itemBuilder: (context, index) {
+            if (sede.mesas != null) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black26, width: 0.5),
+                  ),
                 ),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.verified_user),
-                title: Text(
-                  '${sede.mesas[index].us_nombres}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                    '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
-                trailing: InkWell(
-                  onTap: () {},
-                  child: Icon(Icons.more_vert_outlined),
-                ),
-              ),
-            );
-          } else {
-            return Container(
                 child: ListTile(
-              title: Text('vacio'),
-            ));
-          }
-        },
-      );
+                  leading: Icon(Icons.verified_user),
+                  title: Text(
+                    '${sede.mesas[index].us_nombres}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                      '${sede.mesas[index].us_alias}   -${sede.mesas[index].ca_desc}-'),
+                  trailing: InkWell(
+                    onTap: () {},
+                    child: Icon(Icons.more_vert_outlined),
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                  child: ListTile(
+                title: Text('vacio'),
+              ));
+            }
+          },
+        );
+      } else {
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Container(
+              child: Center(
+            child: Text(
+              'No se han agregado integrantes a la mesa de trabajo',
+              style: TextStyle(color: Colors.black26),
+            ),
+          )),
+        );
+      }
     } else {
       return Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Container(
             child: Center(
           child: Text(
-            'No se han agregado integrantes a la mesa de trabajo',
+            'No se cargaron los datos',
             style: TextStyle(color: Colors.black26),
           ),
         )),
