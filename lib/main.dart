@@ -19,5 +19,6 @@ void main() async {
   await Hive.openBox('sedesdb');
   await Hive.openBox('empresasdb');
   await Hive.openBox('bitacorasdb');
+  await Hive.openBox('pqrsdb');
   runApp(MyApp());
 }

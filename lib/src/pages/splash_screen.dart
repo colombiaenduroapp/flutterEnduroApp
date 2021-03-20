@@ -10,6 +10,7 @@ import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
+import 'package:ui_flutter/src/services/services_pqrs.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 
@@ -45,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ServicioSede().cargarSedes(true);
       ServicioEmpresa().getEmpresa(true);
       ServicioBitacoras().getBitacora(true);
-
+      ServicioPQRS().getPQRS(true);
       SocketIO socket = await socketRes().conexion();
 
 // ----------socket--sedes-----------------------

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_eventos.dart';
+import 'package:ui_flutter/src/pages/listas_pqrs.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 
 import 'boton_gestionar.dart';
@@ -58,7 +60,7 @@ class _cont_gestionarState extends State<cont_gestionar> {
                         context,
                         pages_listas_empresas()),
                     BotonGestionar().boton_gestionar(Icons.help_outline,
-                        'Quejas', context, pages_listas_empresas()),
+                        'Quejas', context, PagesListasPqrs()),
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'convenios',
                         context, pages_listas_empresas()),
                   ],
