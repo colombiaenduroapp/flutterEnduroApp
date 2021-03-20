@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/src/pages/listas_pqrs.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
@@ -54,18 +55,19 @@ Widget _createDrawerItem1(
           child:
               Text(text, style: TextStyle(fontSize: 15, color: Colors.black54)),
         ),
-        if (cambio > 0)
-          Container(
-              margin: EdgeInsets.only(left: 5),
-              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 7),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(cambio.toString(),
-                  style: TextStyle(color: Colors.white)))
       ],
     ),
+    trailing: cambio > 0
+        ? Container(
+            margin: EdgeInsets.only(left: 5),
+            padding: EdgeInsets.symmetric(vertical: 3, horizontal: 7),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child:
+                Text(cambio.toString(), style: TextStyle(color: Colors.white)))
+        : null,
     onTap: () {
       Navigator.push(
         context,
@@ -77,22 +79,15 @@ Widget _createDrawerItem1(
 }
 
 class Nav_drawerState extends State<Nav_drawer> {
-  String us_nombres = '', us_alias = '';
-  int us_perfil = 1;
-  int cambio_sede = App.localStorage.getInt('cambio_sede');
-  addStringToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
-    setState(() {
-      us_nombres = prefs.getString('us_nombres') ?? '';
-      us_alias = prefs.getString('us_alias') ?? '';
-      us_perfil = prefs.getInt('us_perfil') ?? '';
-    });
-  }
+  String us_nombres = App.localStorage.getString('us_nombres') ?? '',
+      us_alias = App.localStorage.getString('us_alias') ?? '';
+  int cambio_sede = App.localStorage.getInt('cambio_sede') ?? 0;
+  int cambio_empresa = App.localStorage.getInt('cambio_empresa') ?? 0;
+  int cambio_bitacora = App.localStorage.getInt('cambio_bitacora') ?? 0;
+  int cambio_pqrs = App.localStorage.getInt('cambio_pqrs') ?? 0;
 
   @override
   void initState() {
-    addStringToSF();
     setState(() {
       cambio_sede = cambio_sede;
       print('cambio sede =' + cambio_sede.toString());
@@ -104,6 +99,7 @@ class Nav_drawerState extends State<Nav_drawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      // semanticLabel: ,
       child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
@@ -158,15 +154,12 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: PagesListasSedes(),
           ),
           Divider(),
-          _createDrawerItem(
+          _createDrawerItem1(
             icon: Icons.apps,
             text: 'Bitacoras',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => pages_listas_bitacoras(),
-              ),
-            ),
+            cambio: cambio_bitacora,
+            nombre_cambio: 'cambio_bitacora',
+            onTap: pages_listas_bitacoras(),
           ),
           Divider(),
           _createDrawerItem(
@@ -195,15 +188,12 @@ class Nav_drawerState extends State<Nav_drawer> {
               text: 'Boton Panico',
               onTap: () => Navigator.pop(context)),
           Divider(),
-          _createDrawerItem(
+          _createDrawerItem1(
             icon: Icons.contacts,
             text: 'Quejas y Reclamos',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PagesPQRS(),
-              ),
-            ),
+            cambio: cambio_pqrs,
+            nombre_cambio: 'cambio_pqrs',
+            onTap: PagesListasPqrs(),
           ),
           Divider(),
           _createDrawerItem(

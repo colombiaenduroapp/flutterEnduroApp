@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:async';
 
 import 'package:adhara_socket_io/socket.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,10 +11,12 @@ import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/socket.dart';
+import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class ServicioSede {
   String url = Url().getUrl();
-
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
 // esta funcion carga la lista de sedes la variable cambio sirve para determinar
 // si hubieron cambion en el servidor  true=hubieron cambios, false=no hubieron cambios
   Future<dynamic> cargarSedes(bool cambio) async {
@@ -37,7 +40,9 @@ class ServicioSede {
         ).timeout(Duration(seconds: 10));
         jsonResponse = json.decode(response.body)['data'];
         if (response.statusCode == 200) {
-          print('todo bien');
+          final dif = jsonResponse.length - sedes.length;
+          if (sedes.length < jsonResponse.length)
+            App.localStorage.setInt('cambio_sede', dif);
           Hive.box('sedesdb').put('data', jsonResponse);
           return jsonResponse;
         }

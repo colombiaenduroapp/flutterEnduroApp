@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
@@ -68,6 +69,10 @@ class ServicioEvento {
 
       if (response.statusCode == 200) {
         return true;
+      } else if (response.statusCode == 403) {
+        print('error token');
+        App.localStorage.setString('token', null);
+        return null;
       } else {
         return false;
       }
@@ -143,6 +148,10 @@ class ServicioEvento {
     }
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 403) {
+      print('error token');
+      App.localStorage.setString('token', null);
+      return null;
     } else {
       return false;
     }
@@ -162,6 +171,10 @@ class ServicioEvento {
     } catch (error) {}
     if (response.statusCode == 200) {
       return true;
+    } else if (response.statusCode == 403) {
+      print('error token');
+      App.localStorage.setString('token', null);
+      return null;
     } else {
       return false;
     }

@@ -4,6 +4,7 @@ import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 
@@ -30,6 +31,9 @@ class ServicioBitacoras {
         },
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
+      final dif = jsonResponse.length - bitacoras.length;
+      if (bitacoras.length < jsonResponse.length)
+        App.localStorage.setInt('cambio_bitacora', dif);
       Hive.box('bitacorasdb').put('data', jsonResponse);
       return jsonResponse;
     } on Error catch (e) {
@@ -60,6 +64,10 @@ class ServicioBitacoras {
           {'tipo': 'registro', 'lugar': bi_lugar}
         ]);
         return true;
+      } else if (response.statusCode == 403) {
+        print('error token');
+        App.localStorage.setString('token', null);
+        return null;
       } else {
         print(response.statusCode);
         return false;
