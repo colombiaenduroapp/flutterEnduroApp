@@ -4,6 +4,7 @@ import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
@@ -42,7 +43,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationPage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('token') != null) {
-      ServicioSede().cargarSedes(true);
+      List viejasede = Hive.box('sedesdb').get('data', defaultValue: []);
+      List nuevasede = await ServicioSede().cargarSedes(true);
+      if (viejasede.length >= nuevasede.length) {
+        print('viejasede');
+        prefs.setInt('cambio_sede', 0);
+      } else {
+        int dif = nuevasede.length - viejasede.length;
+        print(dif);
+        prefs.setInt('cambio_sede', dif);
+        print('nuevasede');
+      }
       ServicioEmpresa().getEmpresa(true);
       ServicioBitacoras().getBitacora(true);
 

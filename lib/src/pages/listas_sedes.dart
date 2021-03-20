@@ -269,17 +269,17 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                                                 fontSize: 20),
                                           ),
                                           onPressed: () async {
-                                            res = await ServicioSede()
-                                                .deleteSede(data[index]
-                                                        ['sd_cdgo']
-                                                    .toString());
-                                            Navigator.pop(context);
                                             WidgetsGenericos.showLoaderDialog(
                                                 context,
                                                 false,
                                                 'Cargando...',
                                                 Icons.check_circle_outlined,
                                                 Colors.green);
+                                            res = await ServicioSede()
+                                                .deleteSede(data[index]
+                                                        ['sd_cdgo']
+                                                    .toString());
+                                            Navigator.pop(context);
 
                                             if (res) {
                                               Navigator.pop(context);
@@ -289,8 +289,8 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
                                                   'Eliminado Correctamente',
                                                   Icons.check_circle_outlined,
                                                   Colors.red);
-                                              // await Future.delayed(
-                                              //     Duration(milliseconds: 500));
+                                              await Future.delayed(
+                                                  Duration(milliseconds: 500));
 
                                               Navigator.pop(context);
                                               setState(() {

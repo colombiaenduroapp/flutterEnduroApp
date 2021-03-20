@@ -9,6 +9,8 @@ import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/pages/pqrs.dart';
 
+import '../../../main.dart';
+
 class Nav_drawer extends StatefulWidget {
   Nav_drawer({Key key}) : super(key: key);
 
@@ -27,10 +29,50 @@ Widget _createDrawerItem(
           padding: EdgeInsets.only(left: 15.0),
           child:
               Text(text, style: TextStyle(fontSize: 15, color: Colors.black54)),
-        )
+        ),
       ],
     ),
     onTap: onTap,
+  );
+}
+
+Widget _createDrawerItem1(
+    {BuildContext context,
+    IconData icon,
+    String text,
+    int cambio,
+    String nombre_cambio,
+    Widget onTap}) {
+  print(cambio);
+  return ListTile(
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Icon(icon),
+        Padding(
+          padding: EdgeInsets.only(left: 15.0),
+          child:
+              Text(text, style: TextStyle(fontSize: 15, color: Colors.black54)),
+        ),
+        if (cambio > 0)
+          Container(
+              margin: EdgeInsets.only(left: 5),
+              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 7),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(cambio.toString(),
+                  style: TextStyle(color: Colors.white)))
+      ],
+    ),
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => onTap),
+      );
+      App.localStorage.setInt('cambio_sede', 0);
+    },
   );
 }
 
@@ -94,26 +136,21 @@ class Nav_drawerState extends State<Nav_drawer> {
             ),
           ),
           Divider(),
-          _createDrawerItem(
+          _createDrawerItem1(
             icon: Icons.event_available,
             text: 'Eventos',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InicioPage(),
-              ),
-            ),
+            cambio: App.localStorage.getInt('cambio_evento') ?? 0,
+            nombre_cambio: 'cambio_evento',
+            onTap: InicioPage(),
           ),
           Divider(),
-          _createDrawerItem(
+          _createDrawerItem1(
+            context: context,
             icon: Icons.apps,
             text: 'Sedes',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PagesListasSedes(),
-              ),
-            ),
+            cambio: App.localStorage.getInt('cambio_sede'),
+            nombre_cambio: 'cambio_sede',
+            onTap: PagesListasSedes(),
           ),
           Divider(),
           _createDrawerItem(

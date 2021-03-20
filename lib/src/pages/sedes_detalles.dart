@@ -98,7 +98,8 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                     height: 50,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
+                                        color:
+                                            Theme.of(context).backgroundColor,
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(0.5),
@@ -113,7 +114,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                     child: Text(''),
                                   ),
                                   Container(
-                                    color: Theme.of(context).primaryColor,
+                                    // color: Theme.of(context).primaryColor,
                                     // padding: EdgeInsets.only(top: 80),
 
                                     child: Column(

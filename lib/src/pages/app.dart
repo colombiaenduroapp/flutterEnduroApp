@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         cardColor: Colors.blueGrey[50],
         secondaryHeaderColor: Colors.orange[100],
         accentColor: Colors.orange[400],
-        backgroundColor: Colors.white10,
+        backgroundColor: Colors.white,
         highlightColor: Colors.grey[300],
 
         // Define la Familia de fuente por defecto
