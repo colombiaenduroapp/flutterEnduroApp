@@ -155,7 +155,9 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
 
     if (!(_searchText.isEmpty)) {
       for (int i = 0; i < data.length; i++) {
-        if (data[i].sd_desc.toLowerCase().contains(_searchText.toLowerCase())) {
+        if (data[i]['sd_desc']
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
           sedes.add(data[i]);
         }
       }
