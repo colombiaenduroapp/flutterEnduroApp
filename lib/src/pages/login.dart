@@ -175,14 +175,15 @@ class _PageLoginState extends State<PageLogin> {
                                         'us_alias', usuario.us_alias);
                                     prefs.setInt(
                                         'us_perfil', usuario.us_perfil);
+                                    prefs.setInt(
+                                        'us_sd_cdgo', usuario.us_sd_cdgo);
+                                    print(usuario.us_sd_cdgo);
                                     prefs.setString('token', login.token);
-                                    int perfil =
-                                        await prefs.getInt('us_perfil');
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            InicioPage(perfil),
+                                            InicioPage(),
                                       ),
                                     );
                                   } else if (login.message != null) {

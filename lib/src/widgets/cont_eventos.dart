@@ -18,21 +18,9 @@ class cont_eventos extends StatefulWidget {
 
 class _cont_eventosState extends State<cont_eventos> {
   Future<EventosList> lista;
-  String us_nombres = '', us_alias = '';
-  int us_perfil = 1;
-  addStringToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
-    setState(() {
-      us_nombres = prefs.getString('us_nombres') ?? '';
-      us_alias = prefs.getString('us_alias') ?? '';
-      us_perfil = prefs.getInt('us_perfil') ?? '';
-    });
-  }
 
   @override
   void initState() {
-    addStringToSF();
     lista = ServicioEvento().getEventos();
     // TODO: implement initState
     super.initState();
@@ -67,7 +55,7 @@ class _cont_eventosState extends State<cont_eventos> {
               } else {
                 return WidgetsGenericos.containerErrorConection(
                   context,
-                  InicioPage(us_perfil),
+                  InicioPage(),
                 );
               }
 

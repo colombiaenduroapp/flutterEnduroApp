@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/main.dart';
+
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_gestionar.dart';
 import 'package:ui_flutter/src/widgets/tab_bar/tab_inicio.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 
 class InicioPage extends StatefulWidget {
-  int us_perfil;
-  InicioPage(this.us_perfil, {Key key}) : super(key: key);
+  InicioPage({Key key}) : super(key: key);
 
   @override
   _InicioPageState createState() => _InicioPageState();
@@ -16,6 +18,7 @@ class InicioPage extends StatefulWidget {
 class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
   int us_per;
+  int us_perfil = App.localStorage.getInt('us_perfil');
   int fabIndex;
   List<Tab> myTabs;
 
@@ -23,7 +26,9 @@ class _InicioPageState extends State<InicioPage>
 
   @override
   void initState() {
-    us_per = widget.us_perfil;
+    String s = App.localStorage.getString('us_alias');
+    print(s);
+    us_per = us_perfil;
     myTabs = <Tab>[
       if (us_per > 1) new Tab(text: "Gestionar"),
       new Tab(text: "Inicio"),

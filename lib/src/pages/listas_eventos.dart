@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_evento.dart';
 import 'package:ui_flutter/src/pages/eventos.dart';
 import 'package:ui_flutter/src/pages/eventos_detalles.dart';
@@ -18,6 +19,8 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
   Future<EventosList> lista = ServicioEvento().getEventos();
   EventosList eventolist;
   final TextEditingController _filter = new TextEditingController();
+
+  int us_perfil = App.localStorage.getInt('us_perfil');
 
   String _searchText = "";
 
@@ -101,8 +104,10 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
             }
           },
         ),
-        floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-            context, pagesEventos(null, null, 'Registrar')),
+        floatingActionButton: us_perfil > 1
+            ? WidgetsGenericos.floatingButtonRegistrar(
+                context, pagesEventos(null, null, 'Registrar'))
+            : null,
       );
     } catch (exception) {
       return Center(
@@ -122,11 +127,6 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
           style: TextStyle(color: Colors.white),
           decoration: new InputDecoration(
               fillColor: Colors.white,
-              // filled: true,
-              // prefixIcon: new Icon(
-              //   Icons.search,
-              //   color: Colors.white,
-              // ),
               contentPadding: const EdgeInsets.all(20),
               focusColor: Colors.white,
               hintText: "Buscar:",

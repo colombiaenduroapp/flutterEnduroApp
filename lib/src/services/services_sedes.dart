@@ -35,10 +35,18 @@ class ServicioSede {
           },
         ).timeout(Duration(seconds: 10));
         jsonResponse = json.decode(response.body)['data'];
-        print(jsonResponse);
+        if (response.statusCode == 200) {
+          print('todo bien');
+          Hive.box('sedesdb').put('data', jsonResponse);
+          return jsonResponse;
+        }
+        // Error de token
+        else if (response.statusCode == 403) {
+          print('error token');
+          return sedes;
+        }
         // sedesList = SedesList.fromJson(jsonResponse);
-        Hive.box('sedesdb').put('data', jsonResponse);
-        return jsonResponse;
+
       }
     } on TimeoutException catch (e) {
       return null;
@@ -156,6 +164,27 @@ class ServicioSede {
           "mt_cargo_ca_cdgo": mt_cargo_ca_cdgo,
           "mt_usuario_us_cdgo": mt_usuario_us_cdgo,
           "mt_sede_sd_cdgo": mt_sede_sd_cdgo,
+        },
+      ).timeout(Duration(seconds: 20));
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception);
+      return false;
+    }
+  }
+
+  Future<bool> deleteMesa(String sd_cdgo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final response = await http.delete(
+        url + "mesa_trabajo/" + sd_cdgo,
+        headers: {
+          "x-access-token": prefs.getString('token'),
         },
       ).timeout(Duration(seconds: 20));
 

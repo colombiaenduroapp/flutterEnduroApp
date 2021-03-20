@@ -6,7 +6,7 @@ class Usuario {
   final String us_alias;
   final String us_logo;
   final int us_perfil;
-  final String us_sd_cdgo;
+  final int us_sd_cdgo;
   final String us_correo;
   final String us_telefono;
   final String us_sexo;

@@ -8,6 +8,7 @@ import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
+import '../../main.dart';
 import 'empresas.dart';
 
 class pages_listas_empresas extends StatefulWidget {
@@ -21,6 +22,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   Future<dynamic> lista = ServicioEmpresa().getEmpresa(false);
   List emplist = Hive.box('empresasdb').get('data', defaultValue: []);
   final TextEditingController _filter = new TextEditingController();
+  int us_perfil = App.localStorage.getInt('us_perfil');
 
   String _searchText = "";
 
@@ -129,8 +131,9 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             }
           },
         ),
-        floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
-            context, pagesEmpresa(null, null, 'Registrar')),
+        floatingActionButton: us_perfil > 1 ??
+            WidgetsGenericos.floatingButtonRegistrar(
+                context, pagesEmpresa(null, null, 'Registrar')),
       );
     } catch (exception) {
       return Center(

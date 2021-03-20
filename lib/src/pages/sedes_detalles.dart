@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
@@ -30,6 +31,9 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
   String cargoSel = null;
   String userSel = null;
   DateTime selected_fecha = DateTime.now();
+
+  int us_perfil = App.localStorage.getInt('us_perfil');
+  int us_sd_cdgo = App.localStorage.getInt('us_sd_cdgo');
   @override
   void initState() {
     getCargo();
@@ -46,17 +50,19 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
       appBar: AppBar(
         title: Text(widget.nombre),
         actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.edit_outlined),
-            iconSize: 30,
-            tooltip: 'Editar',
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => pageSedes('Editar', id, sede),
+          if ((us_sd_cdgo == int.parse(widget.data) && us_perfil == 2) ||
+              us_perfil == 3)
+            IconButton(
+              icon: new Icon(Icons.edit_outlined),
+              iconSize: 30,
+              tooltip: 'Editar',
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => pageSedes('Editar', id, sede),
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: Container(
@@ -153,6 +159,8 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                               ),
                             ],
                           ),
+
+                          // boton add mesa trabajo y renovar mesa
                           Container(
                             width: double.infinity,
                             padding: EdgeInsets.only(left: 10),
@@ -166,19 +174,36 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                RawMaterialButton(
-                                  onPressed: () {
-                                    dialog();
-                                  },
-                                  elevation: 4.0,
-                                  fillColor: Theme.of(context).accentColor,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 25.0,
-                                  ),
-                                  padding: EdgeInsets.all(15.0),
-                                  shape: CircleBorder(),
+                                Row(
+                                  children: [
+                                    if (us_perfil == 3)
+                                      GFButton(
+                                          onPressed: () {
+                                            dialogRenovar();
+                                          },
+                                          elevation: 4.0,
+                                          color: Colors.red,
+                                          child: Text('Renovar mesa'),
+                                          shape: GFButtonShape.pills),
+                                    if ((us_sd_cdgo == int.parse(widget.data) &&
+                                            us_perfil == 2) ||
+                                        us_perfil == 3)
+                                      RawMaterialButton(
+                                        onPressed: () {
+                                          dialog();
+                                        },
+                                        elevation: 4.0,
+                                        fillColor:
+                                            Theme.of(context).accentColor,
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                          size: 25.0,
+                                        ),
+                                        padding: EdgeInsets.all(15.0),
+                                        shape: CircleBorder(),
+                                      ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -362,10 +387,8 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
 
   Future getCargo() async {
     // Ciudad ciudad;
-    print(widget.data);
     http.Response response;
     try {
-      print(widget.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http
           .get(
@@ -376,11 +399,9 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           )
           .timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body)['data'];
-      print(jsonResponse);
       // ciudad = Ciudad.fromJson(jsonResponse);
       setState(() {
         statelist = jsonResponse;
-        print(jsonResponse);
       });
     } catch (e) {}
 
@@ -391,7 +412,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
     // Ciudad ciudad;
     http.Response response;
     try {
-      print(widget.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = await http
           .get(
@@ -402,7 +422,6 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
           )
           .timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body)['data'];
-      print(jsonResponse);
       // ciudad = Ciudad.fromJson(jsonResponse);
       setState(() {
         userlist = jsonResponse;
@@ -510,6 +529,70 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
         Navigator.pop(context);
         dialog();
       });
+  }
+
+  dialogRenovar() {
+    AlertDialog alert1 = AlertDialog(
+      title: Text('¿Estas Seguro?'),
+      content: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+                'Renovar la mesa de trabajo implica que se borraran todos los integrantes de la mesa')
+          ],
+        ),
+      ),
+      actions: [
+        GFButton(
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        GFButton(
+          child: Text(
+            'Renovar',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () async {
+            bool res = false;
+            WidgetsGenericos.showLoaderDialog(
+                context, true, 'Cargando...', null, Colors.blue);
+            res = await ServicioSede().deleteMesa(widget.data);
+            if (res) {
+              Navigator.pop(context);
+              WidgetsGenericos.showLoaderDialog(
+                  context,
+                  false,
+                  'Registrado Exitosamente',
+                  Icons.check_circle_outlined,
+                  Colors.green);
+              await Future.delayed(Duration(milliseconds: 500));
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      page_sedes_detalles(widget.data, widget.nombre),
+                ),
+              );
+            }
+          },
+        )
+      ],
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert1;
+      },
+    );
   }
 
   dialog() {
@@ -633,8 +716,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                 await Future.delayed(Duration(milliseconds: 500));
                 Navigator.pop(context);
                 Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) =>

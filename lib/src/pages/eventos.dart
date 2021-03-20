@@ -42,19 +42,11 @@ class _pagesEventosState extends State<pagesEventos> {
   bool res = false;
   int us_cdgo, us_perfil;
   String us_nombres;
-// utilizar preferencias
-  addStringToSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    us_cdgo = prefs.getInt('us_cdgo') ?? 0;
-    us_perfil = prefs.getInt('us_perfil') ?? 0;
-    us_nombres = prefs.getString('us_nombres') ?? '';
-  }
 
   @override
   void initState() {
     nombre_url_logo = urlLogo.replaceAll(Url().getUrl() + "evento/image/", "");
     cargar_evento(widget.evento);
-    addStringToSF();
     id_ev_cdgo = widget.ev_cdgo;
     // TODO: implement initState
     super.initState();
@@ -71,7 +63,7 @@ class _pagesEventosState extends State<pagesEventos> {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => InicioPage(us_perfil),
+              builder: (context) => InicioPage(),
             ),
           ),
         ),
@@ -80,7 +72,7 @@ class _pagesEventosState extends State<pagesEventos> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioPage(us_perfil),
+            builder: (context) => InicioPage(),
           ),
         ),
         child: Builder(

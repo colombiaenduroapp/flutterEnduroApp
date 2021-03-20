@@ -1,6 +1,7 @@
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/pages/bitacoras_datalles.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/services/socket.dart';
@@ -20,6 +21,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
   Future<dynamic> bitacoras = ServicioBitacoras().getBitacora(false);
 
   List bitlist = Hive.box('bitacorasdb').get('data', defaultValue: []);
+  int us_perfil = App.localStorage.getInt('us_perfil');
   @override
   void initState() {
     // TODO: implement initState
