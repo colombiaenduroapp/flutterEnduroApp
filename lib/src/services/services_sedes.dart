@@ -49,17 +49,6 @@ class ServicioSede {
     }
   }
 
-  Future<List> getCiudad() async {
-    http.Response response = await http.get(url + "sede/");
-    if (response.statusCode == 200) {
-      List res = jsonDecode(response.body)['data'];
-
-      return res;
-    } else {
-      return null;
-    }
-  }
-
   Future<Sede> searchSede(String sd_cdgo) async {
     var response;
     SharedPreferences prefs = await SharedPreferences.getInstance();
