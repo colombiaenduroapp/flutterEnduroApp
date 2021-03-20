@@ -131,9 +131,10 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
             }
           },
         ),
-        floatingActionButton: us_perfil > 1 ??
-            WidgetsGenericos.floatingButtonRegistrar(
-                context, pagesEmpresa(null, null, 'Registrar')),
+        floatingActionButton: us_perfil > 1
+            ? WidgetsGenericos.floatingButtonRegistrar(
+                context, pagesEmpresa(null, null, 'Registrar'))
+            : null,
       );
     } catch (exception) {
       return Center(
@@ -258,17 +259,17 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                               fontSize: 20),
                                         ),
                                         onPressed: () async {
-                                          res = await ServicioEmpresa()
-                                              .deleteEmpresa(data[index]
-                                                      ['em_cdgo']
-                                                  .toString());
-                                          Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
                                               context,
                                               false,
                                               'Cargando...',
                                               Icons.check_circle_outlined,
                                               Colors.blue);
+                                          res = await ServicioEmpresa()
+                                              .deleteEmpresa(data[index]
+                                                      ['em_cdgo']
+                                                  .toString());
+                                          Navigator.pop(context);
 
                                           if (res) {
                                             Navigator.pop(context);
@@ -278,8 +279,8 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                                 'Eliminado Correctamente',
                                                 Icons.check_circle_outlined,
                                                 Colors.green);
-                                            // await Future.delayed(
-                                            //     Duration(milliseconds: 500));
+                                            await Future.delayed(
+                                                Duration(milliseconds: 500));
 
                                             Navigator.pop(context);
                                             await setState(() {

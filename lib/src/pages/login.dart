@@ -1,12 +1,19 @@
+import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:hive/hive.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/conocenos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
+import 'package:ui_flutter/src/services/local_notification.dart';
+import 'package:ui_flutter/src/services/services_bitacora.dart';
+import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_login.dart';
+import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/services_usuario.dart';
+import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PageLogin extends StatefulWidget {
@@ -22,6 +29,16 @@ class _PageLoginState extends State<PageLogin> {
   var passwordTextController = TextEditingController();
   String errorLogin = null;
   Login login;
+  LocalNotification localNotification;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    localNotification = new LocalNotification();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +196,51 @@ class _PageLoginState extends State<PageLogin> {
                                         'us_sd_cdgo', usuario.us_sd_cdgo);
                                     print(usuario.us_sd_cdgo);
                                     prefs.setString('token', login.token);
+                                    // -------------------------------------------------------
+                                    List viejasede = Hive.box('sedesdb')
+                                        .get('data', defaultValue: []);
+                                    List nuevasede =
+                                        await ServicioSede().cargarSedes(true);
+                                    if (viejasede.length >= nuevasede.length) {
+                                      print('viejasede');
+                                      prefs.setInt('cambio_sede', 0);
+                                    } else {
+                                      int dif =
+                                          nuevasede.length - viejasede.length;
+                                      print(dif);
+                                      prefs.setInt('cambio_sede', dif);
+                                      print('nuevasede');
+                                    }
+                                    ServicioEmpresa().getEmpresa(true);
+                                    ServicioBitacoras().getBitacora(true);
+
+                                    SocketIO socket =
+                                        await socketRes().conexion();
+
+// ----------socket--sedes-----------------------
+                                    socket.on('sedesres', (data) {
+                                      if (data['tipo'] == "registro")
+                                        localNotification.scheduleNotification(
+                                            'Se ha registrado una nueva sede ',
+                                            data['sede']);
+
+                                      ServicioSede().cargarSedes(true);
+                                    });
+// -----------socket--bitacoras-----------------
+                                    socket.on('bitacorasres', (data) {
+                                      if (data['tipo'] == "registro")
+                                        localNotification.scheduleNotification(
+                                            'Se ha registrado una nueva bitacora ',
+                                            data['lugar']);
+
+                                      ServicioBitacoras().getBitacora(true);
+                                    });
+
+                                    socket.on('empresasres', (_) {
+                                      print('empresas cambio');
+                                      ServicioEmpresa().getEmpresa(true);
+                                    });
+
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
