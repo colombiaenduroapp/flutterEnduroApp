@@ -43,7 +43,7 @@ Widget _createDrawerItem1(
     int cambio,
     String nombre_cambio,
     Widget onTap}) {
-  print(cambio);
+  print(13 + cambio);
   return ListTile(
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -79,6 +79,7 @@ Widget _createDrawerItem1(
 class Nav_drawerState extends State<Nav_drawer> {
   String us_nombres = '', us_alias = '';
   int us_perfil = 1;
+  int cambio_sede = App.localStorage.getInt('cambio_sede');
   addStringToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // us_cdgo = prefs.getInt('us_cdgo') ?? 0;
@@ -92,6 +93,10 @@ class Nav_drawerState extends State<Nav_drawer> {
   @override
   void initState() {
     addStringToSF();
+    setState(() {
+      cambio_sede = cambio_sede;
+      print('cambio sede =' + cambio_sede.toString());
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -148,7 +153,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             context: context,
             icon: Icons.apps,
             text: 'Sedes',
-            cambio: App.localStorage.getInt('cambio_sede'),
+            cambio: cambio_sede,
             nombre_cambio: 'cambio_sede',
             onTap: PagesListasSedes(),
           ),

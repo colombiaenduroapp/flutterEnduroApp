@@ -10,9 +10,12 @@ import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/login.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';
+import 'package:ui_flutter/src/services/services_carga.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/socket.dart';
+
+import '../../main.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -26,9 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
   String _versionName = 'V1.0';
   final splashDelay = 3;
   LocalNotification localNotification;
+  ServicioCarga carga;
 
   @override
   void initState() {
+    carga = new ServicioCarga();
     socketRes().conexion();
     super.initState();
     _loadWidget();
@@ -41,45 +46,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigationPage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('token') != null) {
+    if (App.localStorage.getString('token') != null) {
       List viejasede = Hive.box('sedesdb').get('data', defaultValue: []);
       List nuevasede = await ServicioSede().cargarSedes(true);
-      if (viejasede.length >= nuevasede.length) {
-        print('viejasede');
-        prefs.setInt('cambio_sede', 0);
-      } else {
-        int dif = nuevasede.length - viejasede.length;
-        print(dif);
-        prefs.setInt('cambio_sede', dif);
-        print('nuevasede');
-      }
       ServicioEmpresa().getEmpresa(true);
       ServicioBitacoras().getBitacora(true);
 
-      SocketIO socket = await socketRes().conexion();
+      if (nuevasede.length == viejasede.length) {
+        print('viejasede');
+        App.localStorage.setInt('cambio_sede', 0);
+      } else {
+        int dif = nuevasede.length - viejasede.length;
+        print(dif);
+        App.localStorage.setInt('cambio_sede', dif);
+        print('nuevasede');
+      }
 
-// ----------socket--sedes-----------------------
-      socket.on('sedesres', (data) {
-        if (data['tipo'] == "registro")
-          localNotification.scheduleNotification(
-              'Se ha registrado una nueva sede ', data['sede']);
+      await ServicioCarga().iniciaSockets();
 
-        ServicioSede().cargarSedes(true);
-      });
-// -----------socket--bitacoras-----------------
-      socket.on('bitacorasres', (data) {
-        if (data['tipo'] == "registro")
-          localNotification.scheduleNotification(
-              'Se ha registrado una nueva bitacora ', data['lugar']);
-
-        ServicioBitacoras().getBitacora(true);
-      });
-
-      socket.on('empresasres', (_) {
-        print('empresas cambio');
-        ServicioEmpresa().getEmpresa(true);
-      });
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => InicioPage()));
     } else {
