@@ -22,7 +22,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
       new GlobalKey<RefreshIndicatorState>();
   bool res = false;
 
-  List sedes1 = await ServicioSede().cargarSedes(false);
+  List sedes1 = Hive.box('sedesdb').get('data', defaultValue: []);
 
   final TextEditingController _filter = new TextEditingController();
 
