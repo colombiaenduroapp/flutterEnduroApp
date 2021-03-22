@@ -9,6 +9,7 @@ class ServicioPQRS {
   String url = Url().getUrl();
 
   Future<dynamic> getPQRS() async {
+    final pqrsvieja = Hive.box('pqrsdb').get('data');
     try {
       final response = await http.get(
         url + 'pqrs',
@@ -17,6 +18,9 @@ class ServicioPQRS {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        final dif = jsonResponse.length - pqrsvieja.length;
+        if (pqrsvieja.length < jsonResponse.length)
+          App.localStorage.setInt('cambio_pqrs', dif);
         Hive.box('pqrsdb')
             .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
       }

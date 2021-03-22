@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_empresa.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +35,10 @@ class ServicioEmpresa {
         },
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
-      // empresalist = EmpresaList.fromJson(jsonResponse);
+      final dif = jsonResponse.length - empresas.length;
+      print('dif' + dif.toString());
+      if (empresas.length < jsonResponse.length)
+        App.localStorage.setInt('cambio_empresa', dif);
       Hive.box('empresasdb').put('data', jsonResponse);
 
       return jsonResponse;
