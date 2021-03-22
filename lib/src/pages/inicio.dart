@@ -27,7 +27,6 @@ class _InicioPageState extends State<InicioPage>
   @override
   void initState() {
     String s = App.localStorage.getString('us_alias');
-    print(s);
     us_per = us_perfil;
     myTabs = <Tab>[
       if (us_per > 1) new Tab(text: "Gestionar"),

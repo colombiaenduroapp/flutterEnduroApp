@@ -60,7 +60,7 @@ class ServicioEmpresa {
     String em_correo,
   ) async {
     try {
-      socket = await socketRes().conexion();
+      socket = await ServicioSocket().conexion();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final response = await http.post(
         url + "empresa",
@@ -127,7 +127,7 @@ class ServicioEmpresa {
       String em_telefono,
       String em_correo) async {
     var response;
-    SocketIO socket = await socketRes().conexion();
+    SocketIO socket = await ServicioSocket().conexion();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 

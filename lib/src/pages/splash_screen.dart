@@ -24,12 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   String _versionName = 'V1.0';
   final splashDelay = 3;
   LocalNotification localNotification;
-  ServicioCarga carga;
 
   @override
   void initState() {
-    carga = new ServicioCarga();
-    socketRes().conexion();
     super.initState();
     _loadWidget();
     localNotification = new LocalNotification();
@@ -42,20 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPage() async {
     if (App.localStorage.getString('token') != null) {
-      List viejasede = Hive.box('sedesdb').get('data', defaultValue: []);
-
-      // if (nuevasede.length == viejasede.length) {
-      //   print('viejasede');
-      //   App.localStorage.setInt('cambio_sede', 0);
-      // } else {
-      //   int dif = nuevasede.length - viejasede.length;
-      //   print(dif);
-      //   App.localStorage.setInt('cambio_sede', dif);
-      //   print('nuevasede');
-      // }
-
-      await ServicioCarga().iniciaSockets();
+      // pone a escuchar todos los sokets
+      await ServicioSocket().iniciaSockets();
+      // ---------------------------------------
+      // carga todos los datos a la base de datos local
       await ServicioCarga().cargarNuevosDatos();
+      // ---------------------------------------
 
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) => InicioPage()));

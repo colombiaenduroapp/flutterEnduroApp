@@ -9,12 +9,15 @@ import 'package:ui_flutter/src/pages/conocenos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_bitacora.dart';
+import 'package:ui_flutter/src/services/services_carga.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_login.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/services_usuario.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
+
+import '../../main.dart';
 
 class PageLogin extends StatefulWidget {
   PageLogin({Key key}) : super(key: key);
@@ -183,63 +186,28 @@ class _PageLoginState extends State<PageLogin> {
                                       JwtDecoder.decode(login.token),
                                     );
 
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setInt('us_cdgo', usuario.us_cdgo);
-                                    prefs.setString(
+                                    // carga las preferencias de sesión
+                                    App.localStorage
+                                        .setInt('us_cdgo', usuario.us_cdgo);
+                                    App.localStorage.setString(
                                         'us_nombres', usuario.us_nombres);
-                                    prefs.setString(
+                                    App.localStorage.setString(
                                         'us_alias', usuario.us_alias);
-                                    prefs.setInt(
-                                        'us_perfil', usuario.us_perfil);
-                                    prefs.setInt(
+                                    App.localStorage
+                                        .setInt('us_perfil', usuario.us_perfil);
+                                    App.localStorage.setInt(
                                         'us_sd_cdgo', usuario.us_sd_cdgo);
-                                    print(usuario.us_sd_cdgo);
-                                    prefs.setString('token', login.token);
-                                    // -------------------------------------------------------
-                                    List viejasede = Hive.box('sedesdb')
-                                        .get('data', defaultValue: []);
-                                    List nuevasede =
-                                        await ServicioSede().cargarSedes(true);
-                                    if (viejasede.length >= nuevasede.length) {
-                                      print('viejasede');
-                                      prefs.setInt('cambio_sede', 0);
-                                    } else {
-                                      int dif =
-                                          nuevasede.length - viejasede.length;
-                                      print(dif);
-                                      prefs.setInt('cambio_sede', dif);
-                                      print('nuevasede');
-                                    }
-                                    ServicioEmpresa().getEmpresa(true);
-                                    ServicioBitacoras().getBitacora(true);
-
-                                    SocketIO socket =
-                                        await socketRes().conexion();
-
-// ----------socket--sedes-----------------------
-                                    socket.on('sedesres', (data) {
-                                      if (data['tipo'] == "registro")
-                                        localNotification.scheduleNotification(
-                                            'Se ha registrado una nueva sede ',
-                                            data['sede']);
-
-                                      ServicioSede().cargarSedes(true);
-                                    });
-// -----------socket--bitacoras-----------------
-                                    socket.on('bitacorasres', (data) {
-                                      if (data['tipo'] == "registro")
-                                        localNotification.scheduleNotification(
-                                            'Se ha registrado una nueva bitacora ',
-                                            data['lugar']);
-
-                                      ServicioBitacoras().getBitacora(true);
-                                    });
-
-                                    socket.on('empresasres', (_) {
-                                      print('empresas cambio');
-                                      ServicioEmpresa().getEmpresa(true);
-                                    });
+                                    App.localStorage
+                                        .setString('token', login.token);
+                                    // ----------------------------------------
+                                    // inicia servicio socket
+                                    ServicioSocket().conexion();
+                                    // pone a escuchar todos los sokets
+                                    await ServicioSocket().iniciaSockets();
+                                    // ---------------------------------------
+                                    // carga todos los datos a la base de datos local
+                                    await ServicioCarga().cargarNuevosDatos();
+                                    // ---------------------------------------
 
                                     Navigator.pushReplacement(
                                       context,
@@ -250,7 +218,6 @@ class _PageLoginState extends State<PageLogin> {
                                     );
                                   } else if (login.message != null) {
                                     Navigator.pop(context);
-                                    print(login.message);
                                     setState(() {
                                       errorLogin = login.message;
                                     });

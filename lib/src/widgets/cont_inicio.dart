@@ -22,16 +22,7 @@ class _cont_inicioState extends State<cont_inicio> {
   SocketIO socket;
   @override
   void initState() {
-    sockets();
     super.initState();
-  }
-
-  sockets() async {
-    socket = await socketRes().conexion();
-    print('hola socket');
-    socket.on('sedesres', (_) {
-      print('sedes');
-    });
   }
 
   void cargalist() async {

@@ -44,7 +44,6 @@ Widget _createDrawerItem1(
     int cambio,
     String nombre_cambio,
     Widget onTap}) {
-  print(13 + cambio);
   return ListTile(
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +89,6 @@ class Nav_drawerState extends State<Nav_drawer> {
   void initState() {
     setState(() {
       cambio_sede = cambio_sede;
-      print('cambio sede =' + cambio_sede.toString());
     });
     // TODO: implement initState
     super.initState();

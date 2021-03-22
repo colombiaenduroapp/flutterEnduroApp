@@ -22,16 +22,11 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
 
   List bitlist = Hive.box('bitacorasdb').get('data', defaultValue: []);
   int us_perfil = App.localStorage.getInt('us_perfil');
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   // el metodo socket crea una conexion con el servidor de sockets y escucha el
 // evento sedeempresas para hacer cambios en tiempo real
   socket() async {
-    SocketIO socket = await socketRes().conexion();
+    SocketIO socket = await ServicioSocket().conexion();
     socket.on('empresasres', (_) async {
       print('empresas cambio ');
       bitlist = await ServicioBitacoras().getBitacora(true);

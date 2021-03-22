@@ -65,7 +65,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
 // el metodo socket crea una conexion con el servidor de sockets y escucha el
 // evento sedes para hacer cambios en tiempo real
   socket() async {
-    SocketIO socket = await socketRes().conexion();
+    SocketIO socket = await ServicioSocket().conexion();
     socket.on('sedesres', (_) async {
       print('sedes cambio second');
       sedes1 = await ServicioSede().cargarSedes(true);

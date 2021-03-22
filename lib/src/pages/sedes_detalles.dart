@@ -743,6 +743,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
                 await Future.delayed(Duration(milliseconds: 500));
                 Navigator.pop(context);
                 Navigator.pop(context);
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -42,7 +42,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   // el metodo socket crea una conexion con el servidor de sockets y escucha el
 // evento sedeempresas para hacer cambios en tiempo real
   socket() async {
-    SocketIO socket = await socketRes().conexion();
+    SocketIO socket = await ServicioSocket().conexion();
     socket.on('empresasres', (_) async {
       print('empresas cambio ');
       emplist = await ServicioEmpresa().getEmpresa(true);
