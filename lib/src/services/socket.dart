@@ -30,10 +30,9 @@ class ServicioSocket {
   }
 
   iniciaSockets() async {
-    SocketIO socket = await conexion();
-    socketBitacoras(socket);
-    socketEmpresas(socket);
-    socketSedes(socket);
+    socketBitacoras(App.conexion);
+    socketEmpresas(App.conexion);
+    socketSedes(App.conexion);
   }
 
   // ------------------socket sede-----------

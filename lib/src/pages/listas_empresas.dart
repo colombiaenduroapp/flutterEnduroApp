@@ -1,24 +1,22 @@
-import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:ui_flutter/src/pages/empresas_detalles.dart';
 import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 import '../../main.dart';
 import 'empresas.dart';
 
-class pages_listas_empresas extends StatefulWidget {
-  pages_listas_empresas({Key key}) : super(key: key);
+class PageListasEmpresas extends StatefulWidget {
+  PageListasEmpresas({Key key}) : super(key: key);
 
   @override
-  _pages_listas_empresasState createState() => _pages_listas_empresasState();
+  _PageListasEmpresasState createState() => _PageListasEmpresasState();
 }
 
-class _pages_listas_empresasState extends State<pages_listas_empresas> {
+class _PageListasEmpresasState extends State<PageListasEmpresas> {
   Future<dynamic> lista = ServicioEmpresa().getEmpresa(false);
   List emplist = Hive.box('empresasdb').get('data', defaultValue: []);
   final TextEditingController _filter = new TextEditingController();
@@ -35,15 +33,13 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
   void initState() {
     cargar();
     socket();
-    // TODO: implement initS
     super.initState();
   }
 
   // el metodo socket crea una conexion con el servidor de sockets y escucha el
 // evento sedeempresas para hacer cambios en tiempo real
   socket() async {
-    SocketIO socket = await ServicioSocket().conexion();
-    socket.on('empresasres', (_) async {
+    App.conexion.on('empresasres', (_) async {
       print('empresas cambio ');
       emplist = await ServicioEmpresa().getEmpresa(true);
       if (mounted) {
@@ -62,7 +58,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
     }
   }
 
-  _pages_listas_empresasState() {
+  _PageListasEmpresasState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -283,7 +279,7 @@ class _pages_listas_empresasState extends State<pages_listas_empresas> {
                                                 Duration(milliseconds: 500));
 
                                             Navigator.pop(context);
-                                            await setState(() {
+                                            setState(() {
                                               data.removeAt(index);
                                             });
                                           } else {}

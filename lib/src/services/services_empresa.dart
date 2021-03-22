@@ -36,7 +36,6 @@ class ServicioEmpresa {
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
       final dif = jsonResponse.length - empresas.length;
-      print('dif' + dif.toString());
       if (empresas.length < jsonResponse.length)
         App.localStorage.setInt('cambio_empresa', dif);
       Hive.box('empresasdb').put('data', jsonResponse);

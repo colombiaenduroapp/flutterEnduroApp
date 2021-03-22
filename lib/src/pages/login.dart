@@ -1,18 +1,12 @@
-import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:hive/hive.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/conocenos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
-import 'package:ui_flutter/src/services/services_bitacora.dart';
 import 'package:ui_flutter/src/services/services_carga.dart';
-import 'package:ui_flutter/src/services/services_empresa.dart';
 import 'package:ui_flutter/src/services/services_login.dart';
-import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/services/services_usuario.dart';
 import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
@@ -36,7 +30,6 @@ class _PageLoginState extends State<PageLogin> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     localNotification = new LocalNotification();

@@ -149,7 +149,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             text: 'Sedes',
             cambio: cambio_sede,
             nombre_cambio: 'cambio_sede',
-            onTap: PagesListasSedes(),
+            onTap: PageListasSedes(),
           ),
           Divider(),
           _createDrawerItem1(
@@ -171,7 +171,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => pages_listas_empresas(),
+                builder: (context) => PageListasEmpresas(),
               ),
             ),
           ),

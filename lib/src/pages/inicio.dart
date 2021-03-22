@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/main.dart';
 
 import 'package:ui_flutter/src/widgets/tab_bar/tab_evento.dart';
@@ -18,7 +17,7 @@ class InicioPage extends StatefulWidget {
 class _InicioPageState extends State<InicioPage>
     with SingleTickerProviderStateMixin {
   int us_per;
-  int us_perfil = App.localStorage.getInt('us_perfil');
+  int usPerfil = App.localStorage.getInt('us_perfil');
   int fabIndex;
   List<Tab> myTabs;
 
@@ -26,8 +25,7 @@ class _InicioPageState extends State<InicioPage>
 
   @override
   void initState() {
-    String s = App.localStorage.getString('us_alias');
-    us_per = us_perfil;
+    us_per = usPerfil;
     myTabs = <Tab>[
       if (us_per > 1) new Tab(text: "Gestionar"),
       new Tab(text: "Inicio"),
@@ -60,8 +58,8 @@ class _InicioPageState extends State<InicioPage>
           body: TabBarView(
             controller: tabController,
             children: [
-              tab_gestionar(),
-              if (us_per > 1) tab_inicio(),
+              TabGestionar(),
+              if (us_per > 1) TabInicio(),
               tab_evento(),
               // tab_sede(),
             ],

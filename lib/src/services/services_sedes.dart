@@ -3,14 +3,12 @@ import 'dart:io';
 import 'dart:async';
 
 import 'package:adhara_socket_io/socket.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
-import 'package:ui_flutter/src/services/socket.dart';
 
 class ServicioSede {
   String url = Url().getUrl();
@@ -78,9 +76,6 @@ class ServicioSede {
     }
 
     if (response.statusCode == 200) {
-      App.conexion.emit('sedes', [
-        {'tipo': 'registro', 'sede': 'sjdh'}
-      ]);
       final jsonResponse = json.decode(response.body)['data'];
       Sede sede = Sede.fromJson(jsonResponse);
       return sede;
@@ -92,7 +87,6 @@ class ServicioSede {
   Future<bool> updateSede(String sd_cdgo, String cd_desc, String logo,
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
-    SocketIO socket = await ServicioSocket().conexion();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -116,7 +110,7 @@ class ServicioSede {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
-      socket.emit('sedes', [
+      App.conexion.emit('sedes', [
         {'tipo': 'registro', 'sede': cd_desc}
       ]);
       return true;
@@ -130,7 +124,6 @@ class ServicioSede {
 
   Future<bool> addSede(
       String cd_desc, String logo, String jersey, String ciudad) async {
-    SocketIO socket = await ServicioSocket().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final response = await http.post(
@@ -147,7 +140,7 @@ class ServicioSede {
       ).timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200) {
-        socket.emit('sedes', [
+        App.conexion.emit('sedes', [
           {'tipo': 'registro', 'sede': cd_desc}
         ]);
         return true;
@@ -215,7 +208,6 @@ class ServicioSede {
 
   Future<bool> deleteSede(String sd_cdgo) async {
     var response;
-    SocketIO socket = await ServicioSocket().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await http.delete(
@@ -226,7 +218,7 @@ class ServicioSede {
       );
     } catch (error) {}
     if (response.statusCode == 200) {
-      socket.emit('sedes', [
+      App.conexion.emit('sedes', [
         {'tipo': 'Eliminar', 'sede': sd_cdgo}
       ]);
       return true;
