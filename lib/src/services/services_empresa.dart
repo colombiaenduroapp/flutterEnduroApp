@@ -36,7 +36,6 @@ class ServicioEmpresa {
       ).timeout(Duration(seconds: 30));
       jsonResponse = json.decode(response.body)['data'];
       final dif = jsonResponse.length - empresas.length;
-      print('dif' + dif.toString());
       if (empresas.length < jsonResponse.length)
         App.localStorage.setInt('cambio_empresa', dif);
       Hive.box('empresasdb').put('data', jsonResponse);
@@ -60,7 +59,7 @@ class ServicioEmpresa {
     String em_correo,
   ) async {
     try {
-      socket = await socketRes().conexion();
+      socket = await ServicioSocket().conexion();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final response = await http.post(
         url + "empresa",
@@ -127,7 +126,7 @@ class ServicioEmpresa {
       String em_telefono,
       String em_correo) async {
     var response;
-    SocketIO socket = await socketRes().conexion();
+    SocketIO socket = await ServicioSocket().conexion();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 

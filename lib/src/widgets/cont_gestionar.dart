@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_eventos.dart';
 import 'package:ui_flutter/src/pages/listas_pqrs.dart';
@@ -7,14 +6,14 @@ import 'package:ui_flutter/src/pages/listas_sedes.dart';
 
 import 'boton_gestionar.dart';
 
-class cont_gestionar extends StatefulWidget {
-  cont_gestionar({Key key}) : super(key: key);
+class ContGestionar extends StatefulWidget {
+  ContGestionar({Key key}) : super(key: key);
 
   @override
-  _cont_gestionarState createState() => _cont_gestionarState();
+  _ContGestionarState createState() => _ContGestionarState();
 }
 
-class _cont_gestionarState extends State<cont_gestionar> {
+class _ContGestionarState extends State<ContGestionar> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -41,39 +40,36 @@ class _cont_gestionarState extends State<cont_gestionar> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     BotonGestionar().boton_gestionar(Icons.gamepad_outlined,
-                        'Sedes', context, PagesListasSedes()),
+                        'Sedes', context, PageListasSedes()),
                     BotonGestionar().boton_gestionar(
                         Icons.corporate_fare_outlined,
                         'Empresas',
                         context,
-                        pages_listas_empresas()),
-                    BotonGestionar().boton_gestionar(Icons.event, 'Eventos',
-                        context, pages_listas_eventos()),
+                        PageListasEmpresas()),
+                    BotonGestionar().boton_gestionar(
+                        Icons.event, 'Eventos', context, PageListasEventos()),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    BotonGestionar().boton_gestionar(
-                        Icons.link,
-                        'Publicacion Masivas',
-                        context,
-                        pages_listas_empresas()),
+                    BotonGestionar().boton_gestionar(Icons.link,
+                        'Publicacion Masivas', context, PageListasEmpresas()),
                     BotonGestionar().boton_gestionar(Icons.help_outline,
                         'Quejas', context, PagesListasPqrs()),
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'convenios',
-                        context, pages_listas_empresas()),
+                        context, PageListasEmpresas()),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'Lideres',
-                        context, pages_listas_empresas()),
+                        context, PageListasEmpresas()),
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'Empresas',
-                        context, pages_listas_empresas()),
+                        context, PageListasEmpresas()),
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'Eventos',
-                        context, pages_listas_empresas()),
+                        context, PageListasEmpresas()),
                   ],
                 ),
               ],

@@ -1,28 +1,22 @@
-import 'package:adhara_socket_io/socket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'package:ui_flutter/main.dart';
-import 'package:ui_flutter/src/models/model_sede.dart';
-import 'package:ui_flutter/src/pages/inicio.dart';
 import 'package:ui_flutter/src/pages/sedes.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
-import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
-class PagesListasSedes extends StatefulWidget {
-  PagesListasSedes({Key key}) : super(key: key);
+class PageListasSedes extends StatefulWidget {
+  PageListasSedes({Key key}) : super(key: key);
 
   @override
-  _PagesListasSedesState createState() => _PagesListasSedesState();
+  _PageListasSedesState createState() => _PageListasSedesState();
 }
 
-class _PagesListasSedesState extends State<PagesListasSedes> {
+class _PageListasSedesState extends State<PageListasSedes> {
   Future<dynamic> lista = ServicioSede().cargarSedes(false);
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
   bool res = false;
 
   int us_perfil = App.localStorage.getInt('us_perfil');
@@ -36,7 +30,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = new Text('Sedes');
 
-  _PagesListasSedesState() {
+  _PageListasSedesState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -58,20 +52,17 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
     cargar();
     socket();
 
-    // TODO: implement initState
     super.initState();
   }
 
 // el metodo socket crea una conexion con el servidor de sockets y escucha el
 // evento sedes para hacer cambios en tiempo real
   socket() async {
-    SocketIO socket = await socketRes().conexion();
-    socket.on('sedesres', (_) async {
-      print('sedes cambio second');
+    App.conexion.on('sedesres', (_) async {
+      print('sedes cambio ');
       sedes1 = await ServicioSede().cargarSedes(true);
       if (mounted) {
         setState(() {
-          print('cambiando');
           sedes1 = sedes1;
         });
       }
@@ -87,7 +78,6 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
 
   @override
   void dispose() {
-    _searchText;
     _filter.dispose();
     super.dispose();
   }
@@ -150,7 +140,7 @@ class _PagesListasSedesState extends State<PagesListasSedes> {
     });
   }
 
-  Widget _jobsListView(data) {
+  _jobsListView(data) {
     List<dynamic> sedes = new List();
 
     if (!(_searchText.isEmpty)) {

@@ -3,20 +3,15 @@ import 'dart:io';
 import 'dart:async';
 
 import 'package:adhara_socket_io/socket.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
-import 'package:ui_flutter/src/services/socket.dart';
-import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class ServicioSede {
   String url = Url().getUrl();
-  final GlobalKey<NavigatorState> navigatorKey =
-      new GlobalKey<NavigatorState>();
 // esta funcion carga la lista de sedes la variable cambio sirve para determinar
 // si hubieron cambion en el servidor  true=hubieron cambios, false=no hubieron cambios
   Future<dynamic> cargarSedes(bool cambio) async {
@@ -44,11 +39,11 @@ class ServicioSede {
           if (sedes.length < jsonResponse.length)
             App.localStorage.setInt('cambio_sede', dif);
           Hive.box('sedesdb').put('data', jsonResponse);
+
           return jsonResponse;
         }
         // Error de token
         else if (response.statusCode == 403) {
-          print('error token');
           App.localStorage.setString('token', null);
           return sedes;
         }
@@ -71,7 +66,7 @@ class ServicioSede {
       response = await http.get(
         url + "sede/" + sd_cdgo,
         headers: {
-          "x-access-token": '',
+          "x-access-token": prefs.getString('token'),
         },
       ).timeout(Duration(seconds: 40));
     } on TimeoutException catch (e) {
@@ -84,9 +79,6 @@ class ServicioSede {
       final jsonResponse = json.decode(response.body)['data'];
       Sede sede = Sede.fromJson(jsonResponse);
       return sede;
-    } else if (response.statusCode == 403) {
-      print('error token');
-      return null;
     } else {
       return null;
     }
@@ -95,7 +87,6 @@ class ServicioSede {
   Future<bool> updateSede(String sd_cdgo, String cd_desc, String logo,
       String url_logo, String jersey, String url_jersey, String ciudad) async {
     var response;
-    SocketIO socket = await socketRes().conexion();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -119,12 +110,11 @@ class ServicioSede {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
-      socket.emit('sedes', [
+      App.conexion.emit('sedes', [
         {'tipo': 'registro', 'sede': cd_desc}
       ]);
       return true;
     } else if (response.statusCode == 403) {
-      print('error token');
       App.localStorage.setString('token', null);
       return null;
     } else {
@@ -134,7 +124,6 @@ class ServicioSede {
 
   Future<bool> addSede(
       String cd_desc, String logo, String jersey, String ciudad) async {
-    SocketIO socket = await socketRes().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final response = await http.post(
@@ -151,10 +140,13 @@ class ServicioSede {
       ).timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200) {
-        socket.emit('sedes', [
+        App.conexion.emit('sedes', [
           {'tipo': 'registro', 'sede': cd_desc}
         ]);
         return true;
+      } else if (response.statusCode == 403) {
+        App.localStorage.setString('token', null);
+        return null;
       } else {
         return false;
       }
@@ -216,7 +208,6 @@ class ServicioSede {
 
   Future<bool> deleteSede(String sd_cdgo) async {
     var response;
-    SocketIO socket = await socketRes().conexion();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await http.delete(
@@ -227,7 +218,7 @@ class ServicioSede {
       );
     } catch (error) {}
     if (response.statusCode == 200) {
-      socket.emit('sedes', [
+      App.conexion.emit('sedes', [
         {'tipo': 'Eliminar', 'sede': sd_cdgo}
       ]);
       return true;

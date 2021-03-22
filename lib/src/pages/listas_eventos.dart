@@ -8,14 +8,14 @@ import 'package:ui_flutter/src/services/services_eventos.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
-class pages_listas_eventos extends StatefulWidget {
-  pages_listas_eventos({Key key}) : super(key: key);
+class PageListasEventos extends StatefulWidget {
+  PageListasEventos({Key key}) : super(key: key);
 
   @override
-  _pages_listas_eventosState createState() => _pages_listas_eventosState();
+  _PageListasEventosState createState() => _PageListasEventosState();
 }
 
-class _pages_listas_eventosState extends State<pages_listas_eventos> {
+class _PageListasEventosState extends State<PageListasEventos> {
   Future<EventosList> lista = ServicioEvento().getEventos();
   EventosList eventolist;
   final TextEditingController _filter = new TextEditingController();
@@ -29,11 +29,10 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
   bool res = true;
   @override
   void initState() {
-    // TODO: implement initS
     super.initState();
   }
 
-  _pages_listas_eventosState() {
+  _PageListasEventosState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -86,7 +85,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                   return Text("${snapshot.error}");
                 } else {
                   return WidgetsGenericos.containerErrorConection(
-                      context, pages_listas_eventos());
+                      context, PageListasEventos());
                 }
 
                 break;
@@ -149,7 +148,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
     );
   }
 
-  Widget _jobsListView(data) {
+  _jobsListView(data) {
     List teventolist = new List();
     if (!(_searchText.isEmpty)) {
       for (int i = 0; i < eventolist.eventos.length; i++) {
@@ -258,7 +257,7 @@ class _pages_listas_eventosState extends State<pages_listas_eventos> {
                                             //     Duration(milliseconds: 500));
 
                                             Navigator.pop(context);
-                                            await setState(() {
+                                            setState(() {
                                               data.eventos.removeAt(index);
                                             });
                                           } else {

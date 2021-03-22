@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/widgets/cont_inicio.dart';
 
-class tab_inicio extends StatefulWidget {
-  tab_inicio({Key key}) : super(key: key);
+class TabInicio extends StatefulWidget {
+  TabInicio({Key key}) : super(key: key);
 
   @override
-  _tab_inicioState createState() => _tab_inicioState();
+  _TabInicioState createState() => _TabInicioState();
 }
 
-class _tab_inicioState extends State<tab_inicio> {
+class _TabInicioState extends State<TabInicio> {
   @override
   Widget build(BuildContext context) {
     return Container(

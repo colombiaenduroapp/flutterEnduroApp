@@ -75,7 +75,7 @@ class _pageSedesState extends State<pageSedes> {
             onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PagesListasSedes(),
+                    builder: (context) => PageListasSedes(),
                   ),
                 )),
         // actions: [
@@ -87,7 +87,7 @@ class _pageSedesState extends State<pageSedes> {
         onWillPop: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => PagesListasSedes(),
+            builder: (context) => PageListasSedes(),
           ),
         ),
         child: Builder(
@@ -440,7 +440,7 @@ class _pageSedesState extends State<pageSedes> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PagesListasSedes(),
+                        builder: (context) => PageListasSedes(),
                       ),
                     );
                   } else {

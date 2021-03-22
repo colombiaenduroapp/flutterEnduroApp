@@ -37,14 +37,14 @@ class ServicioBitacoras {
       Hive.box('bitacorasdb').put('data', jsonResponse);
       return jsonResponse;
     } on Error catch (e) {
-      return null;
+      return e;
     }
   }
 
   Future<bool> addBitacora(String bi_ciudad, String bi_lugar, String bi_desc,
       List<String> bi_logo) async {
     try {
-      socket = await socketRes().conexion();
+      socket = await ServicioSocket().conexion();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final response = await http.post(
         url + "bitacora",

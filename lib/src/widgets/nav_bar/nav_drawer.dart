@@ -44,7 +44,6 @@ Widget _createDrawerItem1(
     int cambio,
     String nombre_cambio,
     Widget onTap}) {
-  print(13 + cambio);
   return ListTile(
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +89,6 @@ class Nav_drawerState extends State<Nav_drawer> {
   void initState() {
     setState(() {
       cambio_sede = cambio_sede;
-      print('cambio sede =' + cambio_sede.toString());
     });
     // TODO: implement initState
     super.initState();
@@ -151,7 +149,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             text: 'Sedes',
             cambio: cambio_sede,
             nombre_cambio: 'cambio_sede',
-            onTap: PagesListasSedes(),
+            onTap: PageListasSedes(),
           ),
           Divider(),
           _createDrawerItem1(
@@ -173,7 +171,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => pages_listas_empresas(),
+                builder: (context) => PageListasEmpresas(),
               ),
             ),
           ),

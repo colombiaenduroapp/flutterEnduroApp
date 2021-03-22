@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ui_flutter/src/models/model_sede.dart';
 import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
-import 'package:ui_flutter/src/services/socket.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class cont_inicio extends StatefulWidget {
@@ -22,16 +21,7 @@ class _cont_inicioState extends State<cont_inicio> {
   SocketIO socket;
   @override
   void initState() {
-    sockets();
     super.initState();
-  }
-
-  sockets() async {
-    socket = await socketRes().conexion();
-    print('hola socket');
-    socket.on('sedesres', (_) {
-      print('sedes');
-    });
   }
 
   void cargalist() async {
