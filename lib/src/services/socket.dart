@@ -1,5 +1,4 @@
 import 'package:adhara_socket_io/adhara_socket_io.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 
 import '../../main.dart';
@@ -33,6 +32,7 @@ class ServicioSocket {
     socketBitacoras(App.conexion);
     socketEmpresas(App.conexion);
     socketSedes(App.conexion);
+    if (App.localStorage.getInt('us_cdgo') == 3) socketSedes(App.conexion);
   }
 
   // ------------------socket sede-----------
@@ -62,6 +62,16 @@ class ServicioSocket {
     socket.on('empresasres', (_) {
       print('empresas cambio');
       ServicioEmpresa().getEmpresa(true);
+    });
+  }
+
+  socketPqrs(SocketIO socket) {
+    socket.on('pqrsres', (data) {
+      if (data['tipo'] == "registro")
+        localNotification.scheduleNotification(
+            'Se ha registrado una nueva queja ', data['pqrs']);
+
+      ServicioSede().cargarSedes(true);
     });
   }
 }

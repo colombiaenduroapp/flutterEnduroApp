@@ -77,6 +77,9 @@ class ServicioEmpresa {
       ).timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200) {
+        App.conexion.emit('empresas', [
+          {'tipo': 'registro', 'empresa': em_nombre}
+        ]);
         return true;
       } else {
         print(response.statusCode);

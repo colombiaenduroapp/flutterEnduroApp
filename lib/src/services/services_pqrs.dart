@@ -27,7 +27,6 @@ class ServicioPQRS {
         Hive.box('pqrsdb')
             .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
       }
-
       final pqrs = Hive.box('pqrsdb').get('data');
       print(pqrs);
       return pqrs;
@@ -41,7 +40,14 @@ class ServicioPQRS {
         headers: {'x-access-token': App.localStorage.getString('token')},
         body: {'pqrs_asunto': pqrsAsunto, 'pqrs_desc': pqrsDesc},
       ).timeout(Duration(seconds: 15));
-      return (response.statusCode == 200) ? true : false;
+      if (response.statusCode == 200) {
+        App.conexion.emit('pqrs', [
+          {'tipo': 'registro', 'pqrs': pqrsAsunto}
+        ]);
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

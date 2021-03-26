@@ -3,6 +3,7 @@ import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_eventos.dart';
 import 'package:ui_flutter/src/pages/listas_pqrs.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
+import 'package:ui_flutter/src/pages/publicacion_masiva.dart';
 
 import 'boton_gestionar.dart';
 
@@ -53,8 +54,11 @@ class _ContGestionarState extends State<ContGestionar> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    BotonGestionar().boton_gestionar(Icons.link,
-                        'Publicacion Masivas', context, PageListasEmpresas()),
+                    BotonGestionar().boton_gestionar(
+                        Icons.link,
+                        'Publicacion Masivas',
+                        context,
+                        PagePublicacionMasiva()),
                     BotonGestionar().boton_gestionar(Icons.help_outline,
                         'Quejas', context, PagesListasPqrs()),
                     BotonGestionar().boton_gestionar(Icons.gamepad, 'convenios',

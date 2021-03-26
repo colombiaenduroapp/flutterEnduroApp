@@ -51,7 +51,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
     return Scaffold(
       drawer: Nav_drawer(),
       appBar: AppBar(
-        title: Text('hola'),
+        title: Text('Bitacoras'),
       ),
       floatingActionButton: WidgetsGenericos.floatingButtonRegistrar(
           context, PagesBitacoraPersonal()),
