@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:ui_flutter/main.dart';
+import 'package:ui_flutter/src/services/services_pqrs.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PagesListasPqrs extends StatefulWidget {
@@ -26,9 +28,20 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
 
   @override
   void initState() {
-    print(pqrs);
     _searchText = "";
     super.initState();
+  }
+
+  socket() async {
+    App.conexion.on('pqrsres', (_) async {
+      pqrs = await ServicioPQRS().getPQRS();
+      if (mounted) {
+        setState(() {
+          print('cambiando');
+          pqrs = pqrs;
+        });
+      }
+    });
   }
 
   @override
@@ -93,9 +106,95 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                 shrinkWrap: true,
                 itemCount: listaPqrs.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('${listaPqrs[index]['pqrs_asunto']}'),
+                  return Container(
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black45,
+                          width: 0.5,
+                        ),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.black54,
+                              blurRadius: 15.0,
+                              offset: Offset(0.0, 0.75))
+                        ],
+                        color: Colors.white),
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom:
+                                  BorderSide(color: Colors.black45, width: 0.5),
+                            ),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(data[index]['us_alias'],
+                                  style: Theme.of(context).textTheme.headline6),
+                              Text(data[index]['sd_desc'],
+                                  style: Theme.of(context).textTheme.bodyText1)
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(bottom: 5),
+                                    width:
+                                        MediaQuery.of(context).size.width - 50,
+                                    child: Text(data[index]['pqrs_asunto'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                        textAlign: TextAlign.start),
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width -
+                                        50, //cambiar a valor dinamico tamaño de pantalla
+                                    child: Text(
+                                      data[index]['pqrs_desc'],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top:
+                                  BorderSide(color: Colors.black45, width: 0.5),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  data[index]['fecha'],
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
+                  // ListTile(
+                  //   title: Text('${listaPqrs[index]['pqrs_asunto']}'),
+                  // );
                 }),
             SizedBox(
               height: 80,
@@ -103,7 +202,8 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
           ],
         ),
       );
-    } else
+    } else {
       return Center(child: WidgetsGenericos.containerEmptyData(context));
+    }
   }
 }

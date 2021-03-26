@@ -20,13 +20,12 @@ class ServicioPQRS {
         final jsonResponse = json.decode(response.body);
         final dif = jsonResponse.length - pqrsvieja.length;
         if (pqrsvieja.length < jsonResponse.length)
-          App.localStorage.setInt('cambio_pqrs', dif);
+          App.localStorage.setInt('cambio_sede', dif);
         Hive.box('pqrsdb')
             .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
-      }
 
-      final pqrs = Hive.box('pqrsdb').get('data');
-      return pqrs;
+        return jsonResponse['data'];
+      }
     } catch (e) {}
   }
 
@@ -37,7 +36,14 @@ class ServicioPQRS {
         headers: {'x-access-token': App.localStorage.getString('token')},
         body: {'pqrs_asunto': pqrsAsunto, 'pqrs_desc': pqrsDesc},
       ).timeout(Duration(seconds: 15));
-      return (response.statusCode == 200) ? true : false;
+      if (response.statusCode == 200) {
+        App.conexion.emit('pqrs', [
+          {'tipo': 'registro', 'pqrs': pqrsAsunto}
+        ]);
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

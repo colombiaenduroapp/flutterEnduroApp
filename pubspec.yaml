@@ -26,6 +26,7 @@ dependencies:
   flutter_absolute_path: ^1.0.6
   flutter_local_notifications: ^4.0.1+2
   hive_flutter:
+  simple_url_preview: ^2.0.0
   hive:
   adhara_socket_io: ^0.4.2+1
   font_awesome_flutter: ^8.11.0

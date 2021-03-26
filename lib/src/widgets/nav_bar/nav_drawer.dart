@@ -42,7 +42,7 @@ Widget _createDrawerItem1(
     IconData icon,
     String text,
     int cambio,
-    String nombre_cambio,
+    String nombreCambio,
     Widget onTap}) {
   return ListTile(
     title: Row(
@@ -70,25 +70,26 @@ Widget _createDrawerItem1(
     onTap: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => onTap),
+        MaterialPageRoute(
+          builder: (context) => onTap,
+        ),
       );
-      App.localStorage.setInt('cambio_sede', 0);
     },
   );
 }
 
 class Nav_drawerState extends State<Nav_drawer> {
-  String us_nombres = App.localStorage.getString('us_nombres') ?? '',
-      us_alias = App.localStorage.getString('us_alias') ?? '';
-  int cambio_sede = App.localStorage.getInt('cambio_sede') ?? 0;
-  int cambio_empresa = App.localStorage.getInt('cambio_empresa') ?? 0;
+  String usNombres = App.localStorage.getString('us_nombres') ?? '',
+      usAlias = App.localStorage.getString('us_alias') ?? '';
+  int cambioSede = App.localStorage.getInt('cambio_sede') ?? 0;
+  int cambioEmpresa = App.localStorage.getInt('cambio_empresa') ?? 0;
   int cambio_bitacora = App.localStorage.getInt('cambio_bitacora') ?? 0;
   int cambio_pqrs = App.localStorage.getInt('cambio_pqrs') ?? 0;
 
   @override
   void initState() {
     setState(() {
-      cambio_sede = cambio_sede;
+      cambioSede = cambioSede;
     });
     // TODO: implement initState
     super.initState();
@@ -104,13 +105,13 @@ class Nav_drawerState extends State<Nav_drawer> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              us_nombres,
+              usNombres,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 30.0,
               ),
             ),
-            accountEmail: Text(us_alias,
+            accountEmail: Text(usAlias,
                 style: TextStyle(
                   color: Colors.black45,
                   fontSize: 18.0,
@@ -139,7 +140,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             icon: Icons.event_available,
             text: 'Eventos',
             cambio: App.localStorage.getInt('cambio_evento') ?? 0,
-            nombre_cambio: 'cambio_evento',
+            nombreCambio: 'cambio_evento',
             onTap: InicioPage(),
           ),
           Divider(),
@@ -147,16 +148,17 @@ class Nav_drawerState extends State<Nav_drawer> {
             context: context,
             icon: Icons.apps,
             text: 'Sedes',
-            cambio: cambio_sede,
-            nombre_cambio: 'cambio_sede',
+            cambio: cambioSede,
+            nombreCambio: 'cambio_sede',
             onTap: PageListasSedes(),
           ),
           Divider(),
           _createDrawerItem1(
+            context: context,
             icon: Icons.apps,
             text: 'Bitacoras',
             cambio: cambio_bitacora,
-            nombre_cambio: 'cambio_bitacora',
+            nombreCambio: 'cambio_bitacora',
             onTap: pages_listas_bitacoras(),
           ),
           Divider(),
@@ -187,11 +189,12 @@ class Nav_drawerState extends State<Nav_drawer> {
               onTap: () => Navigator.pop(context)),
           Divider(),
           _createDrawerItem1(
+            context: context,
             icon: Icons.contacts,
             text: 'Quejas y Reclamos',
             cambio: cambio_pqrs,
-            nombre_cambio: 'cambio_pqrs',
-            onTap: PagesListasPqrs(),
+            nombreCambio: 'cambio_pqrs',
+            onTap: PagesPQRS(),
           ),
           Divider(),
           _createDrawerItem(
