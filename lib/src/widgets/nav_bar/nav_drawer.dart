@@ -187,11 +187,12 @@ class Nav_drawerState extends State<Nav_drawer> {
               onTap: () => Navigator.pop(context)),
           Divider(),
           _createDrawerItem1(
+            context: context,
             icon: Icons.contacts,
             text: 'Quejas y Reclamos',
             cambio: cambio_pqrs,
             nombre_cambio: 'cambio_pqrs',
-            onTap: PagesListasPqrs(),
+            onTap: PagesPQRS(),
           ),
           Divider(),
           _createDrawerItem(

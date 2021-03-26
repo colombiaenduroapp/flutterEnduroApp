@@ -26,7 +26,6 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
 
   @override
   void initState() {
-    print(pqrs);
     _searchText = "";
     super.initState();
   }
