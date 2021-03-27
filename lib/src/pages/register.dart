@@ -41,7 +41,7 @@ class _PageRegisterState extends State<PageRegister> {
         height: MediaQuery.of(context).size.height / 1.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: new AssetImage("assets/fondo.jpg"),
+            image: new AssetImage("assets/fondo_login.jpg"),
           ),
         ),
         child: Container(
