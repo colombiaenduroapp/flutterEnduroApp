@@ -40,13 +40,16 @@ class _PageRegisterState extends State<PageRegister> {
       body: Container(
         height: MediaQuery.of(context).size.height / 1.0,
         decoration: BoxDecoration(
-          color: Colors.blueGrey.shade800,
+          image: DecorationImage(
+            image: new AssetImage("assets/fondo.jpg"),
+          ),
         ),
         child: Container(
+          margin: EdgeInsets.only(top: 50),
           child: Center(
             child: SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.only(right: 20, left: 20),
+                margin: EdgeInsets.only(right: 20, left: 20, top: 20),
                 child: Form(
                   key: _formKey,
                   child: Column(
