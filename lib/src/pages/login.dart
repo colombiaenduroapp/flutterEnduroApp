@@ -4,6 +4,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:ui_flutter/src/pages/conocenos.dart';
 import 'package:ui_flutter/src/pages/inicio.dart';
+import 'package:ui_flutter/src/pages/register.dart';
 import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:ui_flutter/src/services/services_carga.dart';
 import 'package:ui_flutter/src/services/services_login.dart';
@@ -235,7 +236,15 @@ class _PageLoginState extends State<PageLogin> {
                               type: GFButtonType.outline,
                               shape: GFButtonShape.pills,
                               color: Theme.of(context).accentColor,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        PageRegister(),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 'Registrarse',
                                 style: TextStyle(
