@@ -42,6 +42,7 @@ class _PageRegisterState extends State<PageRegister> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: new AssetImage("assets/fondo_login.jpg"),
+            fit: BoxFit.fill,
           ),
         ),
         child: Container(
