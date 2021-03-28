@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:hive/hive.dart';
+import 'package:simple_url_preview/simple_url_preview.dart';
 import 'package:ui_flutter/main.dart';
-import 'package:ui_flutter/src/services/services_pqrs.dart';
+
+import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
+import 'package:ui_flutter/src/services/services_publicacionesMasivas.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
-class PagesListasPqrs extends StatefulWidget {
-  PagesListasPqrs({Key key}) : super(key: key);
+class PagesListasPublicacionesMasivas extends StatefulWidget {
+  PagesListasPublicacionesMasivas({Key key}) : super(key: key);
 
   @override
-  _PagesListasPqrsState createState() => _PagesListasPqrsState();
+  _PagesListasPublicacionesMasivasState createState() =>
+      _PagesListasPublicacionesMasivasState();
 }
 
-class _PagesListasPqrsState extends State<PagesListasPqrs> {
+class _PagesListasPublicacionesMasivasState
+    extends State<PagesListasPublicacionesMasivas> {
   final TextEditingController _filter = new TextEditingController();
   Widget _appBarTitle = new Text('Quejas y Reclamos');
   Icon _searchIcon = Icon(Icons.search);
-  List<dynamic> pqrs = Hive.box('pqrsdb').get('data');
+  List<dynamic> publicaciones =
+      Hive.box('publicacionesmasivasdb').get('data') ?? [];
   String _searchText;
 
-  _PagesListasPqrsState() {
+  _PagesListasPublicacionesMasivasState() {
     _filter.addListener(() {
       setState(() {
         _searchText = (_filter.text.isEmpty) ? "" : _filter.text;
@@ -33,12 +40,13 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
   }
 
   socket() async {
-    App.conexion.on('pqrsres', (_) async {
-      pqrs = await ServicioPQRS().getPQRS();
+    App.conexion.on('publicacionesmasivasresres', (_) async {
+      publicaciones =
+          await ServicioPublicacionesMasivas().getPublicacionesMasivas();
       if (mounted) {
         setState(() {
           print('cambiando');
-          pqrs = pqrs;
+          publicaciones = publicaciones;
         });
       }
     });
@@ -47,6 +55,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Nav_drawer(),
       appBar: AppBar(
         title: _appBarTitle,
         actions: [
@@ -57,7 +66,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
         child: Column(
           children: [
             Container(
-              child: _jobListView(pqrs),
+              child: _jobListView(publicaciones),
             )
           ],
         ),
@@ -92,7 +101,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
   Widget _jobListView(data) {
     if (data.length > 0) {
       List<dynamic> listaPqrs = (_searchText.isNotEmpty)
-          ? pqrs
+          ? publicaciones
               .where((f) => f['pqrs_asunto']
                   .toLowerCase()
                   .contains(_searchText.toLowerCase()))
@@ -152,17 +161,17 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                                     padding: EdgeInsets.only(bottom: 5),
                                     width:
                                         MediaQuery.of(context).size.width - 50,
-                                    child: Text(data[index]['pqrs_asunto'],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
+                                    child: Text(data[index]['pu_desc'],
                                         textAlign: TextAlign.start),
                                   ),
                                   Container(
                                     width: MediaQuery.of(context).size.width -
                                         50, //cambiar a valor dinamico tamaño de pantalla
-                                    child: Text(
-                                      data[index]['pqrs_desc'],
+                                    child: SimpleUrlPreview(
+                                      url: data[index]['pu_link'],
+                                      titleLines: 2,
+                                      descriptionLines: 2,
+                                      imageLoaderColor: Colors.white,
                                     ),
                                   ),
                                 ],
@@ -173,6 +182,15 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
+                            color: data[index]
+                                        ['pu_estado_publicacion_ep_cdgo'] ==
+                                    3
+                                ? Colors.red
+                                : data[index]
+                                            ['pu_estado_publicacion_ep_cdgo'] ==
+                                        2
+                                    ? Colors.green
+                                    : Colors.blue,
                             border: Border(
                               top:
                                   BorderSide(color: Colors.black45, width: 0.5),
@@ -182,13 +200,33 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                             children: [
                               Container(
                                 child: Text(
-                                  data[index]['fecha'],
-                                  style: Theme.of(context).textTheme.caption,
+                                  'Estado: ' + data[index]['ep_desc'],
+                                  // style: Theme.of(context).textTheme.caption,
                                 ),
                               )
                             ],
                           ),
                         ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: GFButton(
+                                onPressed: () {},
+                                color: Colors.blue,
+                                icon: Icon(Icons.reply_rounded),
+                                text: 'Rechazar',
+                              )),
+                              Expanded(
+                                  child: GFButton(
+                                onPressed: () {},
+                                color: Colors.green,
+                                icon: Icon(Icons.share),
+                                text: 'Aprobar',
+                              ))
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   );

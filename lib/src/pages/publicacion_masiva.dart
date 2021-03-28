@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
+import 'package:ui_flutter/src/services/services_publicacionesMasivas.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PagePublicacionMasiva extends StatefulWidget {
@@ -12,7 +13,7 @@ class PagePublicacionMasiva extends StatefulWidget {
 
 class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController asuntoTextController = new TextEditingController();
+  TextEditingController linkTextController = new TextEditingController();
   TextEditingController descTextController = new TextEditingController();
   bool res = true;
   @override
@@ -42,7 +43,7 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
                         Icons.email,
                         TextFormField(
                           autofocus: false,
-                          // controller: asuntoTextController,
+                          controller: linkTextController,
                           decoration: new InputDecoration(
                             labelText: 'Link',
                             disabledBorder: new OutlineInputBorder(
@@ -63,7 +64,7 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
                         Icons.description,
                         TextFormField(
                           autofocus: false,
-                          // controller: descTextController,
+                          controller: descTextController,
                           maxLength: 400,
                           maxLines: 8,
                           decoration: new InputDecoration(
@@ -117,12 +118,14 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
           shape: GFButtonShape.pills,
           color: Theme.of(context).accentColor,
           onPressed: () async {
-            print({asuntoTextController.text, descTextController.text, res});
+            print({linkTextController.text, descTextController.text, res});
             if (_formKey.currentState.validate()) {
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);
-              // res = await ServicioPQRS()
-              //     .addPQRS(asuntoTextController.text, descTextController.text);
+              res = await ServicioPublicacionesMasivas().addPublicacionMasiva(
+                descTextController.text,
+                linkTextController.text,
+              );
             }
             if (res) {
               Navigator.pop(context);
@@ -135,9 +138,9 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
               await Future.delayed(Duration(milliseconds: 500));
               Navigator.pop(context);
               setState(() {
-                asuntoTextController.text = '';
+                linkTextController.text = '';
                 descTextController.text = '';
-                // res = false;
+                res = false;
               });
             } else {
               Navigator.pop(context);

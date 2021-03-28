@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_flutter/src/pages/listas_pqrs.dart';
+import 'package:ui_flutter/src/pages/listas_publicacion_masiva.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_bitacoras.dart';
@@ -68,6 +69,7 @@ Widget _createDrawerItem1(
                 Text(cambio.toString(), style: TextStyle(color: Colors.white)))
         : null,
     onTap: () {
+      App.localStorage.setInt(nombreCambio, 0);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -85,11 +87,17 @@ class Nav_drawerState extends State<Nav_drawer> {
   int cambioEmpresa = App.localStorage.getInt('cambio_empresa') ?? 0;
   int cambio_bitacora = App.localStorage.getInt('cambio_bitacora') ?? 0;
   int cambio_pqrs = App.localStorage.getInt('cambio_pqrs') ?? 0;
+  int cambio_publicacionesmasivas =
+      App.localStorage.getInt('cambio_publicacionesmasivas') ?? 0;
 
   @override
   void initState() {
     setState(() {
       cambioSede = cambioSede;
+      cambioEmpresa = cambioEmpresa;
+      cambio_bitacora = cambio_bitacora;
+      cambio_pqrs = cambio_pqrs;
+      cambio_publicacionesmasivas = cambio_publicacionesmasivas;
     });
     // TODO: implement initState
     super.initState();
@@ -176,6 +184,15 @@ class Nav_drawerState extends State<Nav_drawer> {
                 builder: (context) => PageListasEmpresas(),
               ),
             ),
+          ),
+          Divider(),
+          _createDrawerItem1(
+            context: context,
+            icon: Icons.contacts,
+            text: 'Publicaciones masivas',
+            cambio: cambio_publicacionesmasivas,
+            nombreCambio: 'cambio_publicacionesmasivas',
+            onTap: PagesListasPublicacionesMasivas(),
           ),
           Divider(),
           _createDrawerItem(
