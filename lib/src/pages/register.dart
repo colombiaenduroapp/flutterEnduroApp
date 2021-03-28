@@ -41,7 +41,7 @@ class _PageRegisterState extends State<PageRegister> {
         height: MediaQuery.of(context).size.height / 1.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: new AssetImage("assets/fondo_login.jpg"),
+            image: new AssetImage("assets/fondo.jpg"),
             fit: BoxFit.fill,
           ),
         ),
@@ -193,6 +193,47 @@ class _PageRegisterState extends State<PageRegister> {
                           },
                         ),
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: WidgetsGenericos.formItemsDesign(
+                              Icons.location_city,
+                              DropdownButton(
+                                value: sexoSel,
+                                onChanged: (String value) {
+                                  setState(() {
+                                    sexoSel = value;
+                                  });
+                                },
+                                items: [
+                                  DropdownMenuItem(
+                                    value: "F",
+                                    child: Text("Femenino"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "M",
+                                    child: Text("Masculino"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "O",
+                                    child: Text("Otro"),
+                                  )
+                                ],
+                                hint: Text('Sexo'),
+                                isExpanded: true,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              color: Colors.amber,
+                              height: 100,
+                            ),
+                          ),
+                        ],
+                      ),
+
                       /* 
                       Row(
                         children: [
@@ -315,7 +356,7 @@ class _PageRegisterState extends State<PageRegister> {
                 child: Column(
                   children: [
                     CircularProgressIndicator(),
-                    Text('Cargando Convenios...')
+                    Text('Cargando sedes...')
                   ],
                 ),
               ),
