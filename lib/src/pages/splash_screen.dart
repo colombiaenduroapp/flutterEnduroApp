@@ -21,7 +21,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   String _versionName = 'V1.0';
-  final splashDelay = 3;
+  final splashDelay = 1;
   LocalNotification localNotification;
 
   @override
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationPage() async {
     if (App.localStorage.getString('token') != null) {
       // pone a escuchar todos los sokets
-      await ServicioSocket().iniciaSockets();
+      ServicioSocket().iniciaSockets();
       // ---------------------------------------
       // carga todos los datos a la base de datos local
       await ServicioCarga().cargarNuevosDatos();

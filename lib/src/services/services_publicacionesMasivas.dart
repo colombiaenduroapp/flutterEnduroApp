@@ -5,43 +5,40 @@ import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
 
-class ServicioPQRS {
+class ServicioPublicacionesMasivas {
   String url = Url().getUrl();
 
-  Future<dynamic> getPQRS() async {
+  Future<dynamic> getPublicacionesMasivas() async {
+    final publicacionesvieja = Hive.box('publicacionesmasivasdb').get('data');
     try {
       final response = await http.get(
-        url + 'pqrs',
+        url + 'publicacion_masiva',
         headers: {'x-access-token': App.localStorage.getString('token')},
       ).timeout(Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final pqrsvieja = (Hive.box('pqrsdb').get('data') == null)
-            ? []
-            : Hive.box('pqrsdb').get('data');
-        if (pqrsvieja.length < jsonResponse['data'].length) {
-          final dif = jsonResponse['data'].length - pqrsvieja.length;
-          App.localStorage.setInt('cambio_pqrs', dif);
-        }
-        Hive.box('pqrsdb')
+        final dif = jsonResponse['data'].length - publicacionesvieja.length;
+        if (publicacionesvieja.length < jsonResponse.length)
+          App.localStorage.setInt('cambio_publicacionesmasivas', dif);
+        Hive.box('publicacionesmasivasdb')
             .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
+        final responses = Hive.box('publicacionesmasivasdb').get('data');
+        return responses;
       }
-      final pqrs = Hive.box('pqrsdb').get('data');
-      return pqrs;
     } catch (e) {}
   }
 
-  Future<bool> addPQRS(String pqrsAsunto, String pqrsDesc) async {
+  Future<bool> addPublicacionMasiva(String pu_desc, String pu_link) async {
     try {
       final response = await http.post(
-        url + 'pqrs',
+        url + 'publicacion_masiva',
         headers: {'x-access-token': App.localStorage.getString('token')},
-        body: {'pqrs_asunto': pqrsAsunto, 'pqrs_desc': pqrsDesc},
+        body: {'pu_desc': pu_desc, 'pu_link': pu_link},
       ).timeout(Duration(seconds: 15));
       if (response.statusCode == 200) {
-        App.conexion.emit('pqrs', [
-          {'tipo': 'registro', 'pqrs': pqrsAsunto}
+        App.conexion.emit('publicacionesmasivas', [
+          {'tipo': 'registro', 'publicacionesmasivas': ''}
         ]);
         return true;
       } else {
