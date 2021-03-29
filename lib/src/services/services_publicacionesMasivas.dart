@@ -9,7 +9,8 @@ class ServicioPublicacionesMasivas {
   String url = Url().getUrl();
 
   Future<dynamic> getPublicacionesMasivas() async {
-    final publicacionesvieja = Hive.box('publicacionesmasivasdb').get('data');
+    final publicacionesvieja =
+        Hive.box('publicacionesmasivasdb').get('data') ?? [];
     try {
       final response = await http.get(
         url + 'publicacion_masiva',

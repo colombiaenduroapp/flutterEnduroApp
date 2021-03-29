@@ -30,21 +30,15 @@ void callbackDispatcher() {
     await AndroidAlarmManager.periodic(
         const Duration(minutes: 1), helloAlarmID, printHello,
         rescheduleOnReboot: true);
-    print("Native called background task"); //simpleTask will be emitted here.
-    ServicioSocket().iniciaSockets();
 
     return Future.value(true);
   });
 }
 
 void printHello() {
-  LocalNotification localNotification = new LocalNotification();
   final DateTime now = DateTime.now();
   final int isolateId = Isolate.current.hashCode;
-
-  localNotification.scheduleNotification(
-      'Se ha registrado una nueva sede ', 'hhjskjs');
-  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+  ServicioSocket().iniciaSockets();
 }
 
 // ------------------------------------------

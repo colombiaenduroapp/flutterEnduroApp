@@ -179,54 +179,58 @@ class _PagesListasPublicacionesMasivasState
                             ],
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: data[index]
-                                        ['pu_estado_publicacion_ep_cdgo'] ==
-                                    3
-                                ? Colors.red
-                                : data[index]
-                                            ['pu_estado_publicacion_ep_cdgo'] ==
-                                        2
-                                    ? Colors.green
-                                    : Colors.blue,
-                            border: Border(
-                              top:
-                                  BorderSide(color: Colors.black45, width: 0.5),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text(
-                                  'Estado: ' + data[index]['ep_desc'],
-                                  // style: Theme.of(context).textTheme.caption,
+                        data[index]['ep_desc'] != null
+                            ? Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: data[index][
+                                              'pu_estado_publicacion_ep_cdgo'] ==
+                                          3
+                                      ? Colors.red
+                                      : data[index][
+                                                  'pu_estado_publicacion_ep_cdgo'] ==
+                                              2
+                                          ? Colors.green
+                                          : Colors.blue,
+                                  border: Border(
+                                    top: BorderSide(
+                                        color: Colors.black45, width: 0.5),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        'Estado: ' + data[index]['ep_desc'],
+                                        // style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: GFButton(
-                                onPressed: () {},
-                                color: Colors.blue,
-                                icon: Icon(Icons.reply_rounded),
-                                text: 'Rechazar',
-                              )),
-                              Expanded(
-                                  child: GFButton(
-                                onPressed: () {},
-                                color: Colors.green,
-                                icon: Icon(Icons.share),
-                                text: 'Aprobar',
-                              ))
-                            ],
-                          ),
-                        )
+                            : SizedBox(),
+                        data[index]['ep_desc'] != null
+                            ? Container(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: GFButton(
+                                      onPressed: () {},
+                                      color: Colors.blue,
+                                      icon: Icon(Icons.reply_rounded),
+                                      text: 'Rechazar',
+                                    )),
+                                    Expanded(
+                                        child: GFButton(
+                                      onPressed: () {},
+                                      color: Colors.green,
+                                      icon: Icon(Icons.share),
+                                      text: 'Aprobar',
+                                    ))
+                                  ],
+                                ),
+                              )
+                            : SizedBox()
                       ],
                     ),
                   );
