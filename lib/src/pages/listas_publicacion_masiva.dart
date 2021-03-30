@@ -19,7 +19,7 @@ class PagesListasPublicacionesMasivas extends StatefulWidget {
 class _PagesListasPublicacionesMasivasState
     extends State<PagesListasPublicacionesMasivas> {
   final TextEditingController _filter = new TextEditingController();
-  Widget _appBarTitle = new Text('Quejas y Reclamos');
+  Widget _appBarTitle = new Text('Publicaciones masivas');
   Icon _searchIcon = Icon(Icons.search);
   List<dynamic> publicaciones =
       Hive.box('publicacionesmasivasdb').get('data') ?? [];
