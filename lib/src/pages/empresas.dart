@@ -413,7 +413,6 @@ class _pagesEmpresaState extends State<pagesEmpresa> {
                   file.readAsBytesSync(),
                 );
               }
-              print(urlLogo);
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);
               res = await ServicioEmpresa().updateEmpresa(
