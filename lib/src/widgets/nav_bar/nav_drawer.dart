@@ -92,6 +92,7 @@ class Nav_drawerState extends State<Nav_drawer> {
 
   @override
   void initState() {
+    print(App.localStorage.getString('us_logo'));
     setState(() {
       cambioSede = cambioSede;
       cambioEmpresa = cambioEmpresa;
@@ -125,12 +126,15 @@ class Nav_drawerState extends State<Nav_drawer> {
                   fontSize: 18.0,
                 )),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.8),
               image: DecorationImage(
-                colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(0.1), BlendMode.dstATop),
-                image: NetworkImage('https://picsum.photos/200/300'),
-              ),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(0.6), BlendMode.dstATop),
+                  image: NetworkImage(
+                    App.localStorage.getString('us_logo') ??
+                        'https://picsum.photos/200/300',
+                  ),
+                  fit: BoxFit.contain),
             ),
           ),
           _createDrawerItem(

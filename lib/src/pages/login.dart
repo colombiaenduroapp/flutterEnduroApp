@@ -189,6 +189,8 @@ class _PageLoginState extends State<PageLogin> {
                                     App.localStorage.setString(
                                         'us_alias', usuario.us_alias);
                                     App.localStorage
+                                        .setString('us_logo', usuario.us_logo);
+                                    App.localStorage
                                         .setInt('us_perfil', usuario.us_perfil);
                                     App.localStorage.setInt(
                                         'us_sd_cdgo', usuario.us_sd_cdgo);
@@ -201,7 +203,7 @@ class _PageLoginState extends State<PageLogin> {
                                     await ServicioSocket().iniciaSockets();
                                     // ---------------------------------------
                                     // carga todos los datos a la base de datos local
-                                    await ServicioCarga().cargarNuevosDatos();
+                                    ServicioCarga().cargarNuevosDatos();
                                     // ---------------------------------------
 
                                     Navigator.pushReplacement(
