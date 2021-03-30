@@ -65,9 +65,8 @@ class ServicioUsuario {
       String correo,
       String clave) async {
     try {
-      print('hola');
       final response = await http.post(
-        url + 'usuaris',
+        url + 'usuarios',
         body: {
           'us_nombres': nombres,
           'us_apellidos': apellidos,
