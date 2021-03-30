@@ -589,6 +589,7 @@ class _page_sedes_detallesState extends State<page_sedes_detalles> {
             bool res = false;
             WidgetsGenericos.showLoaderDialog(
                 context, true, 'Cargando...', null, Colors.blue);
+            print(widget.data);
             res = await ServicioSede().deleteMesa(widget.data);
             if (res) {
               Navigator.pop(context);
