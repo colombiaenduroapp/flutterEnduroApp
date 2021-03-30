@@ -17,9 +17,11 @@ class WidgetsGenericos {
               child: Row(
                 children: [
                   Icon(icon, color: color),
-                  Text(
-                    '  ' + texto,
-                    style: TextStyle(color: color),
+                  Container(
+                    child: Text(
+                      '  ' + texto,
+                      style: TextStyle(color: color),
+                    ),
                   )
                 ],
               )),
