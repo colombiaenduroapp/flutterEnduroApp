@@ -1,4 +1,9 @@
-class Usuario {
+import 'package:ui_flutter/src/services/service_url.dart';
+import 'package:http/http.dart' as http;
+
+class ServicioUsuario {
+  String url = Url().getUrl();
+
   final int us_cdgo;
   final String us_clave;
   final String us_nombres;
@@ -15,7 +20,7 @@ class Usuario {
 
   final String us_direccion;
 
-  Usuario(
+  ServicioUsuario(
       {this.us_cdgo,
       this.us_clave,
       this.us_nombres,
@@ -30,8 +35,8 @@ class Usuario {
       this.us_rh,
       this.us_direccion});
 
-  factory Usuario.fromJson(Map<String, dynamic> parsedJson) {
-    return Usuario(
+  factory ServicioUsuario.fromJson(Map<String, dynamic> parsedJson) {
+    return ServicioUsuario(
       us_cdgo: parsedJson['us_cdgo'],
       us_clave: parsedJson['us_clave'],
       us_nombres: parsedJson['us_nombres'],
@@ -46,5 +51,48 @@ class Usuario {
       us_rh: parsedJson['us_rh'],
       us_direccion: parsedJson['us_direccion'],
     );
+  }
+  Future<bool> addUsuario(
+      String nombres,
+      String apellidos,
+      String telefono,
+      String direccion,
+      String logo,
+      String sede,
+      String alias,
+      String sexo,
+      String rh,
+      String correo,
+      String clave) async {
+    try {
+      final response = await http.post(
+        url + "usuarios/",
+        body: {
+          "us_nombres": nombres,
+          "us_apellidos": apellidos,
+          "us_telefono": telefono,
+          "us_direccion": direccion,
+          "us_logo": logo,
+          "us_sede_sd_cdgo": sede,
+          "us_alias": alias,
+          "us_sexo": sexo,
+          "us_rh": rh,
+          "us_correo": correo,
+          "us_clave": clave,
+        },
+      ).timeout(Duration(seconds: 20));
+      print(response);
+      if (response.statusCode == 200) {
+        /* App.conexion.emit('sedes', [
+          {'tipo': 'registro', 'sede': cd_desc}
+        ]); */
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      print(exception);
+      return false;
+    }
   }
 }

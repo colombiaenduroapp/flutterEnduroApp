@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ui_flutter/src/services/services_usuario.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,7 @@ class _PageRegisterState extends State<PageRegister> {
   String sexoSel = null;
   String rhSel = null;
   File file;
+  String imageFile;
 
   @override
   void initState() {
@@ -465,7 +467,7 @@ class _PageRegisterState extends State<PageRegister> {
                                                   contraseniaTextController
                                                       .text)
                                           ? () {
-                                              print('hola');
+                                              _guardar();
                                             }
                                           : null,
                                       child: Container(
@@ -509,7 +511,59 @@ class _PageRegisterState extends State<PageRegister> {
     );
   }
 
-  _guardar() async {}
+  _guardar() async {
+    try {
+      if (file != null) imageFile = base64Encode(file.readAsBytesSync());
+      WidgetsGenericos.showLoaderDialog(
+          context, true, 'Cargando..', null, Colors.grey);
+      bool res = await ServicioUsuario().addUsuario(
+          nombresTextController.text,
+          apellidosTextController.text,
+          telefonoTextController.text,
+          direccionTextController.text,
+          imageFile,
+          sedeSel,
+          aliasTextController.text,
+          sexoSel,
+          rhSel,
+          correoTextController.text,
+          contraseniaTextController.text);
+      Navigator.pop(context);
+      if (res) {
+        WidgetsGenericos.showLoaderDialog(
+            context,
+            false,
+            'Registrado Correctamente. Debes esperar la aprobación del lider de la sede.',
+            Icons.check_circle_outlined,
+            Colors.green);
+        setState(() {
+          nombresTextController.clear();
+          apellidosTextController.clear();
+          telefonoTextController.clear();
+          direccionTextController.clear();
+          aliasTextController.clear();
+          correoTextController.clear();
+          contraseniaTextController.clear();
+          contraseniaValidTextController.clear();
+          file = null;
+          imageFile = '';
+          sedeSel = null;
+          sexoSel = null;
+          rhSel = null;
+        });
+
+        //await ServicioSede().cargarSedes(true);
+
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        WidgetsGenericos.showLoaderDialog(context, false,
+            'Ha Ocurrido un error', Icons.error_outline, Colors.red);
+        await Future.delayed(Duration(milliseconds: 500));
+        Navigator.pop(context);
+      }
+    } catch (e) {}
+  }
 
   _chooseImage() async {
     final picker = ImagePicker();

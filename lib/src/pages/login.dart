@@ -176,7 +176,8 @@ class _PageLoginState extends State<PageLogin> {
                                     setState(() {
                                       errorLogin = null;
                                     });
-                                    Usuario usuario = Usuario.fromJson(
+                                    ServicioUsuario usuario =
+                                        ServicioUsuario.fromJson(
                                       JwtDecoder.decode(login.token),
                                     );
 
