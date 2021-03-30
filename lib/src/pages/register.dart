@@ -554,8 +554,6 @@ class _PageRegisterState extends State<PageRegister> {
           rhSel = null;
         });
 
-        //await ServicioSede().cargarSedes(true);
-
         Navigator.pop(context);
       } else {
         Navigator.pop(context);

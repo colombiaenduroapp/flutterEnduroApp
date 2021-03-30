@@ -1,3 +1,4 @@
+import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,9 +84,9 @@ class ServicioUsuario {
       ).timeout(Duration(seconds: 20));
       print(response);
       if (response.statusCode == 200) {
-        /* App.conexion.emit('sedes', [
-          {'tipo': 'registro', 'sede': cd_desc}
-        ]); */
+        App.conexion.emit('usuarios', [
+          {'tipo': 'registro', 'sede': sede, 'alias': alias}
+        ]);
         return true;
       } else {
         return false;
