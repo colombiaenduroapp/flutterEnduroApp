@@ -65,20 +65,21 @@ class ServicioUsuario {
       String correo,
       String clave) async {
     try {
+      print('hola');
       final response = await http.post(
-        url + "usuarios/",
+        url + 'usuaris',
         body: {
-          "us_nombres": nombres,
-          "us_apellidos": apellidos,
-          "us_telefono": telefono,
-          "us_direccion": direccion,
-          "us_logo": logo,
-          "us_sede_sd_cdgo": sede,
-          "us_alias": alias,
-          "us_sexo": sexo,
-          "us_rh": rh,
-          "us_correo": correo,
-          "us_clave": clave,
+          'us_nombres': nombres,
+          'us_apellidos': apellidos,
+          'us_telefono': telefono,
+          'us_direccion': direccion,
+          'us_logo': logo,
+          'us_sede_sd_cdgo': sede,
+          'us_alias': alias,
+          'us_sexo': sexo,
+          'us_rh': rh,
+          'us_correo': correo,
+          'us_clave': clave,
         },
       ).timeout(Duration(seconds: 20));
       print(response);
