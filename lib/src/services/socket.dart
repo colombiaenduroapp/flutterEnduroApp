@@ -35,6 +35,7 @@ class ServicioSocket {
     socketSedes(App.conexion);
     socketPqrs(App.conexion);
     socketPublicacionesMasivas(App.conexion);
+    socketUsuarios(App.conexion);
   }
 
   // ------------------socket sede-----------
