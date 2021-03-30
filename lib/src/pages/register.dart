@@ -31,7 +31,7 @@ class _PageRegisterState extends State<PageRegister> {
   String sexoSel = null;
   String rhSel = null;
   File file;
-  String imageFile;
+  String imageFile = '';
 
   @override
   void initState() {
@@ -528,14 +528,16 @@ class _PageRegisterState extends State<PageRegister> {
           rhSel,
           correoTextController.text,
           contraseniaTextController.text);
-      Navigator.pop(context);
+
       if (res) {
+        Navigator.pop(context);
         WidgetsGenericos.showLoaderDialog(
             context,
             false,
             'Registrado Correctamente. Debes esperar la aprobación del lider de la sede.',
             Icons.check_circle_outlined,
             Colors.green);
+        await Future.delayed(Duration(milliseconds: 500));
         setState(() {
           nombresTextController.clear();
           apellidosTextController.clear();
@@ -555,8 +557,8 @@ class _PageRegisterState extends State<PageRegister> {
         //await ServicioSede().cargarSedes(true);
 
         Navigator.pop(context);
-        Navigator.pop(context);
       } else {
+        Navigator.pop(context);
         WidgetsGenericos.showLoaderDialog(context, false,
             'Ha Ocurrido un error', Icons.error_outline, Colors.red);
         await Future.delayed(Duration(milliseconds: 500));
