@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ui_flutter/src/services/local_notification.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'src/pages/app.dart';
