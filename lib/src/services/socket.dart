@@ -86,4 +86,16 @@ class ServicioSocket {
       ServicioPQRS().getPQRS();
     });
   }
+
+  socketUsuarios(SocketIO socket) {
+    socket.on('usuariosres', (data) {
+      if (data['tipo'] == "registro" &&
+          App.localStorage.getInt('us_sd_cdgo').toString() == data['sede'] &&
+          App.localStorage.getInt('us_perfil') == 2)
+        localNotification.scheduleNotification(
+            'Se ha registrado un nuevo usuario ', data['alias']);
+
+      //ServicioPQRS().getPQRS();
+    });
+  }
 }
