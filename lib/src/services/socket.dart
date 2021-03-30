@@ -30,7 +30,7 @@ class ServicioSocket {
   }
 
   iniciaSockets() async {
-    // socketBitacoras(App.conexion);
+    socketBitacoras(App.conexion);
     socketEmpresas(App.conexion);
     socketSedes(App.conexion);
     socketPqrs(App.conexion);
