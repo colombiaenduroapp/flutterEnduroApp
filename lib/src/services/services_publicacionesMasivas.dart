@@ -50,4 +50,24 @@ class ServicioPublicacionesMasivas {
       return false;
     }
   }
+
+  Future<bool> updatePublicacionMasiva(String puCdgo, String epCdgo) async {
+    try {
+      final response = await http.put(
+        url + 'publicacion_masiva' + puCdgo,
+        headers: {'x-access-token': App.localStorage.getString('token')},
+        body: {
+          'pu_estado_publicacion_ep_cdgo': epCdgo,
+        },
+      ).timeout(Duration(seconds: 15));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

@@ -24,6 +24,7 @@ class _PagesListasPublicacionesMasivasState
   List<dynamic> publicaciones =
       Hive.box('publicacionesmasivasdb').get('data') ?? [];
   String _searchText;
+  bool res = false;
 
   _PagesListasPublicacionesMasivasState() {
     _filter.addListener(() {
@@ -215,14 +216,88 @@ class _PagesListasPublicacionesMasivasState
                                   children: [
                                     Expanded(
                                         child: GFButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        WidgetsGenericos.showLoaderDialog(
+                                            context,
+                                            true,
+                                            'Cargando...',
+                                            null,
+                                            Colors.blue);
+                                        res =
+                                            await ServicioPublicacionesMasivas()
+                                                .updatePublicacionMasiva(
+                                                    data[index]['pu_cdgo']
+                                                        .toString(),
+                                                    '1');
+                                        if (res) {
+                                          Navigator.pop(context);
+                                          WidgetsGenericos.showLoaderDialog(
+                                              context,
+                                              false,
+                                              'Publicacion rechazada',
+                                              Icons.check_circle_outlined,
+                                              Colors.green);
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          Navigator.pop(context);
+                                          res = false;
+                                        } else {
+                                          Navigator.pop(context);
+                                          WidgetsGenericos.showLoaderDialog(
+                                              context,
+                                              false,
+                                              'Ha ocurrido un error',
+                                              Icons.error_outline,
+                                              Colors.red);
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          Navigator.pop(context);
+                                        }
+                                      },
                                       color: Colors.blue,
                                       icon: Icon(Icons.reply_rounded),
                                       text: 'Rechazar',
                                     )),
                                     Expanded(
                                         child: GFButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        WidgetsGenericos.showLoaderDialog(
+                                            context,
+                                            true,
+                                            'Cargando...',
+                                            null,
+                                            Colors.blue);
+                                        res =
+                                            await ServicioPublicacionesMasivas()
+                                                .updatePublicacionMasiva(
+                                                    data[index]['pu_cdgo']
+                                                        .toString(),
+                                                    '2');
+                                        if (res) {
+                                          Navigator.pop(context);
+                                          WidgetsGenericos.showLoaderDialog(
+                                              context,
+                                              false,
+                                              'Publicacion aceptada',
+                                              Icons.check_circle_outlined,
+                                              Colors.green);
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          Navigator.pop(context);
+                                          res = false;
+                                        } else {
+                                          Navigator.pop(context);
+                                          WidgetsGenericos.showLoaderDialog(
+                                              context,
+                                              false,
+                                              'Ha ocurrido un error',
+                                              Icons.error_outline,
+                                              Colors.red);
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
+                                          Navigator.pop(context);
+                                        }
+                                      },
                                       color: Colors.green,
                                       icon: Icon(Icons.share),
                                       text: 'Aprobar',
