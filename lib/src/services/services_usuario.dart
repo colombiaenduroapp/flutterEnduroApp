@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
@@ -82,7 +84,7 @@ class ServicioUsuario {
           'us_clave': clave,
         },
       ).timeout(Duration(seconds: 20));
-      print(response);
+
       if (response.statusCode == 200) {
         App.conexion.emit('usuarios', [
           {'tipo': 'registro', 'sede': sede, 'alias': alias}
@@ -92,7 +94,24 @@ class ServicioUsuario {
         return false;
       }
     } catch (exception) {
-      print(exception);
+      return false;
+    }
+  }
+
+  Future<bool> validate(String tipo, String data) async {
+    try {
+      final response = await http
+          .get(
+            url + 'usuarios/validate?tipo=' + tipo + '&data=' + data,
+          )
+          .timeout(Duration(seconds: 20));
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return jsonResponse['status'];
+      } else {
+        return false;
+      }
+    } catch (exception) {
       return false;
     }
   }
