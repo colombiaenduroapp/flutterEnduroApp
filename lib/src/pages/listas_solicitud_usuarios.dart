@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:ui_flutter/main.dart';
 
-class PageListasUsuarios extends StatefulWidget {
-  PageListasUsuarios({Key key}) : super(key: key);
+class PageListasSolicitudUsuarios extends StatefulWidget {
+  PageListasSolicitudUsuarios({Key key}) : super(key: key);
 
   @override
-  _PageListasUsuariosState createState() => _PageListasUsuariosState();
+  _PageListasSolicitudUsuariosState createState() =>
+      _PageListasSolicitudUsuariosState();
 }
 
-class _PageListasUsuariosState extends State<PageListasUsuarios> {
+class _PageListasSolicitudUsuariosState
+    extends State<PageListasSolicitudUsuarios> {
   final TextEditingController _filter = new TextEditingController();
   Widget _appBarTitle = new Text('Solicitudes de usuarios');
   Icon _searchIcon = Icon(Icons.search);
   String _searchText;
   List<dynamic> usuarios = Hive.box('solicitudusuariosdb').get('data');
 
-  _PageListasUsuariosState() {
+  _PageListasSolicitudUsuariosState() {
     _filter.addListener(() {
       setState(() {
         _searchText = (_filter.text.isEmpty) ? "" : _filter.text;

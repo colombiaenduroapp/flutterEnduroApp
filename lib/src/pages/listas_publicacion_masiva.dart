@@ -56,7 +56,7 @@ class _PagesListasPublicacionesMasivasState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: _appBarTitle,
         actions: [

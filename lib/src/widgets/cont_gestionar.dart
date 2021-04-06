@@ -4,7 +4,7 @@ import 'package:ui_flutter/src/pages/listas_empresas.dart';
 import 'package:ui_flutter/src/pages/listas_eventos.dart';
 import 'package:ui_flutter/src/pages/listas_pqrs.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
-import 'package:ui_flutter/src/pages/listas_usuarios.dart';
+import 'package:ui_flutter/src/pages/listas_solicitud_usuarios.dart';
 import 'package:ui_flutter/src/pages/publicacion_masiva.dart';
 
 import 'boton_gestionar.dart';
@@ -67,7 +67,7 @@ class _ContGestionarState extends State<ContGestionar> {
                       Icons.group,
                       'Usuarios',
                       context,
-                      PageListasUsuarios(),
+                      PageListasSolicitudUsuarios(),
                     )
                   ],
                 ),

@@ -47,7 +47,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Bitacoras'),
       ),

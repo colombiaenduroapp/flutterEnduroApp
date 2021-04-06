@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ui_flutter/src/pages/listas_pqrs.dart';
 import 'package:ui_flutter/src/pages/listas_publicacion_masiva.dart';
 import 'package:ui_flutter/src/pages/listas_sedes.dart';
 import 'package:ui_flutter/src/pages/listas_empresas.dart';
@@ -13,11 +12,11 @@ import 'package:ui_flutter/src/pages/pqrs.dart';
 
 import '../../../main.dart';
 
-class Nav_drawer extends StatefulWidget {
-  Nav_drawer({Key key}) : super(key: key);
+class NavDrawer extends StatefulWidget {
+  NavDrawer({Key key}) : super(key: key);
 
   @override
-  Nav_drawerState createState() => Nav_drawerState();
+  NavDrawerState createState() => NavDrawerState();
 }
 
 Widget _createDrawerItem(
@@ -80,14 +79,14 @@ Widget _createDrawerItem1(
   );
 }
 
-class Nav_drawerState extends State<Nav_drawer> {
+class NavDrawerState extends State<NavDrawer> {
   String usNombres = App.localStorage.getString('us_nombres') ?? '',
       usAlias = App.localStorage.getString('us_alias') ?? '';
   int cambioSede = App.localStorage.getInt('cambio_sede') ?? 0;
   int cambioEmpresa = App.localStorage.getInt('cambio_empresa') ?? 0;
-  int cambio_bitacora = App.localStorage.getInt('cambio_bitacora') ?? 0;
-  int cambio_pqrs = App.localStorage.getInt('cambio_pqrs') ?? 0;
-  int cambio_publicacionesmasivas =
+  int cambioBitacora = App.localStorage.getInt('cambio_bitacora') ?? 0;
+  int cambioPQRS = App.localStorage.getInt('cambio_pqrs') ?? 0;
+  int cambioPublicacionesMasivas =
       App.localStorage.getInt('cambio_publicacionesmasivas') ?? 0;
 
   @override
@@ -95,9 +94,9 @@ class Nav_drawerState extends State<Nav_drawer> {
     setState(() {
       cambioSede = cambioSede;
       cambioEmpresa = cambioEmpresa;
-      cambio_bitacora = cambio_bitacora;
-      cambio_pqrs = cambio_pqrs;
-      cambio_publicacionesmasivas = cambio_publicacionesmasivas;
+      cambioBitacora = cambioBitacora;
+      cambioPQRS = cambioPQRS;
+      cambioPublicacionesMasivas = cambioPublicacionesMasivas;
     });
     // TODO: implement initState
     super.initState();
@@ -168,7 +167,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             context: context,
             icon: Icons.apps,
             text: 'Bitacoras',
-            cambio: cambio_bitacora,
+            cambio: cambioBitacora,
             nombreCambio: 'cambio_bitacora',
             onTap: pages_listas_bitacoras(),
           ),
@@ -193,7 +192,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             context: context,
             icon: Icons.contacts,
             text: 'Publicaciones masivas',
-            cambio: cambio_publicacionesmasivas,
+            cambio: cambioPublicacionesMasivas,
             nombreCambio: 'cambio_publicacionesmasivas',
             onTap: PagesListasPublicacionesMasivas(),
           ),
@@ -212,7 +211,7 @@ class Nav_drawerState extends State<Nav_drawer> {
             context: context,
             icon: Icons.contacts,
             text: 'Quejas y Reclamos',
-            cambio: cambio_pqrs,
+            cambio: cambioPQRS,
             nombreCambio: 'cambio_pqrs',
             onTap: PagesPQRS(),
           ),

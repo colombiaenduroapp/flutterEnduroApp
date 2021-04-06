@@ -75,7 +75,7 @@ class _PageListasEmpresasState extends State<PageListasEmpresas> {
   Widget build(BuildContext context) {
     try {
       return Scaffold(
-        drawer: Nav_drawer(),
+        drawer: NavDrawer(),
         appBar: AppBar(
           title: _appBarTitle,
           actions: [

@@ -20,7 +20,7 @@ class _PagesPQRSState extends State<PagesPQRS> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Registrar Queja o Reclamo'),
       ),
