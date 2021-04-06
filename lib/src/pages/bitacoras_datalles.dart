@@ -154,7 +154,6 @@ class _PagesBitacoraDetallesState extends State<PagesBitacoraDetalles> {
   }
 
   Widget carousel(data) {
-    print(data[0]['imbi_img']);
     return Container(
       child: Column(
         children: [

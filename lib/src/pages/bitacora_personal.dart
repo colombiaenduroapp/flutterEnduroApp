@@ -155,7 +155,6 @@ class _PagesBitacoraPersonalState extends State<PagesBitacoraPersonal> {
                                   lugarTextController.text,
                                   descTextController.text,
                                   listBase);
-                              print(res);
                               if (res) {
                                 Navigator.pop(context);
                                 WidgetsGenericos.showLoaderDialog(

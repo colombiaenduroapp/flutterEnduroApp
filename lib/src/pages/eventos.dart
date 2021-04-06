@@ -346,7 +346,6 @@ class _pagesEventosState extends State<pagesEventos> {
 
               if (res) {
                 Navigator.pop(context);
-                print('true');
                 WidgetsGenericos.showLoaderDialog(
                     context,
                     false,
@@ -414,7 +413,6 @@ class _pagesEventosState extends State<pagesEventos> {
               Navigator.pop(context);
             } else {
               Navigator.pop(context);
-              print('false');
               WidgetsGenericos.showLoaderDialog(context, false,
                   'Ha ocurrido un error', Icons.error_outline, Colors.red);
               await Future.delayed(Duration(milliseconds: 500));

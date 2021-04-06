@@ -52,7 +52,7 @@ class _PageListasEventosState extends State<PageListasEventos> {
   Widget build(BuildContext context) {
     try {
       return Scaffold(
-        drawer: Nav_drawer(),
+        drawer: NavDrawer(),
         appBar: AppBar(
           title: _appBarTitle,
           actions: [

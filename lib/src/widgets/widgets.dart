@@ -6,8 +6,8 @@ import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:shimmer/shimmer.dart';
 
 class WidgetsGenericos {
-  static Widget showLoaderDialog(BuildContext context, bool estado,
-      String texto, IconData icon, Color color) {
+  static showLoaderDialog(BuildContext context, bool estado, String texto,
+      IconData icon, Color color) {
     AlertDialog alert = AlertDialog(
       content: new Row(
         children: [
@@ -28,6 +28,7 @@ class WidgetsGenericos {
         ],
       ),
     );
+
     showDialog(
       barrierDismissible: false,
       context: context,

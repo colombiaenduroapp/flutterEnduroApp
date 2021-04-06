@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../cont_eventos.dart';
 
-class tab_evento extends StatefulWidget {
-  tab_evento({Key key}) : super(key: key);
+class TabEvento extends StatefulWidget {
+  TabEvento({Key key}) : super(key: key);
 
   @override
-  _tab_eventoState createState() => _tab_eventoState();
+  _TabEventoState createState() => _TabEventoState();
 }
 
-class _tab_eventoState extends State<tab_evento> {
+class _TabEventoState extends State<TabEvento> {
   @override
   Widget build(BuildContext context) {
     return Container(

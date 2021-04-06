@@ -60,7 +60,7 @@ class _InicioPageState extends State<InicioPage>
             children: [
               TabGestionar(),
               if (us_per > 1) TabInicio(),
-              tab_evento(),
+              TabEvento(),
               // tab_sede(),
             ],
           ),
@@ -99,7 +99,7 @@ class _InicioPageState extends State<InicioPage>
               tabs: myTabs,
             ),
           ),
-          drawer: Nav_drawer(),
+          drawer: NavDrawer(),
         ));
   }
 }

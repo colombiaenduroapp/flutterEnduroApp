@@ -20,7 +20,7 @@ class _PagesPQRSState extends State<PagesPQRS> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Registrar Queja o Reclamo'),
       ),
@@ -111,7 +111,6 @@ class _PagesPQRSState extends State<PagesPQRS> {
           shape: GFButtonShape.pills,
           color: Theme.of(context).accentColor,
           onPressed: () async {
-            print({asuntoTextController.text, descTextController.text, res});
             if (_formKey.currentState.validate()) {
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);

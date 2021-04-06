@@ -64,7 +64,6 @@ class ServicioSocket {
 // ------------------socket empresas-----------
   socketEmpresas(SocketIO socket) {
     socket.on('empresasres', (_) {
-      print('empresas cambio');
       ServicioEmpresa().getEmpresa(true);
     });
   }

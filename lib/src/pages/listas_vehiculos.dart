@@ -22,7 +22,7 @@ class _PageListasVehiculosState extends State<PageListasVehiculos> {
           child: Text('Hola mundo'),
         ),
       ),
-      drawer: Nav_drawer(),
+      // drawer: Nav_drawer(),
       floatingActionButton:
           WidgetsGenericos.floatingButtonRegistrar(context, PageVehiculos()),
     );

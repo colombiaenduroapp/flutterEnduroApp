@@ -28,11 +28,9 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
   socket() async {
     SocketIO socket = await ServicioSocket().conexion();
     socket.on('empresasres', (_) async {
-      print('empresas cambio ');
       bitlist = await ServicioBitacoras().getBitacora(true);
       if (mounted) {
         setState(() {
-          print('cambiando');
           bitlist = bitlist;
         });
       }
@@ -49,7 +47,7 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Bitacoras'),
       ),

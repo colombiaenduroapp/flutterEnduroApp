@@ -17,6 +17,10 @@ class PageRegister extends StatefulWidget {
 
 class _PageRegisterState extends State<PageRegister> {
   final _formKey = GlobalKey<FormState>();
+  final _formFileKeyCorreo = GlobalKey<FormFieldState>();
+  final _formFileKeyAlias = GlobalKey<FormFieldState>();
+  FocusNode _focusCorreo = FocusNode();
+  FocusNode _focusAlias = FocusNode();
   List statelist = [];
   int page = 1;
   var nombresTextController = TextEditingController();
@@ -27,6 +31,8 @@ class _PageRegisterState extends State<PageRegister> {
   var correoTextController = TextEditingController();
   var contraseniaTextController = TextEditingController();
   var contraseniaValidTextController = TextEditingController();
+  bool correoExiste = false;
+  bool aliasExiste = false;
   String sedeSel = null;
   String sexoSel = null;
   String rhSel = null;
@@ -35,8 +41,25 @@ class _PageRegisterState extends State<PageRegister> {
 
   @override
   void initState() {
+    validar(_focusCorreo, _formFileKeyCorreo, 'correo', correoTextController);
+    validar(_focusAlias, _formFileKeyAlias, 'alias', aliasTextController);
     super.initState();
     getSedes();
+  }
+
+  validar(FocusNode _focusNode, GlobalKey<FormFieldState> _formFileKey,
+      String tipo, TextEditingController data) {
+    _focusNode.addListener(() async {
+      if (!_focusNode.hasFocus) {
+        bool existe = await ServicioUsuario().validate(tipo, data.text);
+        setState(() {
+          if (tipo == 'alias')
+            aliasExiste = existe;
+          else if (tipo == 'correo') correoExiste = existe;
+        });
+        _formFileKey.currentState.validate();
+      }
+    });
   }
 
   @override
@@ -308,6 +331,8 @@ class _PageRegisterState extends State<PageRegister> {
                                   WidgetsGenericos.formItemsDesign(
                                     Icons.label,
                                     TextFormField(
+                                      key: _formFileKeyAlias,
+                                      focusNode: _focusAlias,
                                       controller: aliasTextController,
                                       decoration: new InputDecoration(
                                         labelText: 'Alias',
@@ -319,11 +344,20 @@ class _PageRegisterState extends State<PageRegister> {
                                               BorderRadius.circular(10.0),
                                         ),
                                       ),
+                                      validator: (value) {
+                                        if (aliasExiste)
+                                          return 'El alias "' +
+                                              value +
+                                              '" ya existe';
+                                        return null;
+                                      },
                                     ),
                                   ),
                                   WidgetsGenericos.formItemsDesign(
                                     Icons.alternate_email,
                                     TextFormField(
+                                      key: _formFileKeyCorreo,
+                                      focusNode: _focusCorreo,
                                       controller: correoTextController,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -341,6 +375,10 @@ class _PageRegisterState extends State<PageRegister> {
                                       validator: (value) {
                                         if (value.isEmpty)
                                           return 'Por favor ingrese el correo';
+                                        else if (correoExiste)
+                                          return 'El correo ' +
+                                              value +
+                                              ' ya existe';
                                         return null;
                                       },
                                     ),
@@ -366,7 +404,7 @@ class _PageRegisterState extends State<PageRegister> {
                                       ),
                                       validator: (value) {
                                         if (value.isEmpty)
-                                          return 'Por favor ingrese el contraseña';
+                                          return 'Por favor ingrese la contraseña';
                                         return null;
                                       },
                                     ),
@@ -455,17 +493,16 @@ class _PageRegisterState extends State<PageRegister> {
                                       ),
                                     )
                                   : TextButton(
-                                      onPressed: (sedeSel != null &&
-                                              correoTextController
+                                      onPressed: (correoTextController
                                                   .text.isNotEmpty &&
                                               contraseniaTextController
                                                   .text.isNotEmpty &&
-                                              contraseniaValidTextController
-                                                  .text.isNotEmpty &&
-                                              contraseniaValidTextController
-                                                      .text ==
-                                                  contraseniaTextController
-                                                      .text)
+                                              contraseniaTextController.text ==
+                                                  contraseniaValidTextController
+                                                      .text &&
+                                              !correoExiste &&
+                                              !aliasExiste &&
+                                              sedeSel != null)
                                           ? () {
                                               _guardar();
                                             }
@@ -528,7 +565,6 @@ class _PageRegisterState extends State<PageRegister> {
           rhSel,
           correoTextController.text,
           contraseniaTextController.text);
-
       if (res) {
         Navigator.pop(context);
         WidgetsGenericos.showLoaderDialog(
@@ -537,7 +573,7 @@ class _PageRegisterState extends State<PageRegister> {
             'Registrado Correctamente. Debes esperar la aprobación del lider de la sede.',
             Icons.check_circle_outlined,
             Colors.green);
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(Duration(milliseconds: 700));
         setState(() {
           nombresTextController.clear();
           apellidosTextController.clear();
@@ -553,7 +589,6 @@ class _PageRegisterState extends State<PageRegister> {
           sexoSel = null;
           rhSel = null;
         });
-
         Navigator.pop(context);
       } else {
         Navigator.pop(context);

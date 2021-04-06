@@ -40,11 +40,9 @@ class _PageListasEmpresasState extends State<PageListasEmpresas> {
 // evento sedeempresas para hacer cambios en tiempo real
   socket() async {
     App.conexion.on('empresasres', (_) async {
-      print('empresas cambio ');
       emplist = await ServicioEmpresa().getEmpresa(true);
       if (mounted) {
         setState(() {
-          print('cambiando');
           emplist = emplist;
         });
       }
@@ -77,7 +75,7 @@ class _PageListasEmpresasState extends State<PageListasEmpresas> {
   Widget build(BuildContext context) {
     try {
       return Scaffold(
-        drawer: Nav_drawer(),
+        drawer: NavDrawer(),
         appBar: AppBar(
           title: _appBarTitle,
           actions: [

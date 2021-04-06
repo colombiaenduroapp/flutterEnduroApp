@@ -85,7 +85,7 @@ class _PageListasSedesState extends State<PageListasSedes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Nav_drawer(),
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: _appBarTitle,
         actions: [

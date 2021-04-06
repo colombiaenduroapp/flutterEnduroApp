@@ -69,7 +69,6 @@ class ServicioBitacoras {
         App.localStorage.setString('token', null);
         return null;
       } else {
-        print(response.statusCode);
         return false;
       }
     } catch (exception) {

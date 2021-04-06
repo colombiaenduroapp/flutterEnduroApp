@@ -82,11 +82,9 @@ class ServicioEmpresa {
         ]);
         return true;
       } else {
-        print(response.statusCode);
         return false;
       }
     } catch (exception) {
-      print(exception);
       return false;
     }
   }
@@ -152,7 +150,6 @@ class ServicioEmpresa {
       print('Error: $e');
     }
     if (response.statusCode == 200) {
-      print('hola mundp');
       socket.emit('empresas', ['true']);
       return true;
     } else {

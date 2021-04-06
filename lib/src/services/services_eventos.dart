@@ -32,11 +32,9 @@ class ServicioEvento {
       return null;
     }
     if (jsonResponse == null) {
-      print(jsonResponse);
       return jsonResponse;
     } else {
       eventoList = EventosList.fromJson(jsonResponse);
-      print(eventoList);
       return eventoList;
     }
   }

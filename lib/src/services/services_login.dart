@@ -14,9 +14,7 @@ class ServicioLogin {
         "password": password,
       }).timeout(Duration(seconds: 30));
       final jsonResponse = json.decode(response.body);
-      // print(jsonResponse);
       login = Login.fromJson(jsonResponse);
-      // print(login.message);
       return login;
     } catch (e) {
       print(e);
