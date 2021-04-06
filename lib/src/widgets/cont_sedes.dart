@@ -5,17 +5,15 @@ import 'package:ui_flutter/src/pages/sedes_detalles.dart';
 import 'package:ui_flutter/src/services/services_sedes.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
-class cont_sedes extends StatefulWidget {
-  cont_sedes({Key key}) : super(key: key);
+class ContSedes extends StatefulWidget {
+  ContSedes({Key key}) : super(key: key);
 
   @override
-  _cont_sedesState createState() => _cont_sedesState();
+  _ContSedesState createState() => _ContSedesState();
 }
 
-class _cont_sedesState extends State<cont_sedes> {
+class _ContSedesState extends State<ContSedes> {
   Future<SedesList> lista = ServicioSede().cargarSedes(true);
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
   bool res = false;
   final TextEditingController _filter = new TextEditingController();
 
@@ -36,7 +34,7 @@ class _cont_sedesState extends State<cont_sedes> {
     super.dispose();
   }
 
-  _cont_sedesState() {
+  _ContSedesState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
