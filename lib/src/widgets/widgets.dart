@@ -243,7 +243,7 @@ class WidgetsGenericos {
   static Widget floatingButtonRegistrar(BuildContext context, Widget pagina) {
     return FloatingActionButton(
       shape: StadiumBorder(),
-      onPressed: () => Navigator.pushReplacement(
+      onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => pagina),
       ),

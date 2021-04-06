@@ -1,6 +1,7 @@
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_pqrs.dart';
+import 'package:ui_flutter/src/services/services_publicacionesMasivas.dart';
 
 import '../../main.dart';
 import 'local_notification.dart';
@@ -79,12 +80,13 @@ class ServicioSocket {
   }
 
   socketPublicacionesMasivas(SocketIO socket) {
-    socket.on('publicacionesmasivasres', (data) {
+    socket.on('publicacionesmasivasres', (data) async {
       if (App.localStorage.getInt('us_perfil') == 3)
         localNotification.scheduleNotification(
-            'Se ha registrado una nueva solicitud ', data['pqrs']);
+            'Se ha registrado una nueva solicitud ',
+            data['publicacionesmasivas']);
 
-      ServicioPQRS().getPQRS();
+      await ServicioPublicacionesMasivas().getPublicacionesMasivas();
     });
   }
 

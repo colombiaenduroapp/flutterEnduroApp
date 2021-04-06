@@ -25,6 +25,16 @@ class _PagesListasPublicacionesMasivasState
       Hive.box('publicacionesmasivasdb').get('data') ?? [];
   String _searchText;
   bool res = false;
+  cargar() async {
+    publicaciones =
+        await ServicioPublicacionesMasivas().getPublicacionesMasivas();
+    if (mounted) {
+      setState(() {
+        print('cambiando');
+        publicaciones = publicaciones;
+      });
+    }
+  }
 
   _PagesListasPublicacionesMasivasState() {
     _filter.addListener(() {
@@ -229,6 +239,8 @@ class _PagesListasPublicacionesMasivasState
                                                     data[index]['pu_cdgo']
                                                         .toString(),
                                                     '1');
+                                        cargar();
+
                                         if (res) {
                                           Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
@@ -273,7 +285,11 @@ class _PagesListasPublicacionesMasivasState
                                                     data[index]['pu_cdgo']
                                                         .toString(),
                                                     '2');
+                                        cargar();
+
                                         if (res) {
+                                          ServicioPublicacionesMasivas()
+                                              .getPublicacionesMasivas();
                                           Navigator.pop(context);
                                           WidgetsGenericos.showLoaderDialog(
                                               context,

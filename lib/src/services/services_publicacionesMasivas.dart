@@ -53,8 +53,9 @@ class ServicioPublicacionesMasivas {
 
   Future<bool> updatePublicacionMasiva(String puCdgo, String epCdgo) async {
     try {
+      print(puCdgo);
       final response = await http.put(
-        url + 'publicacion_masiva' + puCdgo,
+        url + 'publicacion_masiva/' + puCdgo,
         headers: {'x-access-token': App.localStorage.getString('token')},
         body: {
           'pu_estado_publicacion_ep_cdgo': epCdgo,
