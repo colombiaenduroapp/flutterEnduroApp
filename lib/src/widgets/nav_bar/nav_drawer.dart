@@ -92,7 +92,6 @@ class Nav_drawerState extends State<Nav_drawer> {
 
   @override
   void initState() {
-    print(App.localStorage.getString('us_logo'));
     setState(() {
       cambioSede = cambioSede;
       cambioEmpresa = cambioEmpresa;

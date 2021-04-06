@@ -551,7 +551,6 @@ class _PageRegisterState extends State<PageRegister> {
   _guardar() async {
     try {
       if (file != null) imageFile = base64Encode(file.readAsBytesSync());
-      print(imageFile);
       WidgetsGenericos.showLoaderDialog(
           context, true, 'Cargando..', null, Colors.grey);
       bool res = await ServicioUsuario().addUsuario(

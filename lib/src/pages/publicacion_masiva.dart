@@ -118,7 +118,6 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
           shape: GFButtonShape.pills,
           color: Theme.of(context).accentColor,
           onPressed: () async {
-            print({linkTextController.text, descTextController.text, res});
             if (_formKey.currentState.validate()) {
               WidgetsGenericos.showLoaderDialog(
                   context, true, 'Cargando...', null, Colors.blue);

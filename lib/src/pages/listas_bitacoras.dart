@@ -28,11 +28,9 @@ class _pages_listas_bitacorasState extends State<pages_listas_bitacoras> {
   socket() async {
     SocketIO socket = await ServicioSocket().conexion();
     socket.on('empresasres', (_) async {
-      print('empresas cambio ');
       bitlist = await ServicioBitacoras().getBitacora(true);
       if (mounted) {
         setState(() {
-          print('cambiando');
           bitlist = bitlist;
         });
       }

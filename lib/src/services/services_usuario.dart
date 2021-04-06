@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
 import 'package:ui_flutter/main.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:http/http.dart' as http;
@@ -55,6 +56,34 @@ class ServicioUsuario {
       us_direccion: parsedJson['us_direccion'],
     );
   }
+
+  Future<dynamic> getSolicitudUsuarios() async {
+    try {
+      final response = await http.get(
+        url + 'usuarios/solicitudes',
+        headers: {'x-access-token': App.localStorage.getString('token')},
+      ).timeout(Duration(seconds: 15));
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final usuariosVieja =
+            (Hive.box('solicitudusuariosdb').get('data') == null)
+                ? []
+                : Hive.box('solicitudusuariosdb').get('data');
+        if (usuariosVieja.length < jsonResponse['data'].length) {
+          final dif = jsonResponse['data'].length - usuariosVieja.length;
+          App.localStorage.setInt('cambio_solicitudusuario', dif);
+        }
+        Hive.box('solicitudusuariosdb')
+            .put('data', (jsonResponse['status']) ? jsonResponse['data'] : []);
+      }
+      final usuarios = Hive.box('solicitudusuariosdb').get('data');
+      return usuarios;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<bool> addUsuario(
       String nombres,
       String apellidos,

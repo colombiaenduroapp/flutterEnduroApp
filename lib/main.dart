@@ -21,10 +21,10 @@ void main() async {
   await App.init();
   await Hive.initFlutter();
   await Hive.openBox('sedesdb');
-
   await Hive.openBox('publicacionesmasivasdb');
   await Hive.openBox('empresasdb');
   await Hive.openBox('bitacorasdb');
   await Hive.openBox('pqrsdb');
+  await Hive.openBox('solicitudusuariosdb');
   runApp(MyApp());
 }
