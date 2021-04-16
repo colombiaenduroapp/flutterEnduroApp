@@ -83,13 +83,6 @@ class _PagePublicacionMasivaState extends State<PagePublicacionMasiva> {
                           },
                         ),
                       ),
-                      SimpleUrlPreview(
-                        url:
-                            'https://www.facebook.com/vhie140695/videos/827575657826310',
-                        titleLines: 2,
-                        descriptionLines: 2,
-                        imageLoaderColor: Colors.white,
-                      ),
                       botonRegistrar(),
                     ],
                   ),

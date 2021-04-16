@@ -268,6 +268,7 @@ class WidgetsGenericos {
   static loadImage(String url) {
     try {
       return CachedNetworkImage(
+        fit: BoxFit.cover,
         imageUrl: url,
         placeholder: (context, url) => Center(
           child: Shimmer.fromColors(

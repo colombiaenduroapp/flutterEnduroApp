@@ -25,6 +25,7 @@ void main() async {
   await Hive.openBox('empresasdb');
   await Hive.openBox('bitacorasdb');
   await Hive.openBox('pqrsdb');
+  await Hive.openBox('vehiculosdb');
   await Hive.openBox('solicitudusuariosdb');
   runApp(MyApp());
 }
