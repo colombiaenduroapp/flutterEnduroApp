@@ -110,17 +110,18 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black45,
-                          width: 0.5,
-                        ),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 5.0,
-                              offset: Offset(1.0, 0.75))
-                        ],
-                        color: Colors.white),
+                      border: Border.all(
+                        color: Colors.black45,
+                        width: 0.5,
+                      ),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 5.0,
+                            offset: Offset(1.0, 0.75))
+                      ],
+                      color: Colors.white,
+                    ),
                     child: Column(
                       children: [
                         Container(
@@ -134,9 +135,9 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(data[index]['us_alias'],
+                              Text(listaPqrs[index]['us_alias'],
                                   style: Theme.of(context).textTheme.headline6),
-                              Text(data[index]['sd_desc'],
+                              Text(listaPqrs[index]['sd_desc'],
                                   style: Theme.of(context).textTheme.bodyText1)
                             ],
                           ),
@@ -152,7 +153,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                                     padding: EdgeInsets.only(bottom: 5),
                                     width:
                                         MediaQuery.of(context).size.width - 50,
-                                    child: Text(data[index]['pqrs_asunto'],
+                                    child: Text(listaPqrs[index]['pqrs_asunto'],
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,
@@ -162,7 +163,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                                     width: MediaQuery.of(context).size.width -
                                         50, //cambiar a valor dinamico tamaño de pantalla
                                     child: Text(
-                                      data[index]['pqrs_desc'],
+                                      listaPqrs[index]['pqrs_desc'],
                                     ),
                                   ),
                                 ],
@@ -182,7 +183,7 @@ class _PagesListasPqrsState extends State<PagesListasPqrs> {
                             children: [
                               Container(
                                 child: Text(
-                                  data[index]['fecha'],
+                                  listaPqrs[index]['fecha'],
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               )
