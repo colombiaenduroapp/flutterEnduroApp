@@ -145,22 +145,22 @@ class ServicioUsuario {
     }
   }
 
-  Future<bool> updateSede(int us_cdgo, String accion) async {
+  Future<bool> updateEstado(String us_cdgo, String accion) async {
     try {
       final response = await http.put(
-        url + "usuario/cambio_estado/" + us_cdgo.toString(),
+        url + "usuarios/cambio_estado/" + us_cdgo,
         headers: {
           "x-access-token": App.localStorage.getString('token'),
         },
         body: {
-          "estado": (accion == "Aceptar") ? 1 : 0,
+          "estado": (accion == "Aceptar") ? "1" : "0",
         },
       ).timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        /* App.conexion.emit('usuarios', [
-          {'tipo': 'registro', 'sede': sede, 'alias': alias}
-        ]); */
+        App.conexion.emit('usuarios', [
+          {'tipo': 'actualizar', 'sede': null, 'alias': null}
+        ]);
         return true;
       } else {
         return false;

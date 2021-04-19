@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:hive/hive.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:ui_flutter/src/models/model_usuario.dart';
+import 'package:ui_flutter/src/services/services_usuario.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
 
 class PageListasSolicitudUsuarios extends StatefulWidget {
@@ -194,8 +196,8 @@ class _PageListasSolicitudUsuariosState
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           children: [
-                            boton("Aceptar"),
-                            boton("Eliminar"),
+                            boton("Aceptar", listaUsuarios[index]['us_cdgo']),
+                            boton("Eliminar", listaUsuarios[index]['us_cdgo']),
                           ],
                         ),
                       )
@@ -210,7 +212,7 @@ class _PageListasSolicitudUsuariosState
     }
   }
 
-  boton(String nombreBoton) {
+  boton(String nombreBoton, int us_cdgo) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.all(5),
@@ -219,14 +221,35 @@ class _PageListasSolicitudUsuariosState
           color: (nombreBoton == "Aceptar")
               ? Colors.blue
               : Colors.blueGrey.shade200,
-          onPressed: () {
+          onPressed: () async {
             bool res = false;
             WidgetsGenericos.showLoaderDialog(
                 context, true, 'Cargando...', null, Colors.blue);
-            if (nombreBoton == "Aceptar") {
-              print("hola");
+
+            res = await ServicioUsuario()
+                .updateEstado(us_cdgo.toString(), nombreBoton);
+            if (res) {
+              usuarios = await ServicioUsuario().getSolicitudUsuarios();
+              if (mounted) {
+                setState(() {
+                  usuarios = usuarios;
+                });
+              }
+              Navigator.pop(context);
+              WidgetsGenericos.showLoaderDialog(
+                  context,
+                  false,
+                  (nombreBoton == "Aceptar")
+                      ? 'Aceptado Exitosamente'
+                      : "Solicitud Eliminada",
+                  Icons.check_circle_outlined,
+                  Colors.green);
+              await Future.delayed(Duration(milliseconds: 1000));
+              Navigator.pop(context);
             } else {
-              print("no hola");
+              WidgetsGenericos.showLoaderDialog(context, false,
+                  'Ha ocurrido un error', Icons.error_outline, Colors.red);
+              Navigator.pop(context);
             }
           },
         ),
