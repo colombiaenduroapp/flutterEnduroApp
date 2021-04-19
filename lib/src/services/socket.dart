@@ -2,6 +2,7 @@ import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:ui_flutter/src/services/service_url.dart';
 import 'package:ui_flutter/src/services/services_pqrs.dart';
 import 'package:ui_flutter/src/services/services_publicacionesMasivas.dart';
+import 'package:ui_flutter/src/services/services_usuario.dart';
 
 import '../../main.dart';
 import 'local_notification.dart';
@@ -90,14 +91,14 @@ class ServicioSocket {
   }
 
   socketUsuarios(SocketIO socket) {
-    socket.on('usuariosres', (data) {
+    socket.on('usuariosres', (data) async {
       if (data['tipo'] == "registro" &&
           App.localStorage.getInt('us_sd_cdgo').toString() == data['sede'] &&
           App.localStorage.getInt('us_perfil') == 2)
         localNotification.scheduleNotification(
             'Se ha registrado un nuevo usuario ', data['alias']);
 
-      //ServicioPQRS().getPQRS();
+      await ServicioUsuario().getSolicitudUsuarios();
     });
   }
 }

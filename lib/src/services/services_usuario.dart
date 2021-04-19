@@ -144,4 +144,29 @@ class ServicioUsuario {
       return false;
     }
   }
+
+  Future<bool> updateEstado(String us_cdgo, String accion) async {
+    try {
+      final response = await http.put(
+        url + "usuarios/cambio_estado/" + us_cdgo,
+        headers: {
+          "x-access-token": App.localStorage.getString('token'),
+        },
+        body: {
+          "estado": (accion == "Aceptar") ? "1" : "0",
+        },
+      ).timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        App.conexion.emit('usuarios', [
+          {'tipo': 'actualizar', 'sede': null, 'alias': null}
+        ]);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      return false;
+    }
+  }
 }
