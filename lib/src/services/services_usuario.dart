@@ -144,4 +144,29 @@ class ServicioUsuario {
       return false;
     }
   }
+
+  Future<bool> updateSede(int us_cdgo, String accion) async {
+    try {
+      final response = await http.put(
+        url + "usuario/cambio_estado/" + us_cdgo.toString(),
+        headers: {
+          "x-access-token": App.localStorage.getString('token'),
+        },
+        body: {
+          "estado": (accion == "Aceptar") ? 1 : 0,
+        },
+      ).timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        /* App.conexion.emit('usuarios', [
+          {'tipo': 'registro', 'sede': sede, 'alias': alias}
+        ]); */
+        return true;
+      } else {
+        return false;
+      }
+    } catch (exception) {
+      return false;
+    }
+  }
 }
