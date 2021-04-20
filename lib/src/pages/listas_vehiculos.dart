@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'package:ui_flutter/main.dart';
+import 'package:ui_flutter/src/pages/vehiculo_detalles.dart';
 import 'package:ui_flutter/src/pages/vehiculos.dart';
 import 'package:ui_flutter/src/services/services_vehiculo.dart';
 import 'package:ui_flutter/src/widgets/nav_bar/nav_drawer.dart';
@@ -205,98 +206,113 @@ class _PageListasVehiculosState extends State<PageListasVehiculos> {
                   return Slidable(
                     key: ValueKey(velist[index]),
                     closeOnScroll: true,
-                    child: Container(
-                      margin: EdgeInsets.all(2),
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset:
-                                  Offset(1, 1), // changes position of shadow
-                            ),
-                          ],
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFc3c3c3),
-                              width: 0.6,
-                            ),
-                          )),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xFFc3c3c3),
-                                  width: 0.4,
-                                ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PagesVehiculoDetalles(
+                                velist[index]['ve_cdgo'].toString(),
+                                velist[index]),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(2),
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset:
+                                    Offset(1, 1), // changes position of shadow
                               ),
-                            ),
-                            child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 10, right: 10),
-                                  width: 30,
-                                  height: 30,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(80.0),
-                                    child: WidgetsGenericos.loadImage(
-                                      tvelist[index]['us_logo'],
-                                    ),
+                            ],
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color(0xFFc3c3c3),
+                                width: 0.6,
+                              ),
+                            )),
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xFFc3c3c3),
+                                    width: 0.4,
                                   ),
                                 ),
-                                Text(
-                                  tvelist[index]['us_alias'],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Text('Placa: ',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1),
-                                Text(
-                                  tvelist[index]['ve_placa'],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: Color(0xFFc3c3c3),
-                                  width: 0.4,
-                                ),
+                              ),
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 10, right: 10),
+                                    width: 30,
+                                    height: 30,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(80.0),
+                                      child: WidgetsGenericos.loadImage(
+                                        tvelist[index]['us_logo'],
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    tvelist[index]['us_alias'],
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                tvelist[index]['dif_soat'] < 0
-                                    ? Text(
-                                        'Soat Vencido  hace: ${tvelist[index]['dif_soat'] * -1} dias ',
-                                        style: (TextStyle(color: Colors.red)))
-                                    : Text(
-                                        'Venc Soat: ${tvelist[index]['ve_fecha_soat']}'),
-                                tvelist[index]['dif_tecno'] < 0
-                                    ? Text(
-                                        'Tecno Vencida  hace: ${tvelist[index]['dif_tecno'] * -1} dias ',
-                                        style: (TextStyle(color: Colors.red)))
-                                    : Text(
-                                        'Venc Tecno: ${tvelist[index]['ve_fecha_tecno']}'),
-                              ],
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Text('Placa: ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                  Text(
+                                    tvelist[index]['ve_placa'],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Color(0xFFc3c3c3),
+                                    width: 0.4,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  tvelist[index]['dif_soat'] < 0
+                                      ? Text(
+                                          'Soat Vencido  hace: ${tvelist[index]['dif_soat'] * -1} dias ',
+                                          style: (TextStyle(color: Colors.red)))
+                                      : Text(
+                                          'Venc Soat: ${tvelist[index]['ve_fecha_soat']}'),
+                                  tvelist[index]['dif_tecno'] < 0
+                                      ? Text(
+                                          'Tecno Vencida  hace: ${tvelist[index]['dif_tecno'] * -1} dias ',
+                                          style: (TextStyle(color: Colors.red)))
+                                      : Text(
+                                          'Venc Tecno: ${tvelist[index]['ve_fecha_tecno']}'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     actions: <Widget>[

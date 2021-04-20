@@ -58,4 +58,26 @@ class ServicioVehiculos {
       return false;
     }
   }
+
+  Future<dynamic> searchVehiculo(String ve_cdgo) async {
+    var response;
+    try {
+      response = await http.get(
+        url + "vehiculo/" + ve_cdgo,
+        headers: {
+          "x-access-token": App.localStorage.getString('token'),
+        },
+      ).timeout(Duration(seconds: 40));
+    } on Error catch (e) {
+      print('Error: $e');
+    }
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body)['data'];
+      print(jsonResponse);
+      return jsonResponse;
+    } else {
+      return null;
+    }
+  }
 }

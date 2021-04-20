@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ui_flutter/src/pages/empresas.dart';
-import 'package:ui_flutter/src/services/services_empresa.dart';
+import 'package:ui_flutter/src/services/services_vehiculo.dart';
 import 'package:ui_flutter/src/widgets/widgets.dart';
-
-import 'empresas.dart';
+import 'vehiculos.dart';
 
 class PagesVehiculoDetalles extends StatefulWidget {
   String ve_cdgo;
@@ -16,12 +14,13 @@ class PagesVehiculoDetalles extends StatefulWidget {
 }
 
 class _PagesVehiculoDetallesState extends State<PagesVehiculoDetalles> {
-  Future<dynamic> futureEmpresa;
+  Future<dynamic> futureVehiculo;
   dynamic vehiculo;
 
   @override
   void initState() {
-    futureEmpresa = ServicioEmpresa().searchEmpresa(widget.ve_cdgo.toString());
+    futureVehiculo =
+        ServicioVehiculos().searchVehiculo(widget.ve_cdgo.toString());
 
     super.initState();
   }
@@ -37,14 +36,13 @@ class _PagesVehiculoDetallesState extends State<PagesVehiculoDetalles> {
           onPressed: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  pagesEmpresa(widget.ve_cdgo, vehiculo, 'Editar'),
+              builder: (context) => PageVehiculos(),
             ),
           ),
         ),
       ]),
       body: FutureBuilder(
-        future: futureEmpresa,
+        future: futureVehiculo,
         // initialData: InitialData,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
@@ -62,11 +60,15 @@ class _PagesVehiculoDetallesState extends State<PagesVehiculoDetalles> {
               if (snapshot.hasData) {
                 vehiculo = snapshot.data;
                 return SingleChildScrollView(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        _imagenEvento(snapshot.data.em_logo),
-                      ],
+                  child: Center(
+                    child: Container(
+                      child: Column(
+                        children: [
+                          _encabezadopropietario(),
+                          _placaydesc(),
+                          _documentos(),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -93,55 +95,93 @@ class _PagesVehiculoDetallesState extends State<PagesVehiculoDetalles> {
     );
   }
 
-  _imagenEvento(String url) {
+  _encabezadopropietario() {
     try {
-      return url != null
-          ? InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        WidgetsGenericos.fullDialogImage(url),
-                    fullscreenDialog: true,
+      return Container(
+          decoration: BoxDecoration(),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(10),
+                width: 100,
+                height: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40.0),
+                  child: WidgetsGenericos.loadImage(
+                    widget.vehiculo['us_logo'],
                   ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: FadeInImage.assetNetwork(
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.cover,
-                  placeholder: 'assets/loading_img.gif',
-                  image: url,
-                  imageErrorBuilder: (BuildContext context, Object exception,
-                      StackTrace stackTrace) {
-                    return Container(
-                      width: double.infinity,
-                      height: 220,
-                      child: Icon(Icons.image_not_supported_rounded),
-                    );
-                  },
                 ),
               ),
-            )
-          : Container(
-              child: Icon(Icons.business_outlined),
-              width: double.infinity,
-              height: 220,
-            );
+              Text(widget.vehiculo['us_alias'],
+                  style: Theme.of(context).textTheme.headline5)
+            ],
+          ));
     } catch (e) {
       print(e);
     }
+  }
+
+  _placaydesc() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+            horizontal: BorderSide(
+          color: Colors.grey,
+          width: 0.5,
+          style: BorderStyle.solid,
+        )),
+      ),
+      child: Column(
+        children: [
+          Text('Vehiculo', style: Theme.of(context).textTheme.overline),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text('Placa:',
+                    style: Theme.of(context).textTheme.overline), //Text
+
+                Text(widget.vehiculo['ve_placa'],
+                    style: Theme.of(context).textTheme.headline6)
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text('Descripcion del vehiculo',
+                    style: Theme.of(context).textTheme.overline),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.grey,
+                          width: 0.5,
+                          style: BorderStyle.solid)),
+                  child: Text(widget.vehiculo['ve_desc'],
+                      textAlign: TextAlign.center),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _documentos() {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Column(
+        children: [
+          Text('Soat y Tecnomecanica',
+              style: Theme.of(context).textTheme.overline),
+        ],
+      ),
+    );
   }
 }
